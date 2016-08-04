@@ -1,0 +1,5 @@
+1. file names should be separated by - hypen symbol
+2. Don’t use synchronous functions
+3. Do logging correctly
+4. Handle exceptions properly
+5. Return on callback - https://blog.risingstack.com/node-js-best-practices/
