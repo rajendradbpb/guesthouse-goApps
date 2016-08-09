@@ -81,4 +81,7 @@ function initGlobals() {
   global.modelFactory = {};
 };
 initGlobals();
+
+
+//  testing codes gose here
 module.exports = app;

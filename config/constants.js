@@ -4,7 +4,10 @@ var constants = {
     errors:{
       "saveUser" : "Error in saving user",
       "undefined"                :   "undefined value",
-      "undefinedRole"            :   "undefined role",
+      "undefinedRole"            :   "undefined Username",
+      "undefinedUsername"            :   "undefined role",
+      "undefinedPassword"            :   "undefined Password",
+      "undefinedFirstName"            :   "undefined undefinedFirstName",
       "undefinedEntererId"       :   "undefined Enterer Id",
       "undefinedUpdateUser"      :   "undefined Update  User Id",
       "saveRole"      :   "Error in saving Role",
