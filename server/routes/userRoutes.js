@@ -1,13 +1,14 @@
 var express = require('express');
 var path = require('path');
 var router = express.Router();
-
+var userCtrl = require("./../controllers/userCtrl");
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log("user 1");
+// create the user
+router.post('/', function(req, res, next) {
+  userCtrl.addUser(req, res);
 });
 router.get('/add', function(req, res, next) {
-  console.log("user add");
+  res.send('User add to be go here');
 });
 
 

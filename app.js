@@ -1,12 +1,18 @@
+/*
+  * added start up function to init the gloal object that will store the details as follows
+  global.modules - will keep all the library modules
+
+*/
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var db = require('./db.js');
 var routes = require('./server/routes/index');
-
+// var factoryManager = require("./server/factory/factoryManager");
+// var routesFactory = factoryManager.getfactory("routesFactory");
 var app = express();
 app.all('/*', function (req, res, next) {
     // CORS headers
@@ -67,4 +73,12 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
+function initGlobals() {
+  global.modules = {};
+  global.factoryManager = {};
+  global.routesFactory = {};
+  global.modelFactory = {};
+};
+initGlobals();
 module.exports = app;

@@ -1,0 +1,14 @@
+{
+  "dev":{
+    "hostName":"localhost",
+    "port":":27017",
+    "db":"guestHouse",
+    "dbserver":"mongodb://"
+  },
+  "prod":{
+    "hostName":"localhost",
+    "port":":27017",
+    "db":"guestHouse"
+  },
+  "env" : "dev"
+}
