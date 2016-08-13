@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
-var constants = require('./../config/constants');
+var constants = require('./../../config/constants');
 var validator = require('validator');
 var Schema = mongoose.Schema;
+var password = require('password-hash-and-salt');
 var userSchema = new mongoose.Schema({
     role              : {type: Schema.Types.ObjectId, ref: 'role',required: constants.messages.errors.undefinedRole},
     userName          : {type: String, unique : true,required: constants.messages.errors.undefinedUsername},
@@ -18,7 +19,9 @@ var userSchema = new mongoose.Schema({
     accessToken          : {type: String, default:null},
 });
 
-
+userSchema.methods.verifyPassword = function(password) {
+  return this.userName == password ? true : false;
+}
 //custom validations
 // userSchema.path('userName').validate(function (value) {
 //     var test = validator.isNull(value) || value == undefined ? false : true;

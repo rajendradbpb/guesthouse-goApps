@@ -5,8 +5,11 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var colors = require('colors');
 var response = require("./../component/response");
-var constants = require("./../config/constants");
+var constants = require("./../../config/constants");
 var password = require('password-hash-and-salt');
+var jwt     = require('jsonwebtoken');
+var config = require("config");
+
 try {
 
   var userModelObj = require("./../models/user");
@@ -20,16 +23,16 @@ exports.addUser = function (req, res) {
   try {
     password(req.body.password).hash(function(error, hash) {
       req.body.password = hash; // encrypting the password
+      userModelObj(req.body).save(function (err, user) {
+        if(err)
+        {
+          return res.json(response(500,"error",constants.messages.errors.saveUser,err))
+        }
+        else {
+          return res.json(response(200,"success",constants.messages.success.saveUser))
+        }
+      });
     })
-    userModelObj(req.body).save(function (err, user) {
-      if(err)
-      {
-        return res.json(response(500,"error",constants.messages.errors.saveUser,err))
-      }
-      else {
-        return res.json(response(200,"success",constants.messages.success.saveUser))
-      }
-    });
   } catch (err) {
     return res.json(response(500,"error",constants.messages.errors.saveUser,err))
   }
@@ -72,3 +75,18 @@ exports.deleteUser = function (req, res) {
 /*
 * user crud operation ends
 */
+
+/*
+* this will be executed if authentication passes
+*/
+exports.signIn = function (req, res) {
+  // creating token that will send to the client side
+  try {
+    var token = jwt.sign(req.user, config.token.secret, { expiresIn: config.token.expiry },
+      function(token) {
+        res.json(response(200,"success",constants.messages.success.login,token))
+      });
+  } catch (e) {
+    res.json(response(500,"error",constants.messages.errors.login,e))
+  }
+}

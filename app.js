@@ -9,8 +9,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var db = require('./db.js');
 var routes = require('./server/routes/index');
+var passport = require('passport');
+var userModelObj = require('./server/models/user');
+var config = require('config');
+var jwt     = require('jsonwebtoken');
 // var factoryManager = require("./server/factory/factoryManager");
 // var routesFactory = factoryManager.getfactory("routesFactory");
 var app = express();
@@ -38,6 +43,53 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// passport init
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+var LocalStrategy = require('passport-local').Strategy;
+var BearerStrategy = require('passport-http-bearer').Strategy;
+/*
+  * this is used to check the user in the database existence
+  used in case of the signIn and signUp user
+*/
+passport.use('local', new LocalStrategy(
+  function(username, password, done) {
+    console.log(">>>>>>>>>>>>>>>>>>>>",username, password);
+    userModelObj.findOne({ userName: username }, function (err, user) {
+      console.log("user  ",user);
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (!user.verifyPassword(password)) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+)
+);
+
+
+passport.use('token',new BearerStrategy(
+  function(token, done) {
+    jwt.verify(token,config.token.secret, function(err, decoded) {
+      if (err) return done(err)
+      else return done(null, true);
+     });
+    // User.findOne({ token: token }, function (err, user) {
+    //   if (err) { return done(err); }
+    //   if (!user) { return done(null, false); }
+    //   return done(null, user, { scope: 'all' });
+    // });
+  }
+));
 
 app.use('/', routes);
 // app.use('/users', users);

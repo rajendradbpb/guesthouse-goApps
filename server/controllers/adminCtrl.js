@@ -7,7 +7,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var response = require("./../component/response");
 var roleModel = require("./../models/role");
-var constants = require("./../config/constants");
+var constants = require("./../../config/constants");
 /*
   CRUD for the roles starts
 */

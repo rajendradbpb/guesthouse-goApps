@@ -2,6 +2,8 @@ var express = require('express');
 var path = require('path');
 var router = express.Router();
 var userCtrl = require("./../controllers/userCtrl");
+var passport = require("passport");
+// var passportToken = require("./../../passportToken");
 /* GET home page. */
 // create the user
 router.post('/', function(req, res, next) {
@@ -16,6 +18,10 @@ router.put('/', function(req, res, next) {
 router.delete('/', function(req, res, next) {
   userCtrl.deleteUser(req, res);
 });
+router.post('/login', passport.authenticate('local', {session:false}) ,userCtrl.signIn);
+// router.get('/token', passport.authenticate('token', {session:false}) ,function(req,res) {
+//   console.log(">>>>>>>>   verify");
+// });
 
 
 

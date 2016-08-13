@@ -15,6 +15,7 @@ var constants = {
         "fetchRoles"                 :   "Error in fetch Roles",
         "deleteRole"                 :   "Error in delete Roles",
         "udpateRole"                 :   "Error in udpate Roles",
+        "login"                 :   "Login Failure",
     },
     success:{
       "saveUser"                 : "Success in saving user",
@@ -26,6 +27,7 @@ var constants = {
       "fetchRoles"                 :   "Success in fetch Roles",
       "deleteRole"                 :   "Success in delete Roles",
       "udpateRole"                 :   "Success in udpate Roles",
+      "login"                 :   "Login Success",
 
     },
 

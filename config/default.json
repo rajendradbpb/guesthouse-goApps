@@ -1,4 +1,8 @@
 {
+  "token":{
+    "secret" : "goApps-Amaresh",
+    "expiry":"24 hours"
+  },
   "dev":{
     "hostName":"localhost",
     "port":":27017",
