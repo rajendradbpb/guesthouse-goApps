@@ -2,7 +2,8 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Constan
   console.log("main controller");
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
   $scope.signOut = function() {
-    $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+    $rootScope.loggedin = false;
+    delete $localStorage[Constants.getTokenKey()]
     $state.go("signIn");
   }
 })

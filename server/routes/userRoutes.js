@@ -23,9 +23,9 @@ router.get('/token', passport.authenticate('token', {session:false}) ,function(r
   // console.log(">>>>>>>>   verify err" , err);
   console.log(">>>>>>>>   verify user" , req.user._doc);
 });
-router.get('/loggedin', function(req,res) {
+router.get('/loggedin',passport.authenticate('token', {session:false}), function(req,res) {
   // console.log(">>>>>>>>   verify err" , err);
-  console.log("loggedin ");
+  console.log("loggedin ",req.user);
   res.status(200).json({status:"OK"});
 });
 

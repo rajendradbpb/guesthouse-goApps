@@ -20,39 +20,51 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
   });
 
 
-  var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope, $state, UserService) {
-
+  function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state,$localStorage,$rootScope) {
       var deferred = $q.defer();
-
       // Make an AJAX call to check if the user is logged in
       $http.get('/user/loggedin').success(function (response) {
 
           // var user = response.user;
           if (response.status == 'OK') {
-              $state.go(user.role.type+".dashboard");
+              $state.go("ccare-dashboard");
           }
           else {
               $timeout(function () {
                   deferred.resolve();
               }, 0);
-              $state.go('signIn');
+              // $state.go('signIn');
           }
-      });
+      }).error(function(err) {
+        $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+        $timeout(function () {
+            deferred.resolve();
+        }, 0);
+        // $state.go('signIn');
+      })
+
       return deferred.promise;
   };
-  var checkLoggedout = function ($q, $timeout, $http, $location, $rootScope, $state, UserService) {
+  function checkLoggedout ($q, $timeout, $http, $location, $rootScope, $state,$localStorage) {
       var deferred = $q.defer();
       $http.get('/user/loggedin').success(function (response) {
           console.log("user checkLoggedout  >>>>>>>>>>>>>>>   ", response);
-          if (response.status == 'OK' && user.role.type) {
+          if (response.status == 'OK') {
               $timeout(deferred.resolve, 0);
           }
           else {
+              $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
               $timeout(function () {
                   deferred.resolve();
               }, 0);
               $state.go('signIn');
           }
+      }).error(function(err) {
+        $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+        $timeout(function () {
+            deferred.resolve();
+        }, 0);
+        $state.go('signIn');
       });
       return deferred.promise;
   };
@@ -66,16 +78,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
     // HOME STATES AND NESTED VIEWS ========================================
         .state('ccare-dashboard', {
             templateUrl: 'pages/dashboard.html',
-            url: '/dashboard',
-            controller:"MainController"
-
+            url: '/ccare-dashboard',
+            controller:"MainController",
+            resolve: {loggedout: checkLoggedout},
         })
 
         .state('signIn', {
             templateUrl: 'pages/signIn.html',
             url: '/signIn',
-            controller:"SignInController", 
-            // resolve: {loggedin: checkLoggedin},
+            controller:"SignInController",
+            resolve: {loggedin: checkLoggedin},
+
         })
 
 });
