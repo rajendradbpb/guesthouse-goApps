@@ -84,7 +84,11 @@ exports.signIn = function (req, res) {
   try {
     var token = jwt.sign(req.user, config.token.secret, { expiresIn: config.token.expiry },
       function(token) {
-        res.json(response(200,"success",constants.messages.success.login,token))
+        var data = {
+          role:req.user.role.type,
+          token:token
+        }
+        res.json(response(200,"success",constants.messages.success.login,data))
       });
   } catch (e) {
     res.json(response(500,"error",constants.messages.errors.login,e))

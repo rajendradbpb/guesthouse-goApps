@@ -65,7 +65,7 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 passport.use('local', new LocalStrategy(
   function(username, password, done) {
     console.log(">>>>>>>>>>>>>>>>>>>>",username, password);
-    userModelObj.findOne({ userName: username }, function (err, user) {
+    userModelObj.findOne({ userName: username }).populate('role').exec(function (err, user) {
       console.log("user  ",user);
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
@@ -80,8 +80,18 @@ passport.use('local', new LocalStrategy(
 passport.use('token',new BearerStrategy(
   function(token, done) {
     jwt.verify(token,config.token.secret, function(err, decoded) {
-      if (err) return done(err)
-      else return done(null, true);
+      if (err) {
+        // console.log("error in verify token  ",err);
+        return done(err,null);
+      }
+      else if(!decoded) {
+        // console.log("No  token  ",err);
+        return done(null, false);
+      }
+      else {
+        // console.log("yes  token  ",decoded);
+        return done(null, decoded);
+      }
      });
     // User.findOne({ token: token }, function (err, user) {
     //   if (err) { return done(err); }

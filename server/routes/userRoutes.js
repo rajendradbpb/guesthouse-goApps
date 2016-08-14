@@ -18,11 +18,15 @@ router.put('/', function(req, res, next) {
 router.delete('/', function(req, res, next) {
   userCtrl.deleteUser(req, res);
 });
-router.post('/login', passport.authenticate('local', {session:false}) ,userCtrl.signIn);
-// router.get('/token', passport.authenticate('token', {session:false}) ,function(req,res) {
-//   console.log(">>>>>>>>   verify");
-// });
-
+router.post('/signIn', passport.authenticate('local', {session:false}) ,userCtrl.signIn);
+router.get('/token', passport.authenticate('token', {session:false}) ,function(req,res) {
+  // console.log(">>>>>>>>   verify err" , err);
+  console.log(">>>>>>>>   verify user" , req.user._doc);
+});
+router.get('/loggedin', passport.authenticate('token', {session:false}) ,function(req,res) {
+  // console.log(">>>>>>>>   verify err" , err);
+  console.log("loggedin " , req.user._doc);
+});
 
 
 module.exports = router;
