@@ -6758,3 +6758,8 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+.tendertextarea
+{
+  width:10000px;
+  height:100px;
+}

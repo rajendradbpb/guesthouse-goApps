@@ -1,5 +1,6 @@
-app = angular.module("guest_house", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate']);
+app = angular.module("guest_house", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngCookies']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) {
+
   //adding http intercepter
   $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage) {
       return {
@@ -18,6 +19,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
       };
   });
 
+
   var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope, $state, UserService) {
 
       var deferred = $q.defer();
@@ -25,8 +27,8 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
       // Make an AJAX call to check if the user is logged in
       $http.get('/user/loggedin').success(function (response) {
 
-          var user = response.user;
-          if (response.status == 'OK' && user.role.type) {
+          // var user = response.user;
+          if (response.status == 'OK') {
               $state.go(user.role.type+".dashboard");
           }
           else {
@@ -54,37 +56,26 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
       });
       return deferred.promise;
   };
+
+
+
+
+
     $urlRouterProvider.otherwise('/signIn');
     $stateProvider
-        .state('signIn', {
-            templateUrl: 'src/views/commons/signIn.html',
-            url: '/signIn',
-            controller:"SignInController",
-            // resolve: {loggedin: checkLoggedin}
-        })
-        .state("ccare", {
-                abstract: true,
-                url: "",
-                views: {
-                    'header': {
-                        templateUrl: 'src/views/ccare/header.html',
-                        controller: "MainController"
-                    },
-                    'sidebar': {
-                        templateUrl: 'src/views/ccare/sidebar.html',
-                        controller: "MainController"
-                    },
-                    '': {
-                        templateUrl: ''
-                    }
-                },
-            })
-            .state('ccare.dashboard', {
-                // url will become '/contacts/list'
-                url: '/dashboard',
-                templateUrl: 'src/views/ccare/dashboard.html',
-                // controller: "mapController",
-                // resolve: {loggedin: checkLoggedout},
+    // HOME STATES AND NESTED VIEWS ========================================
+        .state('ccare-dashboard', {
+            templateUrl: 'pages/dashboard.html',
+            url: '/dashboard',
+            controller:"MainController"
 
-            })
+        })
+
+        .state('signIn', {
+            templateUrl: 'pages/signIn.html',
+            url: '/signIn',
+            controller:"SignInController", 
+            // resolve: {loggedin: checkLoggedin},
+        })
+
 });

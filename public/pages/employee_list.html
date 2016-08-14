@@ -1,0 +1,67 @@
+<section class="content-header" >
+  <h1 class="">
+    Employee List
+    <small>control panel</small>
+  </h1>
+  <button class="btn btn-primary pull-right"><i class="fa fa-plus"></i></button>
+</section>
+<section class="content" ng-init="loadEmpList()">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Employee List</h3>
+        </div>
+        <div class="box-body over-x-sc">
+          <table id="example2" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Sl No</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Village/Town</th>
+                <th>City</th>
+                <th>Po</th>
+                <th>PS</th>
+                <th>District</th>
+                <th>Pin</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>DOB</th>
+                <th>DOJ</th>
+                <th>DOR</th>
+                <td>ULB</td>
+                <th>Status</th>
+                <th>Operation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="employee in emp_list">
+                <td>{{$index+1}}</td>
+                <td>{{employee.name}}</td>
+                <td>{{employee.designation}}</td>
+                <td>{{employee.village}}</td>
+                <td>{{employee.city}}</td>
+                <td>{{employee.post}}</td>
+                <td>{{employee.police_station}}</td>
+                <td>{{employee.district}}</td>
+                <td>{{employee.pin}}</td>
+                <td>{{employee.mobile}}</td>
+                <td>{{employee.email}}</td>
+                <td>{{employee.dob}}</td>
+                <td>{{employee.doj}}</td>
+                <td>{{employee.dor}}</td>
+                <td>{{employee.ulb}}</td>
+                <td>{{employee.emp_status}}</td>
+                <td>
+                  <a href="" class="option-btn" ng-click="goToEdit(employee.id)"><i class="fa fa-pencil-square-o"></i></a>
+                  <a href="" class="option-btn" ng-click="deleteEmployee(employee.id)"  confirm="Are you sure, {{name}}?" confirm-title="Please verify, {{name}}?" confirm-ok="Yes" confirm-cancel="No"><i class="fa fa-trash"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

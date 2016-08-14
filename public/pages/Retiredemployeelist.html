@@ -1,0 +1,66 @@
+<section class="content-header" >
+  <h1 class="">
+    Retired Employee List
+    <small>control panel</small>
+  </h1>
+  <button class="btn btn-primary pull-right" ui-sref="newplan" ng-if="user_type == '3'"><i class="fa fa-plus"></i></button>
+</section>
+<section class="content" ng-init="loadRetiredEmployee()">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Employee List</h3>
+        </div>
+        <div class="box-body over-x-sc">
+          <table id="example2" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Sl No</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Village/Town</th>
+                <th>City</th>
+                <th>Po</th>
+                <th>PS</th>
+                <th>District</th>
+                <th>Pin</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>DOB</th>
+                <th>DOJ</th>
+                <th>DOR</th>
+                <th>ULB</th>
+                <th>Status</th>
+                <th>Operation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="Retiredemployee in employee_list">
+                <td>{{$index+1}}</td>
+                <td>{{Retiredemployee.name}}</td>
+                <td>{{Retiredemployee.designation}}</td>
+                <td>{{Retiredemployee.village}}</td>
+                <td>{{Retiredemployee.city}}</td>
+                <td>{{Retiredemployee.post}}</td>
+                <td>{{Retiredemployee.police_station}}</td>
+                <td>{{Retiredemployee.district}}</td>
+                <td>{{Retiredemployee.pin}}</td>
+                <td>{{Retiredemployee.mobile}}</td>
+                <td>{{Retiredemployee.email}}</td>
+                <td>{{Retiredemployee.dob}}</td>
+                <td>{{Retiredemployee.doj}}</td>
+                <td>{{Retiredemployee.dor}}</td>
+                <td>{{Retiredemployee.ulb}}</td>
+                <td>{{Retiredemployee.emp_status}}</td>
+                <td>
+                  <button ng-click="loadEmpdocument(Retiredemployee.id)" type="button" class="btn btn-block btn-info btn-x" ui-sref="employeeDocuments">Employee Documents</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,159 @@
+<section class="content-header">
+  <h1>
+    Edit Employee
+    <small>Control panel</small>
+  </h1>
+</section>
+<section class="content" ng-init="loadEmployeebyID()">
+  <div class="">
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Edit Employee</h3>
+      </div>
+      <form class="form-horizontal" name="addemployee">
+        <div class="box-body">
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_name.$invalid && addemployee.emp_name.$touched)}">
+             <label for="inputEmail3" class="col-sm-3 control-label">Employee Name</label>
+             <div class="col-sm-8">
+               <input type="text" class="form-control" name="emp_name" ng-model="employee.name" placeholder="employee Name" required ng-pattern="/^(\D)+$/">
+               <span class="help-block" ng-show="addemployee.emp_name.$error.required && addemployee.emp_name.$touched">Please enter employee name</span>
+               <span class="help-block" ng-show="addemployee.emp_name.$error.pattern && addemployee.emp_name.$touched">Name should not be numeric</span>
+             </div>
+           </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_designation.$invalid && addemployee.emp_designation.$touched)}">
+            <label for="inputPassword3" class="col-sm-3 control-label">Designation</label>
+            <div class="col-sm-8">
+              <select class="form-control"  ng-model="employee.designation_id" name="emp_designation" ng-init="desingnation()"  required>
+                <option value="">Select Designation</option>
+                <option value="{{item.id}}" ng-selected="employee.designation_id == item.id" ng-repeat="item in designationList">{{item.designation}}</option>
+              </select>
+              <span class="help-block" ng-show="addemployee.emp_designation.$error.required && addemployee.emp_designation.$touched">Please add your desingnation</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_village.$invalid && addemployee.emp_village.$touched)}">
+            <label for="inputEmail3" class="col-sm-3 control-label">Village/Town</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="emp_village" ng-model="employee.village" placeholder="village/town" required ng-pattern="/^(\D)+$/">
+              <span class="help-block" ng-show="addemployee.emp_village.$error.required && addemployee.emp_village.$touched">Please enter village name</span>
+              <span class="help-block" ng-show="addemployee.emp_village.$error.pattern && addemployee.emp_village.$touched">Name should not be numeric</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_city.$invalid && addemployee.emp_city.$touched)}">
+            <label for="inputEmail3" class="col-sm-3 control-label">city</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="emp_city" ng-model="employee.city" placeholder="employee city" required ng-pattern="/^(\D)+$/">
+              <span class="help-block" ng-show="addemployee.emp_city.$error.required && addemployee.emp_city.$touched">Please enter city name</span>
+              <span class="help-block" ng-show="addemployee.emp_city.$error.pattern && addemployee.emp_city.$touched">city should not be numeric</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_po.$invalid && addemployee.emp_po.$touched)}">
+            <label for="inputEmail3" class="col-sm-3 control-label">Po</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="emp_po" ng-model="employee.post" placeholder="employee postal address" required ng-pattern="/^(\D)+$/">
+              <span class="help-block" ng-show="addemployee.emp_po.$error.required && addemployee.emp_po.$touched">Please enter po name</span>
+              <span class="help-block" ng-show="addemployee.emp_po.$error.pattern && addemployee.emp_po.$touched">city should not be numeric</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_ps.$invalid && addemployee.emp_ps.$touched)}">
+            <label for="inputEmail3" class="col-sm-3 control-label">Ps</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="emp_ps" ng-model="employee.police_station" placeholder="employee postal address" required ng-pattern="/^(\D)+$/">
+              <span class="help-block" ng-show="addemployee.emp_ps.$error.required && addemployee.emp_ps.$touched">Please enter po name</span>
+              <span class="help-block" ng-show="addemployee.emp_ps.$error.pattern && addemployee.emp_ps.$touched">city should not be numeric</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_district.$invalid && addemployee.emp_district.$touched)}">
+            <label for="inputPassword3" class="col-sm-3 control-label"> District</label>
+            <div class="col-sm-8">
+              <select class="form-control" ng-model="employee.district_id" name="emp_district" ng-init="loaddistrict()" ng-change="getdistrictulb(employee.emp_district)" required>
+                <option value="">Select District</option>
+                <option value="{{district.id}}" ng-selected="employee.district_id == district.id" ng-repeat="district in district" >{{district.name}}</option>
+              </select>
+              <span class="help-block" ng-show="addemployee.emp_district.$error.required && addemployee.emp_district.$touched">Please enter a district</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_pin.$invalid && addemployee.emp_pin.$touched)}">
+            <label for="inputEmail3" class="col-sm-3 control-label">Pin</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="emp_pin" ng-model="employee.pin"  ng-maxlength="6"  placeholder="employee pin no" required ng-pattern="/^[0-9]/">
+              <span class="help-block" ng-show="addemployee.emp_pin.$error.required && addemployee.emp_pin.$touched">Please enter pin code</span>
+              <span class="help-block" ng-show="addemployee.emp_pin.$error.pattern && addemployee.emp_pin.$touched" ng-message="maxlength">pin number must be six digit and start from 7</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_mobile.$invalid && addemployee.emp_mobile.$touched)}">
+            <label for="inputPassword3" class="col-sm-3 control-label">Mobile</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="emp_mobile" ng-model="employee.mobile" placeholder="Mobile no." required ng-pattern="/^[0-9]{10,10}$/">
+                <span class="help-block" ng-show="addemployee.emp_mobile.$error.required && addemployee.emp_mobile.$touched">Please enter mobile number</span>
+                <span class="help-block" ng-show="addemployee.emp_mobile.$error.pattern && addemployee.emp_mobile.$touched">Invalid mobile number</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_email.$invalid && addemployee.emp_email.$touched)}">
+           <label for="inputPassword3" class="col-sm-3 control-label">Email(optional)</label>
+           <div class="col-sm-8">
+               <input type="email" class="form-control" name="emp_email" ng-model="employee.email" placeholder="Email" required>
+               <span class="help-block" ng-show="addemployee.email.$error.required && addemployee.email.$touched">Please enter mail id</span>
+           </div>
+         </div>
+          <div class="form-group" ng-class="{'has-error': (addemployee.emp_uib.$invalid && addemployee.emp_uib.$touched)}">
+            <label for="inputPassword3" class="col-sm-3 control-label">Employee ULB</label>
+            <div class="col-sm-8">
+              <select class="form-control" ng-model="employee.ulb_id"  name="emp_uib" required>
+                <option value="">Select ULB</option>
+                <option value="{{ulb.id}}" ng-selected="employee.ulb_id == ulb.id" ng-repeat="ulb in ulblist">{{ulb.name}}</option>
+              </select>
+              <span class="help-block" ng-show="addemployee.emp_uib.$error.required && addemployee.emp_uib.$touched">Please enter employee UIB no</span>
+            </div>
+          </div>
+          <div class="form-group">
+          <label for="inputPassword3" class="col-sm-3 control-label">DOB</label>
+          <div class="col-sm-8">
+              <!-- <input type="text" class="form-control pull-right" id="datepicker" ng-model="buildingPlan.date"> -->
+              <!-- <div date-picker="dates.today" id="pickerMinDateDiv" min-date="minDate" view="date" min-view="hours" timezone="UTC" watch-direct-changes="true"></div> -->
+              <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="employee.dob" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+              </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-3 control-label">DOJ</label>
+          <div class="col-sm-8">
+              <!-- <input type="text" class="form-control pull-right" id="datepicker" ng-model="buildingPlan.date"> -->
+              <!-- <div date-picker="dates.today" id="pickerMinDateDiv" min-date="minDate" view="date" min-view="hours" timezone="UTC" watch-direct-changes="true"></div> -->
+              <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="employee.doj" is-open="popup1.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+              </p>
+          </div>
+        </div>
+      <div class="form-group" ng-class="{'has-error': (addemployee.emp_status.$invalid && addemployee.emp_status.$touched)}">
+        <label for="inputPassword3" class="col-sm-3 control-label">Employee Status</label>
+        <div class="col-sm-8">
+          <select class="form-control" ng-model="employee.emp_status" name="emp_status" required>
+            <option value="">Select one</option>
+            <option value="Active">Active</option>
+            <option value="Suspend">Suspend</option>
+              <option value="Retired">Retired</option>
+          </select>
+          <span class="help-block" ng-show="addemployee.emp_status.$error.required && addemployee.emp_status.$touched">Please enter employee status</span>
+        </div>
+      </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+          <button type="submit" class="btn btn-default" ui-sref="employeeList">Back</button>
+          <button  type="submit" class="btn btn-info pull-right" ng-click="updateEmployee(employee.id)">Update</button>
+          <section  align="center m-t-sm">
+              <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+          </section>
+        </div>
+        <!-- /.box-footer -->
+      </form>
+    </div>
+  </div>
+</section>
