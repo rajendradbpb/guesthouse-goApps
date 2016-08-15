@@ -27,19 +27,22 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
 
           // var user = response.user;
           if (response.status == 'OK') {
-              $state.go("ccare-dashboard");
+              $timeout(function () {
+                  deferred.resolve();
+                  $state.go("ccare-dashboard");
+              }, 100);
           }
           else {
               $timeout(function () {
                   deferred.resolve();
-              }, 0);
+              }, 100);
               // $state.go('signIn');
           }
       }).error(function(err) {
         $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
         $timeout(function () {
             deferred.resolve();
-        }, 0);
+        }, 100);
         // $state.go('signIn');
       })
 
@@ -48,7 +51,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
   function checkLoggedout ($q, $timeout, $http, $location, $rootScope, $state,$localStorage) {
       var deferred = $q.defer();
       $http.get('/user/loggedin').success(function (response) {
-          console.log("user checkLoggedout  >>>>>>>>>>>>>>>   ", response);
           if (response.status == 'OK') {
               $timeout(deferred.resolve, 0);
           }
