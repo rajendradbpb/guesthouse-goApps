@@ -8,6 +8,7 @@ var userSchema = new mongoose.Schema({
     role              : {type: Schema.Types.ObjectId, ref: 'role',required: constants.messages.errors.undefinedRole},
     userName          : {type: String, unique : true,required: constants.messages.errors.undefinedUsername},
     password          : {type: String,required: constants.messages.errors.undefinedPassword},
+    email         : {type: String,required: constants.messages.errors.undefinedEmail},
     firstName         : {type: String,required: constants.messages.errors.undefinedFirstName},
     middleName        : {type: String},
     lastName          : {type: String},
@@ -16,7 +17,7 @@ var userSchema = new mongoose.Schema({
     updatedDate       : {type: Date, default: new Date()},
     updatedBy         : {type: Schema.Types.ObjectId /*, ref: 'user' , required: constants.messages.undefinedUpdateUser*/},
     idDelete          : {type: Boolean, default:false},
-    accessToken          : {type: String, default:null},
+    passwordToken          : {type: String, default:null},
 });
 
 userSchema.methods.verifyPassword = function(password) {

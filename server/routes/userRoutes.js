@@ -18,6 +18,18 @@ router.put('/', function(req, res, next) {
 router.delete('/', function(req, res, next) {
   userCtrl.deleteUser(req, res);
 });
+router.post('/changePassword', passport.authenticate('token', {session:false}) ,function(req, res, next) {
+  userCtrl.changePassword(req, res);
+});
+router.put('/forgetPassword', function(req, res, next) {
+  userCtrl.forgetPassword(req, res);
+});
+router.put('/resetPassword', function(req, res, next) {
+  userCtrl.resetPassword(req, res);
+});
+
+
+
 router.post('/signIn', passport.authenticate('local', {session:false}) ,userCtrl.signIn);
 router.get('/token', passport.authenticate('token', {session:false}) ,function(req,res) {
   // console.log(">>>>>>>>   verify err" , err);

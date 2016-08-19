@@ -4,12 +4,14 @@
     "expiry":"24 hours"
   },
   "dev":{
+    "baseUrl":"http://localhost:3000",
     "hostName":"localhost",
     "port":":27017",
     "db":"guestHouse",
     "dbserver":"mongodb://"
   },
   "prod":{
+    "baseUrl":"http://localhost:3000",
     "hostName":"localhost",
     "port":":27017",
     "db":"guestHouse"

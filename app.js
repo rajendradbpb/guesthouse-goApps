@@ -16,6 +16,7 @@ var passport = require('passport');
 var userModelObj = require('./server/models/user');
 var config = require('config');
 var jwt     = require('jsonwebtoken');
+var passwordHash = require('password-hash-and-salt');
 // var factoryManager = require("./server/factory/factoryManager");
 // var routesFactory = factoryManager.getfactory("routesFactory");
 var app = express();
@@ -64,13 +65,14 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 */
 passport.use('local', new LocalStrategy(
   function(username, password, done) {
-    console.log(">>>>>>>>>>>>>>>>>>>>",username, password);
     userModelObj.findOne({ userName: username }).populate('role').exec(function (err, user) {
-      console.log("user  ",user);
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
-      if (!user.verifyPassword(password)) { return done(null, false); }
-      return done(null, user);
+      passwordHash(password).verifyAgainst(user.password,function(error, verified) {
+        if (error) { return done(err); }
+        else if (!verified) { return done(null, false); }
+        else return done(null, user);
+      })
     });
   }
 )
@@ -93,11 +95,7 @@ passport.use('token',new BearerStrategy(
         return done(null, decoded);
       }
      });
-    // User.findOne({ token: token }, function (err, user) {
-    //   if (err) { return done(err); }
-    //   if (!user) { return done(null, false); }
-    //   return done(null, user, { scope: 'all' });
-    // });
+
   }
 ));
 
@@ -144,7 +142,9 @@ function initGlobals() {
   global.modelFactory = {};
 };
 initGlobals();
-
+// passwordHash('aaa').hash(function(error, hash) {
+//   console.log(hash);
+// })
 
 //  testing codes gose here
 module.exports = app;
