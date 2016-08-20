@@ -1,5 +1,5 @@
-app.controller("MainController",function($scope,$rootScope,$localStorage,Constants,$state) {
-  console.log("main controller");
+app.controller("MainController",function($scope,$rootScope,$localStorage,Constants,$state,UserService) {
+  console.log($rootScope.logedInUser);
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
   $scope.signOut = function() {
     $rootScope.loggedin = false;

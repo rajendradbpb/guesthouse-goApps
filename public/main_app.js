@@ -24,8 +24,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
       var deferred = $q.defer();
       // Make an AJAX call to check if the user is logged in
       $http.get('/user/loggedin').success(function (response) {
-
-          // var user = response.user;
           if (response.status == 'OK') {
               $timeout(function () {
                   deferred.resolve();
@@ -48,9 +46,10 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
 
       return deferred.promise;
   };
-  function checkLoggedout ($q, $timeout, $http, $location, $rootScope, $state,$localStorage) {
+  function checkLoggedout ($q, $timeout, $http, $location, $rootScope, $state,$localStorage,UserService) {
       var deferred = $q.defer();
       $http.get('/user/loggedin').success(function (response) {
+        $rootScope.logedInUser = response.user;
           if (response.status == 'OK') {
               $timeout(deferred.resolve, 0);
           }
@@ -90,6 +89,13 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             url: '/signIn',
             controller:"SignInController",
             resolve: {loggedin: checkLoggedin},
+
+        })
+        .state('userProfile', {
+            templateUrl: 'pages/users/userProfile.html',
+            url: '/userProfile',
+            controller:"UserController",
+            resolve: {loggedin: checkLoggedout},
 
         })
 
