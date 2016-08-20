@@ -5,6 +5,7 @@ var constants = {
     "country" :"India",
     "state" :"Odisha",
   },
+
   messages:{
     errors:{
       "noUser"   :"No user found",
@@ -27,6 +28,8 @@ var constants = {
         "changePasswordFailed"                 :   "Password malfunction",
         "forgetPasswordFailed"                 :   "forget Password Failed",
         "emailVerifiedError"                 :   "email Verified Error",
+        "saveRole"                 :   "save Role Error",
+        "udpateUser"                 :   "udpate User Error",
     },
     success:{
       "saveUser"                 : "Success in saving user",
@@ -43,7 +46,8 @@ var constants = {
       "emailVerifiedSuccess"                 :   "email Verified Success",
       "verificationMailSent"                 :   "verification Mail Sent",
       "passwordReset"                 :   "Password reset succfully",
-
+      "saveRole"                 :   "save Role Success",
+      "udpateUser"                 :   "udpate User Success",
     },
 
   },

@@ -27,6 +27,7 @@ var userSchema = new mongoose.Schema({
       country :{type: String,default:constants.default.country},
     }
 
+
 });
 
 //custom validations

@@ -54,14 +54,26 @@ exports.getUser = function (req, res) {
     })
 }
 exports.udpateUser = function (req, res) {
-  userModelObj.findOneAndUpdate({"_id":req.user._doc._id},req.body,{"new":true}).exec(function (err,data) {
+  userModelObj.findOneAndUpdate({"_id":req.user._doc._id},req.body,{"new":true}).exec(function (err,user) {
     if(err)
     {
       return res.json(response(500,"error",constants.messages.errors.saveUser,err))
     }
     else {
-      console.log("data   ",data);
-      return res.json(response(200,"success",constants.messages.success.saveUser))
+      // creating new token with the new user details
+      userModelObj.populate(user,{path:"role"},function(err,user) {
+        console.log("before  ",user);
+
+        exports.refreshToken(user,function(err,data) {
+          if(err)
+          return res.json(response(500,"error",constants.messages.errors.udpateUser,err))
+          else {
+            return res.json(response(200,"success",constants.messages.success.udpateUser,data))
+
+          }
+        })
+
+      })
     }
   });
 }
@@ -79,6 +91,23 @@ exports.deleteUser = function (req, res) {
 * user crud operation ends
 */
 
+/**
+ * this is used to refreshToken that will hold the latest data updated in the user account
+ */
+ exports.refreshToken = function (user,callback) {
+   try {
+     var token = jwt.sign(user, config.token.secret, { expiresIn: config.token.expiry },
+       function(token) {
+         var data = {
+           role:user.role.type,
+           token:token
+         }
+         callback(null,data);
+       });
+   } catch (e) {
+     callback(e,null);
+   }
+ }
 /*
 * this will be executed if authentication passes
 */
