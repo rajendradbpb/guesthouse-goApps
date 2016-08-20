@@ -4,6 +4,11 @@ app.factory("UserService", function($http,$resource) {
           method: 'PUT',
           url:"/user",
           headers:"application/json"
+      },
+      changePassword: {
+          method: 'POST',
+          url:"/user/changePassword",
+          headers:"application/json"
       }
   });
 })
