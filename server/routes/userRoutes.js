@@ -24,9 +24,11 @@ router.delete('/', function(req, res, next) {
 router.post('/changePassword', passport.authenticate('token', {session:false}) ,function(req, res, next) {
   userCtrl.changePassword(req, res);
 });
+// used to send the verification mail for the password
 router.put('/forgetPassword', function(req, res, next) {
   userCtrl.forgetPassword(req, res);
 });
+// used to reset password after verification mail confirmed
 router.put('/resetPassword', function(req, res, next) {
   userCtrl.resetPassword(req, res);
 });

@@ -61,19 +61,7 @@ exports.udpateUser = function (req, res) {
     }
     else {
       // creating new token with the new user details
-      userModelObj.populate(user,{path:"role"},function(err,user) {
-        console.log("before  ",user);
-
-        exports.refreshToken(user,function(err,data) {
-          if(err)
-          return res.json(response(500,"error",constants.messages.errors.udpateUser,err))
-          else {
-            return res.json(response(200,"success",constants.messages.success.udpateUser,data))
-
-          }
-        })
-
-      })
+      exports.refreshToken2(res,user,constants.messages.success.udpateUser,constants.messages.errors.udpateUser);
     }
   });
 }
@@ -109,6 +97,29 @@ exports.deleteUser = function (req, res) {
      callback(e,null);
    }
  }
+ exports.refreshToken2 = function (res,user,successMsg,errMsg) {
+   try {
+     userModelObj.populate(user,{path:"role"},function(err,user) {
+       if(err)
+        throw err;
+        else {
+          var token = jwt.sign(user, config.token.secret, { expiresIn: config.token.expiry },
+            function(token) {
+              var data = {
+                role:user.role.type,
+                token:token,
+                user:user
+              }
+              return res.json(response(200,"success",successMsg ,data));
+            });
+
+          }
+        })
+
+   } catch (e) {
+     return res.json(response(500,"success",errMsg ,e));
+   }
+ }
 /*
 * this will be executed if authentication passes
 */
@@ -134,9 +145,6 @@ exports.changePassword = function (req, res) {
   // creating token that will send to the client side
   async.series({
       validatePassword: function(callback) {
-          // setTimeout(function() {
-          //     callback(null, 1);
-          // }, 200);
           password(req.body.oldPassword).verifyAgainst(req.user._doc.password,function(error, verified) {
               if(error)
                   throw new Error(constants.messages.errors.changePasswordFailed);
@@ -165,7 +173,6 @@ exports.changePassword = function (req, res) {
           return res.json(response(500,"error",constants.messages.errors.changePasswordFailed,err));
         }
         else {
-          console.log("password upated",req.user._doc.userName);
             var query = {
               "_id":req.user._doc._id
             }
@@ -175,16 +182,16 @@ exports.changePassword = function (req, res) {
             var options = {
               "new":true
             }
-            userModelObj.update(query,udpate,options)
-            .exec(function(err,data) {
+            userModelObj.findOneAndUpdate(query,udpate,options)
+            .exec(function(err,user) {
               if(err) {
                 return  res.json(response(500,"error",constants.messages.errors.changePasswordFailed,err));
               }
-              else if (!data) {
+              else if (!user) {
                 return res.json(response(200,"success","no data found"))
               }
                else {
-                return res.json(response(200,"success",constants.messages.success.changePassword,data));
+                exports.refreshToken2(res,user,constants.messages.success.changePassword,constants.messages.errors.changePassword);
               }
             })
         }
