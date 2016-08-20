@@ -8,15 +8,18 @@ var bodyParser = require('body-parser');
 var response = require("./../component/response");
 var roleModel = require("./../models/role");
 var constants = require("./../../config/constants");
+var response = require("./../component/response");
 /*
   CRUD for the roles starts
 */
 exports.addRole = function (req, res) {
-  new roleModel(req.body).save().then(function (response) {
-    console.log("success");
-  }).catch(function(err){
-    console.log("error",err);
-  });
+  new roleModel(req.body).save(function (err) {
+    if(err)
+      res.json(response(500,"error",constants.messages.errors.saveRole,err));
+      else {
+        res.json(response(200,"success",constants.messages.success.saveRole));
+      }
+  })
 }
 exports.getRole = function (req, res) {
   roleModel.find({"idDelete":false}).exec()

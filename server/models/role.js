@@ -6,7 +6,6 @@ var constants = require('./../../config/constants');
 var roleSchema = new mongoose.Schema({
     type              : {type: String,unique:true,enum: constants.role },
     CreatedDate       : {type: Date, default: new Date()},
-    idAdmin       : {type: Boolean, default:false},
     idDelete       : {type: Boolean, default:false},
 });
 roleSchema.plugin(uniqueValidator, {message: "Role already exists"});

@@ -18,6 +18,8 @@ var userSchema = new mongoose.Schema({
     updatedBy         : {type: Schema.Types.ObjectId /*, ref: 'user' , required: constants.messages.undefinedUpdateUser*/},
     idDelete          : {type: Boolean, default:false},
     passwordToken          : {type: String, default:null},
+    isAdmin          : {type:Boolean,default:false },
+
 });
 
 userSchema.methods.verifyPassword = function(password) {

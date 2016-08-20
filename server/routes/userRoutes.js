@@ -6,7 +6,10 @@ var passport = require("passport");
 // var passportToken = require("./../../passportToken");
 /* GET home page. */
 // create the user
-router.post('/', function(req, res, next) {
+// router.post('/', function(req, res, next) {
+//   userCtrl.addUser(req, res);
+// });
+router.post('/', passport.authenticate('isAdmin', {session:false}) ,function(req, res, next) {
   userCtrl.addUser(req, res);
 });
 router.get('/', function(req, res, next) {
