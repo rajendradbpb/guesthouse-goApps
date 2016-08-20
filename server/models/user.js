@@ -19,12 +19,16 @@ var userSchema = new mongoose.Schema({
     idDelete          : {type: Boolean, default:false},
     passwordToken          : {type: String, default:null},
     isAdmin          : {type:Boolean,default:false },
+    address:{
+      city :{type: String},
+      district :{type: String},
+      state :{type: String,default:constants.default.state},
+      pincode :{type: String},
+      country :{type: String,default:constants.default.country},
+    }
 
 });
 
-userSchema.methods.verifyPassword = function(password) {
-  return this.userName == password ? true : false;
-}
 //custom validations
 // userSchema.path('userName').validate(function (value) {
 //     var test = validator.isNull(value) || value == undefined ? false : true;

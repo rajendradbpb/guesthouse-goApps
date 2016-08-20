@@ -21,8 +21,20 @@ exports.addRole = function (req, res) {
       }
   })
 }
+
+/**
+ * this is used by the admin to create users.
+ * where it will show all the roles to the super admin user
+ * where as this in exclude the super admin and the admin role if the logged in user is admin
+ */
 exports.getRole = function (req, res) {
-  roleModel.find({"idDelete":false}).exec()
+  var query = {
+    "idDelete":false
+  };
+  if(req.user._doc.role.type == "admin"){
+    query.type = { $nin: ["admin","spAdmin"]};
+  }
+  roleModel.find(query).exec()
   .then(function(roles){
     res.json(response(200,"success",constants.messages.success.fetchRoles,roles))
   })

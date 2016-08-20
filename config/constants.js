@@ -1,6 +1,10 @@
 var config = require('config');
 var constants = {
-  roles : ["admin","ccare","ghUser","ghAdmin"],
+  roles : ["spAdmin","admin","ccare","ghUser"],
+  default:{
+    "country" :"India",
+    "state" :"Odisha",
+  },
   messages:{
     errors:{
       "noUser"   :"No user found",
