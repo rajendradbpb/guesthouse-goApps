@@ -100,7 +100,8 @@ exports.deleteUser = function (req, res) {
        function(token) {
          var data = {
            role:user.role.type,
-           token:token
+           token:token,
+           user:user
          }
          callback(null,data);
        });
