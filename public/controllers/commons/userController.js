@@ -39,7 +39,32 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       "newPassword": $scope.password.confirm
     }
     UserService.changePassword(obj,function(response){
-      console.log(response);
+      Util.alertMessage('success', response.message);
+    });
+  }
+  /*******************************************************/
+  /**************This is use for getting all role type in asign role dropdown**********/
+  /*******************************************************/
+  $scope.getRoleType = function(){
+    UserService.getRoleType(function(response){
+      $scope.roleType = response.data;
+    });
+  }
+  /*******************************************************/
+  /**************This is use for submit user details**********/
+  /*******************************************************/
+  $scope.submitUserDetails = function(){
+    var obj={
+      "firstName"  : $scope.user.first_name,
+      "middleName" : $scope.user.middle_name,
+      "lastName"   : $scope.user.last_name,
+      "email"      : $scope.user.email,
+      "role"       :   $scope.user.user_role,
+      "userName"   : $scope.user.user_name,
+      "password"   : $scope.user.password
+    }
+    console.log(obj);
+    UserService.submitUserDetails(obj,function(response){
       Util.alertMessage('success', response.message);
     });
   }

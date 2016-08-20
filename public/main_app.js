@@ -19,7 +19,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
       };
   });
 
-
   function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state,$localStorage,$rootScope) {
       var deferred = $q.defer();
       // Make an AJAX call to check if the user is logged in
@@ -69,11 +68,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
       });
       return deferred.promise;
   };
-
-
-
-
-
     $urlRouterProvider.otherwise('/signIn');
     $stateProvider
     // HOME STATES AND NESTED VIEWS ========================================
@@ -83,7 +77,12 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             controller:"MainController",
             resolve: {loggedout: checkLoggedout},
         })
-
+        .state('admin-dashboard', {
+            templateUrl: 'pages/adminDashboard.html',
+            url: '/admin-dashboard',
+            controller:"MainController",
+            resolve: {loggedout: checkLoggedout},
+        })
         .state('signIn', {
             templateUrl: 'pages/signIn.html',
             url: '/signIn',
@@ -91,6 +90,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             resolve: {loggedin: checkLoggedin},
 
         })
+
         .state('userProfile', {
             templateUrl: 'pages/users/userProfile.html',
             url: '/userProfile',
@@ -98,6 +98,19 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             resolve: {loggedin: checkLoggedout},
 
         })
+
+        .state('forgot-password', {
+            templateUrl: 'pages/forgotPassword.html',
+            url: '/forgot-password',
+            controller:"MainController",
+            resolve: {loggedin: checkLoggedin},
+        })
+        .state('new-user', {
+            templateUrl: 'pages/newUser.html',
+            url: '/new-user',
+            controller:"UserController",
+        })
+
 
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
