@@ -53,13 +53,14 @@ exports.getUser = function (req, res) {
       return res.json(response(500,"error",constants.messages.errors.saveUser,err))
     })
 }
-exports.updateUser = function (req, res) {
-  userModelObj(req.body).save(function (err, user) {
+exports.udpateUser = function (req, res) {
+  userModelObj.findOneAndUpdate({"_id":req.user._doc._id},req.body,{"new":true}).exec(function (err,data) {
     if(err)
     {
       return res.json(response(500,"error",constants.messages.errors.saveUser,err))
     }
     else {
+      console.log("data   ",data);
       return res.json(response(200,"success",constants.messages.success.saveUser))
     }
   });

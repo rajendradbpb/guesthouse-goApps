@@ -18,21 +18,21 @@
               <div class="user-block">
               <table class="box box-primary" >
                <tr>
-                  <td>User Name:</td>
-                  <td>{{userProfile.user_name}}</td>
+                  <td>Name:</td>
+                  <td>{{userProfile.firstName}} {{userProfile.middleName}} {{userProfile.lastName}}</td>
                </tr>
                <tr>
                 <td>Email:</td>
                 <td>{{userProfile.email}}</td>
                </tr>
                <tr>
-                  <td>Mobile:</td>
-                  <td>{{userProfile.mobile}}</td>
+                  <td>User Name:</td>
+                  <td>{{userProfile.userName}}</td>
                </tr>
-                <tr>
-                  <td>Address:</td>
-                  <td>{{userProfile.address}}</td>
-                </tr>
+               <tr>
+                  <td>Roll Type:</td>
+                  <td>{{userProfile.role.type}}</td>
+               </tr>
               </table>
               </div>
             </div>
@@ -40,35 +40,35 @@
           <div class="tab-pane" ng-class="{'active':currentTab == 'editprofile'}" ng-init="loadUserbyID()">
             <form class="form-horizontal" name="updateProfile">
               <div class="form-group">
-                <label for="inputName" class="col-sm-2 control-label">User Name</label>
-                <div class="col-sm-10" ng-class="{'has-error': (updateProfile.user_name.$invalid && updateProfile.user_name.$touched)}">
-                  <input type="text" name="user_name" class="form-control"  placeholder="First Name" ng-model="profile.user_name" required ng-pattern="/^(\D)+$/">
-                  <span class="help-block" ng-show="updateProfile.user_name.$error.required && updateProfile.user_name.$touched">Please enter user name</span>
-                  <span class="help-block" ng-show="updateProfile.user_name.$error.pattern && updateProfile.user_name.$touched">Please enter valid name</span>
+                <label for="inputName" class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-10" ng-class="{'has-error': (updateProfile.first_name.$invalid && updateProfile.first_name.$touched)}">
+                  <input type="text" name="first_name" class="form-control"  placeholder="First Name" ng-model="userProfile.firstName" required ng-pattern="/^(\D)+$/">
+                  <span class="help-block" ng-show="updateProfile.first_name.$error.required && updateProfile.first_name.$touched">Please enter first name</span>
+                  <span class="help-block" ng-show="updateProfile.first_name.$error.pattern && updateProfile.first_name.$touched">Please enter valid name</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Middle Name</label>
+                <div class="col-sm-10" ng-class="{'has-error': (updateProfile.middle_name.$invalid && updateProfile.middle_name.$touched)}">
+                  <input type="text" name="middle_name" class="form-control"  placeholder="Middle Name" ng-model="userProfile.middleName" required ng-pattern="/^(\D)+$/">
+                  <span class="help-block" ng-show="updateProfile.middle_name.$error.required && updateProfile.middle_name.$touched">Please enter first name</span>
+                  <span class="help-block" ng-show="updateProfile.middle_name.$error.pattern && updateProfile.middle_name.$touched">Please enter valid name</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-10" ng-class="{'has-error': (updateProfile.last_name.$invalid && updateProfile.last_name.$touched)}">
+                  <input type="text" name="last_name" class="form-control"  placeholder="Last Name" ng-model="userProfile.lastName" required ng-pattern="/^(\D)+$/">
+                  <span class="help-block" ng-show="updateProfile.last_name.$error.required && updateProfile.last_name.$touched">Please enter first name</span>
+                  <span class="help-block" ng-show="updateProfile.last_name.$error.pattern && updateProfile.last_name.$touched">Please enter valid name</span>
                 </div>
               </div>
               <div class="form-group">
                 <label for="inputEmail" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-10" ng-class="{'has-error': (updateProfile.email.$invalid && updateProfile.email.$touched)}">
-                  <input type="email" class="form-control" name="email" placeholder="Email" ng-model="profile.email" required ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
+                  <input type="email" class="form-control" name="email" placeholder="Email" ng-model="userProfile.email" required ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
                   <span class="help-block" ng-show="updateProfile.email.$error.required && updateProfile.email.$touched">Please enter emailid</span>
                   <span class="help-block" ng-show="updateProfile.email.$error.pattern && updateProfile.email.$touched">Please enter valid emailid</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="inputName" class="col-sm-2 control-label">Mobile</label>
-                <div class="col-sm-10" ng-class="{'has-error': (updateProfile.mobile.$invalid && updateProfile.mobile.$touched)}">
-                  <input type="text" class="form-control" name="mobile" placeholder="Mobile" ng-model="profile.mobile" required ng-pattern="/^[0-9]{10,10}$/">
-                  <span class="help-block" ng-show="updateProfile.mobile.$error.required && updateProfile.mobile.$touched"> Please enter mobile number</span>
-                  <span class="help-block" ng-show="updateProfile.mobile.$error.pattern && updateProfile.mobile.$touched"> Please enter 10 digit mobile number</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="inputName" class="col-sm-2 control-label">Address</label>
-                <div class="col-sm-10" ng-class="{'has-error': (updateProfile.user_address.$invalid && updateProfile.user_address.$touched)}">
-                  <textarea name="adv_text" class="form-control" rows="4" placeholder="Address"  ng-model="profile.address"  required ng-pattern="/^(\D)+$/"></textarea>
-                  <span class="help-block" ng-show="updateProfile.user_address.$error.required && updateProfile.user_address.$touched">Please enter user address</span>
-                  <span class="help-block" ng-show="updateProfile.user_address.$error.pattern && updateProfile.user_address.$touched">Please enter valid address</span>
                 </div>
               </div>
               <div class="form-group">

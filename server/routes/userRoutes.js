@@ -15,7 +15,7 @@ router.post('/', passport.authenticate('isAdmin', {session:false}) ,function(req
 router.get('/', function(req, res, next) {
   userCtrl.getUser(req, res);
 });
-router.put('/', function(req, res, next) {
+router.put('/', passport.authenticate('token', {session:false}), function(req, res, next) {
   userCtrl.udpateUser(req, res);
 });
 router.delete('/', function(req, res, next) {
