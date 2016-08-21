@@ -116,6 +116,24 @@ passport.use('isAdmin',new BearerStrategy(
 
   }
 ));
+passport.use('addCustomer',new BearerStrategy(
+  function(token, done) {
+    jwt.verify(token,config.token.secret, function(err, user) {
+      if (err) {
+        console.log("error in verify token  ",err);
+        return done(err,null);
+      }
+      else if(!user || user._doc.role.type == "ghUser") {
+        console.log("No  token or user is not auth user ",err);
+        return done(null, false);
+      }
+      else {
+        return done(null, user);
+      }
+     });
+
+  }
+));
 
 app.use('/', routes);
 // app.use('/users', users);

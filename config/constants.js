@@ -14,6 +14,7 @@ var constants = {
       "undefinedRole"            :   "undefined Role",
       "undefinedUsername"            :   "undefined Username",
       "undefinedEmail"            :   "undefined Email",
+      "undefinedMobile"            :   "undefined mobile",
       "undefinedPassword"            :   "undefined Password",
       "undefinedFirstName"            :   "undefined undefinedFirstName",
       "undefinedEntererId"       :   "undefined Enterer Id",
@@ -30,6 +31,8 @@ var constants = {
         "emailVerifiedError"                 :   "email Verified Error",
         "saveRole"                 :   "save Role Error",
         "udpateUser"                 :   "udpate User Error",
+        "saveCustomer"                 :   "save Customer Error",
+        "getCustomer"                 :   "get Customer Error",
     },
     success:{
       "saveUser"                 : "Success in saving user",
@@ -48,6 +51,8 @@ var constants = {
       "passwordReset"                 :   "Password reset succfully",
       "saveRole"                 :   "save Role Success",
       "udpateUser"                 :   "udpate User Success",
+      "saveCustomer"                 :   "save Customer Success",
+      "getCustomer"                 :   "get Customer Success",
     },
 
   },
@@ -56,7 +61,7 @@ var constants = {
       "host"              : "smtp.gmail.com",
       "username"          : "goappsolutions",
       "mailUsername"          : "GOApps",
-      "password"          : "Asdf!234",
+      "password"          : "Asdf!2341987",
       "verificationMail"  : "goappsolutions@gmail.com"
   },
   mailFormat : {

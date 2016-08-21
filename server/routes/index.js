@@ -3,6 +3,8 @@ var path = require('path');
 
 var userRoutes = require("./userRoutes");
 var adminRoutes = require("./adminRoutes");
+var customerRoutes = require("./customerRoutes");
+
 var router = express.Router();
 
 /* GET home page. */
@@ -21,6 +23,7 @@ router.get('/', function(req, res, next) {
 */
 router.use('/user', userRoutes);
 router.use('/admin', adminRoutes);
+router.use('/customer', customerRoutes);
 
 
 

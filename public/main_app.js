@@ -110,7 +110,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             url: '/new-user',
             controller:"UserController",
         })
-
+        
 
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){

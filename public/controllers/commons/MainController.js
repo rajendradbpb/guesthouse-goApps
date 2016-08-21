@@ -6,4 +6,13 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Constan
     delete $localStorage[Constants.getTokenKey()]
     $state.go("signIn");
   }
+  $scope.onForgotPassword = function(email) {
+    UserService.onForgotPassword({email:email},function(response) {
+      console.log("email send success  ",response);
+    },
+    function(err) {
+        console.log("email send error  ",err);
+    }
+  )
+  }
 })
