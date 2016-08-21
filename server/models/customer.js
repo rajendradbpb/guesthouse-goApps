@@ -4,21 +4,22 @@ var constants = require('./../../config/constants');
 var validator = require('validator');
 var Schema = mongoose.Schema;
 var password = require('password-hash-and-salt');
-var userSchema = new mongoose.Schema({
-    role              : {type: Schema.Types.ObjectId, ref: 'role',required: constants.messages.errors.undefinedRole},
-    userName          : {type: String, unique : true,required: constants.messages.errors.undefinedUsername},
-    password          : {type: String,required: constants.messages.errors.undefinedPassword},
+var customerSchema = new mongoose.Schema({
+    // role              : {type: Schema.Types.ObjectId, ref: 'role',required: constants.messages.errors.undefinedRole},
+    // userName          : {type: String, unique : true,required: constants.messages.errors.undefinedUsername},
+    // password          : {type: String,required: constants.messages.errors.undefinedPassword},
     email         : {type: String,required: constants.messages.errors.undefinedEmail},
+    mobile         : {type: String,required: constants.messages.errors.undefinedMobile,unique : true},
     firstName         : {type: String,required: constants.messages.errors.undefinedFirstName},
     middleName        : {type: String},
     lastName          : {type: String},
     createdDate       : {type: Date, default: new Date()},
-    createdBy         : {type: Schema.Types.ObjectId /*, ref: 'user',required: constants.messages.undefinedEntererId*/},
+    createdBy         : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
     updatedDate       : {type: Date, default: new Date()},
-    updatedBy         : {type: Schema.Types.ObjectId /*, ref: 'user' , required: constants.messages.undefinedUpdateUser*/},
-    idDelete          : {type: Boolean, default:false},
-    passwordToken          : {type: String, default:null},
-    isAdmin          : {type:Boolean,default:false },
+    updatedBy         : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
+    isDelete          : {type: Boolean, default:false},
+    // passwordToken          : {type: String, default:null},
+    // isAdmin          : {type:Boolean,default:false },
     address:{
       city :{type: String},
       district :{type: String},
@@ -26,6 +27,7 @@ var userSchema = new mongoose.Schema({
       pincode :{type: String},
       country :{type: String,default:constants.default.country},
     }
+
 
 });
 
@@ -43,7 +45,7 @@ var userSchema = new mongoose.Schema({
 //   var test = validator.isNull(value) || value == undefined ? false : true;
 //   return test;
 // }, constants.messages.errors.undefinedFirstName);
-userSchema.plugin(uniqueValidator, {message: "Username already exists"});
+customerSchema.plugin(uniqueValidator, {message: "Mobile already exists"});
 
-var userModel = mongoose.model('user', userSchema);
+var userModel = mongoose.model('customer', customerSchema);
 module.exports = userModel;

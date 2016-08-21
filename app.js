@@ -123,8 +123,8 @@ passport.use('addCustomer',new BearerStrategy(
         console.log("error in verify token  ",err);
         return done(err,null);
       }
-      else if(!user || user._doc.role.type == "ghUser") {
-        console.log("No  token or user is not auth user ",err);
+      else if(!user || !user._doc.type == "ghUser") {
+        console.log("No  token or user is not admin ",err);
         return done(null, false);
       }
       else {
