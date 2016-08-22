@@ -15,7 +15,7 @@
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      <li class="treeview">
+      <li class="treeview" ng-if="logedInUser.role.type =='admin'">
         <a href="">
           <i class="fa fa-cogs" aria-hidden="true"></i>
           <span>User Management</span>
@@ -25,6 +25,12 @@
           <li><a ui-sref="new-user"><i class="fa fa-circle-o"></i>Create User</a></li>
         </ul>
       </li>
+      <li class="treeview" ng-if="logedInUser.role.type =='ccare'">
+       <a href="" ui-sref="customer-details">
+         <i class="fa fa-cogs"></i>
+         <span>Customer Management</span>
+       </a>
+     </li>
       <li class="treeview">
        <a href="" ui-sref="userProfile">
          <i class="fa fa-cogs"></i>

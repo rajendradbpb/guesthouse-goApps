@@ -59,7 +59,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       "middleName" : $scope.user.middle_name,
       "lastName"   : $scope.user.last_name,
       "email"      : $scope.user.email,
-      "role"       :   $scope.user.user_role,
+      "role"       : $scope.user.user_role,
       "userName"   : $scope.user.user_name,
       "password"   : $scope.user.password
     }
@@ -68,4 +68,5 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       Util.alertMessage('success', response.message);
     });
   }
+  
 })

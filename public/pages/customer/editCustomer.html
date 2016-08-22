@@ -1,0 +1,96 @@
+<section class="content-header">
+  <h1>
+    Edit Customer
+    <small>Control panel</small>
+  </h1>
+</section>
+<section class="content" ng-init="getCustomerbyID()">
+  <div class="">
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Edit Customer</h3>
+      </div>
+      <form class="form-horizontal" name="editcustomer">
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 control-label">First Name</label>
+          <div class="col-sm-8" ng-class="{'has-error': (editcustomer.first_name.$invalid && editcustomer.first_name.$touched)}">
+            <input type="text" name="first_name" class="form-control"  placeholder="First Name" ng-model="customer.firstName" required ng-pattern="/^(\D)+$/">
+            <span class="help-block" ng-show="editcustomer.first_name.$error.required && editcustomer.first_name.$touched">Please enter first name</span>
+            <span class="help-block" ng-show="editcustomer.first_name.$error.pattern && editcustomer.first_name.$touched">Please enter valid name</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 control-label">Middle Name</label>
+          <div class="col-sm-8" ng-class="{'has-error': (editcustomer.middle_name.$invalid && editcustomer.middle_name.$touched)}">
+            <input type="text" name="middle_name" class="form-control"  placeholder="Middle Name" ng-model="customer.middleName" required ng-pattern="/^(\D)+$/">
+            <span class="help-block" ng-show="editcustomer.middle_name.$error.required && editcustomer.middle_name.$touched">Please enter middle name</span>
+            <span class="help-block" ng-show="editcustomer.middle_name.$error.pattern && editcustomer.middle_name.$touched">Please enter valid name</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 control-label">Last Name</label>
+          <div class="col-sm-8" ng-class="{'has-error': (editcustomer.last_name.$invalid && editcustomer.last_name.$touched)}">
+            <input type="text" name="last_name" class="form-control"  placeholder="Last Name" ng-model="customer.lastName" required ng-pattern="/^(\D)+$/">
+            <span class="help-block" ng-show="editcustomer.last_name.$error.required && editcustomer.last_name.$touched">Please enter last name</span>
+            <span class="help-block" ng-show="editcustomer.last_name.$error.pattern && editcustomer.last_name.$touched">Please enter valid name</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 control-label">Email</label>
+          <div class="col-sm-8" ng-class="{'has-error': (editcustomer.email.$invalid && editcustomer.email.$touched)}">
+            <input type="email" class="form-control" name="email" placeholder="Email" ng-model="customer.email" required ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
+            <span class="help-block" ng-show="editcustomer.email.$error.required && editcustomer.email.$touched">Please enter emailid</span>
+            <span class="help-block" ng-show="editcustomer.email.$error.pattern && editcustomer.email.$touched">Please enter valid emailid</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 control-label">Mobile</label>
+          <div class="col-sm-8"  ng-class="{'has-error': (editcustomer.mobile.$invalid && editcustomer.mobile.$touched)}">
+              <input type="text" class="form-control" name="mobile" ng-model="customer.mobile" placeholder="Mobile no." required ng-pattern="/^[0-9]{10,10}$/">
+              <span class="help-block" ng-show="editcustomer.mobile.$error.required && editcustomer.mobile.$touched">Please enter mobile number</span>
+              <span class="help-block" ng-show="editcustomer.mobile.$error.pattern && editcustomer.mobile.$touched">Invalid mobile number</span>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': (editcustomer.state.$invalid && editcustomer.state.$touched)}">
+          <label for="inputName" class="col-sm-2 control-label">State</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="state" ng-model="customer.address.state" placeholder="State" required ng-pattern="/^(\D)+$/">
+            <span class="help-block" ng-show="editcustomer.state.$error.required && editcustomer.state.$touched">Please enter state name</span>
+            <span class="help-block" ng-show="editcustomer.state.$error.pattern && editcustomer.state.$touched">state should not be numeric</span>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': (editcustomer.country.$invalid && editcustomer.country.$touched)}">
+          <label for="inputName" class="col-sm-2 control-label">Country</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="country" ng-model="customer.address.country" placeholder="Country" required ng-pattern="/^(\D)+$/">
+            <span class="help-block" ng-show="editcustomer.country.$error.required && editcustomer.country.$touched">Please enter country name</span>
+            <span class="help-block" ng-show="editcustomer.country.$error.pattern && editcustomer.country.$touched">country should not be numeric</span>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': (editcustomer.pinno.$invalid && editcustomer.pinno.$touched)}">
+          <label for="inputName" class="col-sm-2 control-label">Pin</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="pinno" ng-model="customer.pinno"  ng-maxlength="6"  placeholder=" Pin No" required ng-pattern="/^[0-9]/">
+            <span class="help-block" ng-show="editcustomer.pinno.$error.required && editcustomer.pinno.$touched">Please enter pin code</span>
+            <span class="help-block" ng-show="editcustomer.pinno.$error.pattern && editcustomer.pinno.$touched" ng-message="maxlength">pin number must be six digit and start from 7</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-2">
+            <button type="button" class="btn  btn-info" ng-disabled="editcustomer.$invalid" ui-sref="customer-details">Cancel</button>
+            <button type="button" class="btn btn-info pull-right" ng-disabled="editcustomer.$invalid" ng-click="updateCustomer()">Update</button>
+          </div>
+          <div class="col-sm-8 col-sm-offset-2">
+            <section  align="center" class="m-t-sm">
+                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+            </section>
+          </div>
+        </div>
+      </form>
+    </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

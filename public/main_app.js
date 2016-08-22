@@ -90,7 +90,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             resolve: {loggedin: checkLoggedin},
 
         })
-
         .state('userProfile', {
             templateUrl: 'pages/users/userProfile.html',
             url: '/userProfile',
@@ -98,7 +97,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             resolve: {loggedin: checkLoggedout},
 
         })
-
         .state('forgot-password', {
             templateUrl: 'pages/forgotPassword.html',
             url: '/forgot-password',
@@ -110,8 +108,18 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             url: '/new-user',
             controller:"UserController",
         })
-        
-
+        .state('customer-details', {
+            templateUrl: 'pages/customer/customerDetail.html',
+            url: '/customer-details',
+            controller:'CustomerController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('edit-customer',{
+             templateUrl:'pages/customer/editCustomer.html',
+             url:'/edit-customer/:_id',
+             controller:'CustomerController',
+             resolve: {loggedin: checkLoggedout},
+        })
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
     var Util = {};
