@@ -73,9 +73,9 @@ exports.udpateCustomer = function (req, res) {
   });
 }
 exports.deleteCustomer = function (req, res) {
-  req.body.updatedBy = req.user._doc._id;
-  req.body.updatedDate = new Date();
-  customerModelObj.findByIdAndUpdate(req.body._id,{"isDelete":true},{"new" :true})
+  req.query.updatedBy = req.user._doc._id;
+  req.query.updatedDate = new Date();
+  customerModelObj.findByIdAndUpdate(req.query._id,{"isDelete":true},{"new" :true})
   .exec()
   .then(function(data) {
     return res.json(response(200,"success",constants.messages.success.deleteUser));

@@ -99,6 +99,14 @@
                   <span class="help-block" ng-show="newcustomer.state.$error.pattern && newcustomer.state.$touched">state should not be numeric</span>
                 </div>
               </div>
+              <div class="form-group" ng-class="{'has-error': (newcustomer.city.$invalid && newcustomer.city.$touched)}">
+                <label for="inputName" class="col-sm-2 control-label">City</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="city" ng-model="customer.address.city" placeholder="State" required ng-pattern="/^(\D)+$/">
+                  <span class="help-block" ng-show="newcustomer.city.$error.required && newcustomer.city.$touched">Please enter city name</span>
+                  <span class="help-block" ng-show="newcustomer.city.$error.pattern && newcustomer.city.$touched">city should not be numeric</span>
+                </div>
+              </div>
               <div class="form-group" ng-class="{'has-error': (newcustomer.country.$invalid && newcustomer.country.$touched)}">
                 <label for="inputName" class="col-sm-2 control-label">Country</label>
                 <div class="col-sm-8">
@@ -107,12 +115,12 @@
                   <span class="help-block" ng-show="newcustomer.country.$error.pattern && newcustomer.country.$touched">country should not be numeric</span>
                 </div>
               </div>
-              <div class="form-group" ng-class="{'has-error': (newcustomer.pinno.$invalid && newcustomer.pinno.$touched)}">
+              <div class="form-group" ng-class="{'has-error': (newcustomer.pincode.$invalid && newcustomer.pincode.$touched)}">
                 <label for="inputName" class="col-sm-2 control-label">Pin</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" name="pinno" ng-model="customer.pinno"  ng-maxlength="6"  placeholder=" Pin No" required ng-pattern="/^[0-9]/">
-                  <span class="help-block" ng-show="newcustomer.pinno.$error.required && newcustomer.pinno.$touched">Please enter pin code</span>
-                  <span class="help-block" ng-show="newcustomer.pinno.$error.pattern && newcustomer.pinno.$touched" ng-message="maxlength">pin number must be six digit and start from 7</span>
+                  <input type="text" class="form-control" name="pincode" ng-model="customer.address.pincode"  ng-maxlength="6"  placeholder=" Pin No" required ng-pattern="/^[0-9]/">
+                  <span class="help-block" ng-show="newcustomer.pincode.$error.required && newcustomer.pincode.$touched">Please enter pin code</span>
+                  <span class="help-block" ng-show="newcustomer.pincode.$error.pattern && newcustomer.pincode.$touched" ng-message="maxlength">pin number must be six digit and start from 7</span>
                 </div>
               </div>
               <div class="form-group">

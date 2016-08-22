@@ -4941,3 +4941,12 @@ input[type=checkbox], input[type=radio]{
 .m-t-sm{
   margin-top: 5px;
 }
+
+/*custom css gose here*/
+/*codes for the edit-customer page*/
+.content-header.edit-customer h1{
+  display: inline;
+}
+.content-header.edit-customer button{
+  float:  right;
+}

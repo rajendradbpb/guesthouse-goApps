@@ -10,17 +10,7 @@ $scope.changeTab = function(tab){
 /********This is use for submitting customer details******/
 /*******************************************************/
 $scope.submitCustDetails = function(){
-  var obj={
-    "firstName"  : $scope.customer.firstName,
-    "middleName" : $scope.customer.middleName,
-    "lastName"   : $scope.customer.lastName,
-    "email"      : $scope.customer.email,
-    "mobile"     : $scope.customer.mobile,
-    "state"      : $scope.customer.address.state,
-    "country"     : $scope.customer.address.country,
-    "pin"        : $scope.customer.pinno
-  }
-  CustomerService.submitCustDetails(obj,function(response){
+  CustomerService.submitCustDetails($scope.customer,function(response){
     if(response.statusCode == 200){
         Util.alertMessage('success', response.message);
     }
