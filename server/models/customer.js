@@ -30,22 +30,7 @@ var customerSchema = new mongoose.Schema({
 
 
 });
-
-//custom validations
-// userSchema.path('userName').validate(function (value) {
-//     var test = validator.isNull(value) || value == undefined ? false : true;
-//     console.log("test valies  ",test);
-//     return test;
-// }, constants.messages.errors.undefinedUsername);
-// userSchema.path('password').validate(function (value) {
-//   var test = validator.isNull(value) || value == undefined ? false : true;
-//   return test;
-// }, constants.messages.errors.undefinedPassword);
-// userSchema.path('firstName').validate(function (value) {
-//   var test = validator.isNull(value) || value == undefined ? false : true;
-//   return test;
-// }, constants.messages.errors.undefinedFirstName);
 customerSchema.plugin(uniqueValidator, {message: "Mobile already exists"});
 
-var userModel = mongoose.model('customer', customerSchema);
-module.exports = userModel;
+var customerModel = mongoose.model('customer', customerSchema);
+module.exports = customerModel;

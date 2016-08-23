@@ -1,6 +1,8 @@
 var config = require('config');
 var constants = {
   roles : ["spAdmin","admin","ccare","ghUser"],
+  roomType:["AC","NON-AC","FAMILY","DELUX"],
+  bookingStatus:["AVAILABLE","CHECKED-IN","BOOKED"],
   default:{
     "country" :"India",
     "state" :"Odisha",
@@ -19,6 +21,18 @@ var constants = {
       "undefinedFirstName"            :   "undefined undefinedFirstName",
       "undefinedEntererId"       :   "undefined Enterer Id",
       "undefinedUpdateUser"      :   "undefined Update  User Id",
+      "ghNameRequired"      :   "guest house Name Required",
+      "userRequired"      :   "user Required",
+      "lowerLimitRequired"      :   "lower Limit Required",
+      "upperLimitRequired"      :   "upper Limit Required",
+      "roomNoRequired"      :   "room No Required",
+      "ghPriceRequired"      :   "guest house Price Required",
+
+
+      "guestHouseExist"      :   "guest House Exist ",
+      "facilityExist"      :   "facility Exist ",
+
+
       "saveRole"      :   "Error in saving Role",
       "undefinedRole"      :   "Role is not defined",
         "fetchRoles"                 :   "Error in fetch Roles",
