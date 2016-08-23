@@ -77,14 +77,16 @@ $scope.getCustomerbyID = function(){
    /*******************************************************/
    /********This is use to search customer using mobile no******/
    /*******************************************************/
-   $scope.addNewBooking = function(){
-     $scope.customer = {};
-     $scope.customer.mobile = $scope.search.mobile;
+   $scope.getCustomerInfo = function(mobile){
      $scope.is_searched = true;
-     angular.forEach($scope.allcoustomers,function(item){
-       if(item.mobile == $scope.search.mobile){
-         $scope.customer = item;
-       }
-     });
+     var mobile = {
+       "mobile" :mobile
+     }
+     CustomerService.getCustomerList(mobile,function(response) {
+       $scope.customer = response.data[0];
+       response.data.length > 0 ? $scope.customerFound = true : $scope.customerFound = false;
+     },function(err) {
+       Util.alertMessage('danger', err.message);
+     })
    }
 })

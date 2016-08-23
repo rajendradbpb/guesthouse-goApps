@@ -45,8 +45,6 @@ exports.getCustomer = function (req, res) {
     query.mobile = req.query.mobile;
   if(req.query.id)
     query._id = req.query.id;
-
-    console.log("query   ",query);
   customerModelObj.find(query).exec()
     .then(function(customers) {
       return res.json(response(200,"success",constants.messages.success.getCustomer,customers))

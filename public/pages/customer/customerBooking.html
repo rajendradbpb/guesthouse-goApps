@@ -3,7 +3,7 @@
     Customer Booking
   </h1>
 </section>
-<section class="content" ng-init="loadAllCustomer()">
+<section class="content" > <!--ng-init="loadAllCustomer()" -->
   <div class="row">
     <div class="col-md-12">
       <div class="nav-tabs-custom">
@@ -23,7 +23,7 @@
                     <div class="input-group">
                       <input type="text" class="form-control" placeholder="Mobile Number" ng-model="search.mobile" required ng-pattern="/^[0-9]{10,10}$/">
                         <span class="input-group-btn">
-                          <button type="submit" class="btn btn-info btn-flat" ng-click="addNewBooking()" >Go!</button>
+                          <button type="submit" class="btn btn-info btn-flat" ng-click="getCustomerInfo(search.mobile)" >Go!</button>
                           </span>
                       </div>
                   </div>
@@ -108,7 +108,8 @@
                          </div>
                          <div class="form-group">
                            <div class="col-sm-offset-2 col-sm-8">
-                             <button type="button" class="btn  btn-primary pull-right" ng-click="submitCustDetails()"  ng-disabled="newcustomer.$invalid">Submit</button>
+                             <button type="button" class="btn  btn-primary pull-right" ng-click="submitCustDetails()" ng-if="customerFound" ng-disabled="newcustomer.$invalid">Update</button>
+                             <button type="button" class="btn  btn-primary pull-right" ng-click="submitCustDetails()" ng-if="!customerFound" ng-disabled="newcustomer.$invalid">Save</button>
                              <button type="button"  class="btn  btn-primary" ui-sref="ccare-dashboard">Back</button>
                            </div>
                            <div class="col-sm-12">
