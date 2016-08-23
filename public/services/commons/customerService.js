@@ -1,9 +1,9 @@
 app.factory("CustomerService", function($http,$resource,$localStorage,Constants) {
   return $resource('/',null,{
-    submitCustDetails:{
-          method: 'POST',
-          url:"/customer",
-          headers:"application/json"
+     submitCustDetails:{
+        method: 'POST',
+        url:"/customer",
+        headers:"application/json"
      },
      getCustomerList: {
         method: 'GET',
@@ -24,6 +24,11 @@ app.factory("CustomerService", function($http,$resource,$localStorage,Constants)
        method: 'DELETE',
        url:"/customer",
        headers:"application/json"
+     },
+     addNewBooking: {
+        method: 'GET',
+        url:"/customer",
+        headers:"application/json"
      }
   });
 })

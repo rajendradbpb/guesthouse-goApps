@@ -54,7 +54,6 @@ var constants = {
       "saveCustomer"                 :   "save Customer Success",
       "getCustomer"                 :   "get Customer Success",
     },
-
   },
   gmailSMTPCredentials : {
       "service"           : "gmail",
@@ -71,6 +70,5 @@ var constants = {
         "link" : config[config["env"]].baseUrl+"/forgotPassword/{{passwordToken}}",
       }
   }
-
 }
 module.exports = constants;

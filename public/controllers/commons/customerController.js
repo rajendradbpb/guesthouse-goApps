@@ -6,6 +6,10 @@ $scope.changeTab = function(tab){
   }
   $scope.currentTab = tab;
 }
+$scope.currentTab1 = 'customerdetail';
+$scope.changeTab1 = function(tab){
+  $scope.currentTab1 = tab;
+}
 /*******************************************************/
 /********This is use for submitting customer details******/
 /*******************************************************/
@@ -45,8 +49,12 @@ $scope.getCustomerbyID = function(){
         $scope.customer = response.data[0];
     })
   }
+  /*******************************************************/
+  /********This is use to update customer data******/
+  /*******************************************************/
   $scope.updateCustomer = function(){
     CustomerService.updateCustomerbyID($scope.customer,function(response){
+      console.log($scope.customer);
     if(response.statusCode == 200){
         Util.alertMessage('success', response.message);
     }
@@ -55,13 +63,28 @@ $scope.getCustomerbyID = function(){
     }
    })
  }
+ /*******************************************************/
+ /********This is use to delete customer data from list******/
+ /*******************************************************/
  $scope.deletecustomer = function(_id){
      var obj = {
       "_id":_id
      }
      CustomerService.deleteCustomer(obj,function(response) {
-       console.log(response);
-        $scope.loadAllCustomer();
+       $scope.loadAllCustomer();
     })
+   }
+   /*******************************************************/
+   /********This is use to search customer using mobile no******/
+   /*******************************************************/
+   $scope.addNewBooking = function(){
+     $scope.customer = {};
+     $scope.customer.mobile = $scope.search.mobile;
+     $scope.is_searched = true;
+     angular.forEach($scope.allcoustomers,function(item){
+       if(item.mobile == $scope.search.mobile){
+         $scope.customer = item;
+       }
+     });
    }
 })

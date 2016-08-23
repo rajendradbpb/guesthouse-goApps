@@ -120,6 +120,12 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
              controller:'CustomerController',
              resolve: {loggedin: checkLoggedout},
         })
+        .state('customer-booking',{
+             templateUrl:'pages/customer/customerBooking.html',
+             url:'/customer-booking',
+             controller:'CustomerController',
+             resolve: {loggedin: checkLoggedout},
+        })
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
     var Util = {};
