@@ -1,5 +1,7 @@
-app.controller("CustomerController", function($scope,$rootScope,CommonService,$state,Constants,$localStorage, $window,UserService,$stateParams,CustomerService,Util) {
+app.controller("CustomerController", function($scope,$rootScope,$state,$stateParams,CustomerService,Util) {
 $scope.currentTab = 'customerList';
+$scope.find = {};
+
 $scope.changeTab = function(tab){
   if(tab == 'customerList'){
     $scope.loadAllCustomer();
@@ -7,13 +9,14 @@ $scope.changeTab = function(tab){
   $scope.currentTab = tab;
 }
 $scope.currentTab1 = 'customerdetail';
-$scope.changeTab1 = function(tab){
+$scope.changeBookingTab = function(tab){
   $scope.currentTab1 = tab;
 }
 /*******************************************************/
 /********This is use for submitting customer details******/
 /*******************************************************/
 $scope.submitCustDetails = function(){
+    console.log($scope.customer);
   CustomerService.submitCustDetails($scope.customer,function(response){
     if(response.statusCode == 200){
         Util.alertMessage('success', response.message);
@@ -44,9 +47,8 @@ $scope.getCustomerbyID = function(){
     var obj ={
       "id":$stateParams._id
     }
-    CustomerService.getCustomerbyID(obj,function(response){
-       console.log(response);
-        $scope.customer = response.data[0];
+    CustomerService.getCustomerList(obj,function(response){
+          $scope.customer = response.data[0];
     })
   }
   /*******************************************************/
@@ -54,21 +56,20 @@ $scope.getCustomerbyID = function(){
   /*******************************************************/
   $scope.updateCustomer = function(){
     CustomerService.updateCustomerbyID($scope.customer,function(response){
-      console.log($scope.customer);
-    if(response.statusCode == 200){
-        Util.alertMessage('success', response.message);
-    }
-    else {
-        Util.alertMessage('danger', response.message);
-    }
+      if(response.statusCode == 200){
+          Util.alertMessage('success', response.message);
+      }
+      else {
+          Util.alertMessage('danger', response.message);
+      }
    })
  }
  /*******************************************************/
  /********This is use to delete customer data from list******/
  /*******************************************************/
- $scope.deletecustomer = function(_id){
+ $scope.deletecustomer = function(id){
      var obj = {
-      "_id":_id
+      "_id":id
      }
      CustomerService.deleteCustomer(obj,function(response) {
        $scope.loadAllCustomer();
@@ -77,14 +78,21 @@ $scope.getCustomerbyID = function(){
    /*******************************************************/
    /********This is use to search customer using mobile no******/
    /*******************************************************/
-   $scope.getCustomerInfo = function(mobile){
+   $scope.getCustomerInfo = function(){
+     $scope.customer = {};
      $scope.is_searched = true;
      var mobile = {
-       "mobile" :mobile
+       "mobile" :$scope.find.mobile
      }
      CustomerService.getCustomerList(mobile,function(response) {
-       $scope.customer = response.data[0];
-       response.data.length > 0 ? $scope.customerFound = true : $scope.customerFound = false;
+       if(response.data.length > 0){
+        $scope.customer =  response.data[0];
+        $scope.customerFound = true;
+       }
+       else{
+         $scope.customer = {};
+         $scope.customer.mobile = $scope.find.mobile;
+       }
      },function(err) {
        Util.alertMessage('danger', err.message);
      })

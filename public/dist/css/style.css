@@ -4950,3 +4950,8 @@ input[type=checkbox], input[type=radio]{
 .content-header.edit-customer button{
   float:  right;
 }
+.input-search-field{
+  width: 215px;
+  float: right;
+  margin-right: 10px;
+}
