@@ -10,11 +10,6 @@ app.factory("CustomerService", function($http,$resource,$localStorage,Constants)
         url:"/customer",
         headers:"application/json"
      },
-     getCustomerbyID: {
-       method: 'GET',
-       url:"/customer",
-       headers:"application/json"
-     },
      updateCustomerbyID : {
        method: 'PUT',
        url:"/customer",

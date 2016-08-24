@@ -54,9 +54,11 @@ exports.getCustomer = function (req, res) {
     })
 }
 exports.udpateCustomer = function (req, res) {
+  var id = req.body._id;
+  delete req.body['_id']; //  removed to avoid the _id mod error
   req.body.updatedBy = req.user._doc._id;
   req.body.updatedDate = new Date();
-  customerModelObj.findOneAndUpdate({"_id":req.body._id},req.body,{"new":true}).exec(function (err,user) {
+  customerModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,user) {
     if(err)
     {
       return res.json(response(500,"error",constants.messages.errors.saveUser,err))
