@@ -1,0 +1,133 @@
+<section class="content-header">
+  <h1>
+    GuestHouse Profile
+  </h1>
+</section>
+<section class="content" >
+  <div class="row">
+    <div class="col-md-12">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="" data-toggle="tab" ng-click="guestHouseTab('guestHouseDetails')">GuestHouse List</a></li>
+          <li><a href="" data-toggle="tab" ng-click="guestHouseTab('addGuestHouse')">New GuestHouse</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane" ng-class="{'active':currentTab == 'guestHouseDetails'}" >
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="box">
+                  <div class="box-body over-x-sc">
+                    <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Sl No</th>
+                          <th>Name</th>
+                          <th>Mobile No</th>
+                          <th>Email</th>
+                          <th>Country</th>
+                          <th>State</th>
+                          <th>Operation</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="customer in allcoustomers">
+                          <td>{{$index+1}}</td>
+                          <td>{{customer.firstName}}</td>
+                          <td>{{customer.mobile}}</td>
+                          <td>{{customer.email}}</td>
+                          <td>{{customer.address.country}}</td>
+                          <td>{{customer.address.state}}</td>
+                          <td>
+                            <a href="" class="option-btn" ng-click="goToEdit(customer._id)"><i class="fa fa-pencil"></i></a>
+                            <a href="" class="option-btn" ng-click="deletecustomer(customer._id)"><i class="fa fa-trash"></i></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" ng-class="{'active':currentTab == 'addGuestHouse'}">
+            <form class="form-horizontal" name="newghUser">
+              <div class="form-group" ng-class="{'has-error': (newghUser.user_role.$invalid && newghUser.user_role.$touched)}">
+                <label for="inputName" class="col-sm-2 control-label">User</label>
+                <div class="col-sm-8">
+                  <select class="form-control"  ng-model="ghUser.username" name="user" required>
+                    <option value="">Select user</option>
+                    <option value="57b8131c82ea961810199dcc">pandagh</option>
+                  </select>
+                  <span class="help-block" ng-show="newghUser.user_roleType.$error.required && newghUser.user_roleType.$touched">Please add user role type</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label"> Name</label>
+                <div class="col-sm-8" ng-class="{'has-error': (newghUser.name.$invalid && newghUser.name.$touched)}">
+                  <input type="text" name="name" class="form-control"  placeholder="Name" ng-model="ghUser.name" required ng-pattern="/^(\D)+$/">
+                  <span class="help-block" ng-show="newghUser.name.$error.required && newghUser.name.$touched">Please enter  name</span>
+                  <span class="help-block" ng-show="newghUser.name.$error.pattern && newghUser.name.$touched">Please enter valid name</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Mobile</label>
+                <div class="col-sm-8"  ng-class="{'has-error': (newghUser.mobile.$invalid && newghUser.mobile.$touched)}">
+                    <input type="text" class="form-control" name="mobile" ng-model="ghUser.contactDetails.mobile" placeholder="Mobile no." required ng-pattern="/^[0-9]{10,10}$/">
+                    <span class="help-block" ng-show="newghUser.mobile.$error.required && newghUser.mobile.$touched">Please enter mobile number</span>
+                    <span class="help-block" ng-show="newghUser.mobile.$error.pattern && newghUser.mobile.$touched">Invalid mobile number</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Phone</label>
+                <div class="col-sm-8"  ng-class="{'has-error': (newghUser.mobile.$invalid && newghUser.mobile.$touched)}">
+                    <input type="text" class="form-control" name="mobile" ng-model="ghUser.contactDetails.phone" placeholder="Phone no." required ng-pattern="/^[0-9]{10,10}$/">
+                    <span class="help-block" ng-show="newghUser.mobile.$error.required && newghUser.mobile.$touched">Please enter phone number</span>
+                    <span class="help-block" ng-show="newghUser.mobile.$error.pattern && newghUser.mobile.$touched">Invalid phone number</span>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error': (newghUser.min_price.$invalid && newghUser.min_price.$touched)}">
+                <label for="inputName" class="col-sm-2 control-label">Min Price</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="min_price" ng-model="ghUser.minprice" placeholder="Min Price" required  >
+                  <!-- <span class="help-block" ng-show="newghUser.min_price.$error.required && newghUser.min_price.$touched">Please enter min price</span>
+                  <span class="help-block" ng-show="newghUser.min_price.$error.pattern && newghUser.min_price.$touched"> min price should  be numeric</span> -->
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error': (newghUser.max_price.$invalid && newghUser.max_price.$touched)}">
+                <label for="inputName" class="col-sm-2 control-label">Max Price</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="max_price" ng-model="ghUser.maxprice" placeholder="Max Price" required  >
+                  <!-- <span class="help-block" ng-show="newghUser.max_price.$error.required && newghUser.max_price.$touched">Please enter max price</span>
+                  <span class="help-block" ng-show="newghUser.max_price.$error.pattern && newghUser.max_price.$touched"> max price should be numeric</span> -->
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Establish Date</label>
+                <div class="col-sm-8">
+                    <!-- <input type="text" class="form-control pull-right" id="datepicker" ng-model="buildingPlan.date"> -->
+                    <!-- <div date-picker="dates.today" id="pickerMinDateDiv" min-date="minDate" view="date" min-view="hours" timezone="UTC" watch-direct-changes="true"></div> -->
+                    <p class="input-group">
+                      <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="ghuser.date"  is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-2">
+                  <button type="button" class="btn btn-block btn-info" ng-click="submitguestHouse()"  ng-disabled="newghUser.$invalid">Submit</button>
+                </div>
+                <div class="col-sm-12">
+                  <section  align="center" class="m-t-sm">
+                      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+                  </section>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

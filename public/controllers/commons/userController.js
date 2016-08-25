@@ -65,8 +65,9 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
     }
     console.log(obj);
     UserService.submitUserDetails(obj,function(response){
+      console.log(response);
       Util.alertMessage('success', response.message);
     });
   }
-  
+
 })
