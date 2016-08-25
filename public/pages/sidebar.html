@@ -36,7 +36,13 @@
          <span>Customer Management</span>
        </a>
      </li>
-     <li class="treeview">
+     <li class="treeview" ng-if="logedInUser.role.type =='admin'">
+      <a href="" ui-sref="guesthouse-details">
+        <i  class="fa fa-home"></i>
+        <span>GuestHouse Management</span>
+      </a>
+    </li>
+     <li class="treeview" ng-if="logedInUser.role.type =='ccare'">
       <a href="" ui-sref="customer-booking">
         <i class="fa fa-book"></i>
         <span>Bookings</span>
