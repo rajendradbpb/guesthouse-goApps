@@ -123,7 +123,25 @@ passport.use('addCustomer',new BearerStrategy(
         console.log("error in verify token  ",err);
         return done(err,null);
       }
-      else if(!user || !user._doc.type == "ghUser") {
+      else if(!user || user._doc.role.type == "ghUser") {
+        console.log("No  token or user is not admin ",err);
+        return done(null, false);
+      }
+      else {
+        return done(null, user);
+      }
+     });
+
+  }
+));
+passport.use('ghAuth',new BearerStrategy(
+  function(token, done) {
+    jwt.verify(token,config.token.secret, function(err, user) {
+      if (err) {
+        console.log("error in verify token  ",err);
+        return done(err,null);
+      }
+      else if(!user || user._doc.role.type == "ccare") {
         console.log("No  token or user is not admin ",err);
         return done(null, false);
       }

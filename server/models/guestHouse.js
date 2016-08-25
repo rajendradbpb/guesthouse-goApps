@@ -7,8 +7,8 @@ var guestHouseSchema = new mongoose.Schema({
     user                      : {type: Schema.Types.ObjectId, ref: 'user' , required: constants.messages.errors.userRequired},
     name                      : {type: String, required: constants.messages.errors.ghNameRequired , unique:true},
     contactDetails            : {
-      mobile : [type: String], // here both could be array type
-      phone : [type: String]
+      mobile : [{type: String}], // here both could be array type
+      phone : [{type: String}]
     },
     establishDate             : {type: Date},
     rooms                     : [{type: Schema.Types.ObjectId, ref: 'room'}],
@@ -27,6 +27,9 @@ var guestHouseSchema = new mongoose.Schema({
     updatedDate               : {type: Date, default: new Date()},
     updatedBy                 : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
     isDelete                  : {type: Boolean, default:false},
+    regdDate                  :{type: Date, default: new Date()},
+    expDate                   :{type: Date},
+    planType                  :{type: Schema.Types.ObjectId, ref: 'plan'},
 
 });
 

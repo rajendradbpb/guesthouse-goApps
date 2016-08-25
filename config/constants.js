@@ -47,6 +47,9 @@ var constants = {
         "udpateUser"                 :   "udpate User Error",
         "saveCustomer"                 :   "save Customer Error",
         "getCustomer"                 :   "get Customer Error",
+        "saveGuestHouse"                 :   "save Guest House Error",
+        "updateData"                 :   "update Data Error",
+        "deleteData"                 :   "delete Data Error",
     },
     success:{
       "saveUser"                 : "Success in saving user",
@@ -67,6 +70,9 @@ var constants = {
       "udpateUser"                 :   "udpate User Success",
       "saveCustomer"                 :   "save Customer Success",
       "getCustomer"                 :   "get Customer Success",
+      "saveGuestHouse"                 :   "save Guest House Success",
+      "updateData"                 :   "update Data Success",
+      "deleteData"                 :   "delete Data Success",
     },
   },
   gmailSMTPCredentials : {
