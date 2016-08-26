@@ -71,9 +71,7 @@ exports.deleteGuestHouse = function (req, res) {
   })
   .catch(function(err) {
     return res.json(response(500,"error",constants.messages.errors.deleteData,err))
-
   })
-
 }
 /*
 * guest house crud operation ends

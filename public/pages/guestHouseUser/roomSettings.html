@@ -1,62 +1,28 @@
 <section class="content-header">
   <h1>
-    GuestHouse Profile
+    Room Profile
   </h1>
+  <button type="button" class="btn  btn-primary pull-right"  ui-sref="newRoom_details">Add Room</button>
 </section>
 <section class="content" >
   <div class="row">
     <div class="col-md-12">
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-          <li class="active"><a href="" data-toggle="tab" ng-click="guestHouseTab('guestHouseDetails')">GuestHouse List</a></li>
-          <li><a href="" data-toggle="tab" ng-click="guestHouseTab('addGuestHouse')">New GuestHouse</a></li>
+          <li class="active"><a href="" data-toggle="tab" ng-click="roomlistingTab('roomlists')">Room List</a></li>
+          <li><a href="" data-toggle="tab" ng-click="roomlistingTab('roomdetails')">Room Details</a></li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane" ng-class="{'active':currentTab == 'guestHouseDetails'}" >
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="box">
-                  <div class="box-body over-x-sc">
-                    <table id="example2" class="table table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>Sl No</th>
-                          <th>Name</th>
-                          <th>Mobile No</th>
-                          <th>Email</th>
-                          <th>Country</th>
-                          <th>State</th>
-                          <th>Operation</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr ng-repeat="customer in allcoustomers">
-                          <td>{{$index+1}}</td>
-                          <td>{{customer.firstName}}</td>
-                          <td>{{customer.mobile}}</td>
-                          <td>{{customer.email}}</td>
-                          <td>{{customer.address.country}}</td>
-                          <td>{{customer.address.state}}</td>
-                          <td>
-                            <a href="" class="option-btn" ng-click="goToEdit(customer._id)"><i class="fa fa-pencil"></i></a>
-                            <a href="" class="option-btn" ng-click="deletecustomer(customer._id)"><i class="fa fa-trash"></i></a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
           </div>
-          <div class="tab-pane" ng-class="{'active':currentTab == 'addGuestHouse'}">
+          <div class="tab-pane" ng-class="{'active':currentTab == 'roomdetails'}">
             <form class="form-horizontal" name="newghUser">
               <div class="form-group" ng-class="{'has-error': (newghUser.user_role.$invalid && newghUser.user_role.$touched)}">
                 <label for="inputName" class="col-sm-2 control-label">User</label>
                 <div class="col-sm-8">
-                  <select class="form-control"  ng-model="ghUser.username" name="user" required>
+                  <select class="form-control"  ng-model="ghUser.username" name="user"  required>
                     <option value="">Select user</option>
-                    <option value="57b8131c82ea961810199dcc">pandagh</option>
+                    <option value="" ></option>
                   </select>
                   <span class="help-block" ng-show="newghUser.user_roleType.$error.required && newghUser.user_roleType.$touched">Please add user role type</span>
                 </div>

@@ -2,7 +2,7 @@
   <section class="sidebar">
     <div class="user-panel">
       <div class="pull-left image">
-        <img src="dist/img/logo.jpg" class="img-circle" alt="User Image">
+        <img src="dist/img/vector_home_building_logo_inspiration.png" class="img-circle" alt="User Image">
       </div>
       <div class="pull-left info">
         <p>{{logedInUser.role.type}}</p>
@@ -20,6 +20,11 @@
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
+      <li class="active treeview" ng-if="logedInUser.role.type =='ghUser'">
+        <a href="" ui-sref="guest_house-dashboard">
+          <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        </a>
+      </li>
       <li class="treeview" ng-if="logedInUser.role.type =='admin'">
         <a href="">
           <i class="fa fa-cogs" aria-hidden="true"></i>
@@ -30,18 +35,18 @@
           <li><a ui-sref="new-user"><i class="fa fa-circle-o"></i>Create User</a></li>
         </ul>
       </li>
+      <li class="treeview" ng-if="logedInUser.role.type =='ghUser'">
+        <a href="" ui-sref="room-setttings">
+          <i class="fa fa-cogs" ></i>
+          <span>Room Management</span>
+        </a>
+      </li>
       <li class="treeview" ng-if="logedInUser.role.type =='ccare'">
        <a href="" ui-sref="customer-details">
          <i class="fa fa-cogs"></i>
          <span>Customer Management</span>
        </a>
      </li>
-     <li class="treeview" ng-if="logedInUser.role.type =='admin'">
-      <a href="" ui-sref="guesthouse-details">
-        <i  class="fa fa-home"></i>
-        <span>GuestHouse Management</span>
-      </a>
-    </li>
      <li class="treeview" ng-if="logedInUser.role.type =='ccare'">
       <a href="" ui-sref="customer-booking">
         <i class="fa fa-book"></i>

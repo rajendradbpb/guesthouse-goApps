@@ -17,7 +17,7 @@ app.controller("SignInController",["$scope","$rootScope","CommonService","$state
           $state.go("admin-dashboard");
           break;
           case "ghUser":
-
+          $state.go("guest_house-dashboard");
           break;
           case "ghAdmin":
 

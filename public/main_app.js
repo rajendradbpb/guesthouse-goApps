@@ -83,6 +83,12 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             controller:"MainController",
             resolve: {loggedout: checkLoggedout},
         })
+        .state('guest_house-dashboard', {
+            templateUrl: 'pages/guesthouseDashboard.html',
+            url: '/guest_house-dashboard',
+            controller:"MainController",
+            resolve: {loggedout: checkLoggedout},
+        })
         .state('signIn', {
             templateUrl: 'pages/signIn.html',
             url: '/signIn',
@@ -107,6 +113,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             templateUrl: 'pages/newUser.html',
             url: '/new-user',
             controller:"UserController",
+            resolve:{loggedin: checkLoggedout}
         })
         .state('customer-details', {
             templateUrl: 'pages/customer/customerDetail.html',
@@ -126,11 +133,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
              controller:'CustomerController',
              resolve: {loggedin: checkLoggedout},
         })
-        .state('guesthouse-details',{
-             templateUrl:'pages/guestHouseUser/getAllGuesthouse.html',
-             url:'/guesthouse-details',
-             controller:'GuesthouseController',
-             resolve: {loggedin: checkLoggedout},
+        .state('room-setttings', {
+            templateUrl: 'pages/guestHouseUser/roomSettings.html',
+            url: '/room-setttings',
+            controller:'GuesthouseController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('newRoom_details', {
+            templateUrl: 'pages/guestHouseUser/newRoomDetails.html',
+            url: '/newRoom_details',
+            controller:'GuesthouseController',
+            resolve: {loggedin: checkLoggedout},
         })
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
