@@ -3,8 +3,9 @@ var uniqueValidator = require('mongoose-unique-validator');
 var constants = require('./../../config/constants');
 var validator = require('validator');
 var Schema = mongoose.Schema;
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var roomSchema = new mongoose.Schema({
-    guestHouse              : {type: Schema.Types.ObjectId, ref: 'guestHouse' , required: constants.messages.errors.ghNameRequired},
+    guestHouse              : {type: Schema.Types.ObjectId, ref: 'user' , required: constants.messages.errors.ghNameRequired},
     roomNo                  : {type: String, required: constants.messages.errors.roomNoRequired},
     roomType                : {type: String, enum: constants.role },
     price                   : {type: Number,required: constants.messages.errors.ghPriceRequired},
@@ -26,6 +27,15 @@ var roomSchema = new mongoose.Schema({
 });
 
 roomSchema.plugin(uniqueValidator, {message: constants.messages.errors.guestHouseExist});
-
+roomSchema.plugin(deepPopulate, {
+  whitelist: [
+    'guestHouse',
+  ],
+  populate: {
+    'guestHouse': {
+      select: 'email firstName lastName middleName minPrice maxPrice mobile establishDate address',
+    },
+  }
+});
 var roomSchemaModel = mongoose.model('room', roomSchema);
 module.exports = roomSchemaModel;
