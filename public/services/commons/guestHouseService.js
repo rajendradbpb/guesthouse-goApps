@@ -1,10 +1,5 @@
 app.factory("GuesthouseService", function($http,$resource,$localStorage,Constants) {
   return $resource('/',null,{
-    getuser: {
-      method:'GET',
-      url:"/user",
-      headers:"application/json"
-    },
     addRoom: {
       method:'POST',
       url:"/guestHouse/room",
@@ -19,7 +14,11 @@ app.factory("GuesthouseService", function($http,$resource,$localStorage,Constant
      method: 'POST',
      url:"/guestHouse",
      headers:"application/json"
+  },
+  getRoom : {
+     method:'GET',
+     url:"/guestHouse/room",
+     headers:"application/json"
   }
-
   });
 })

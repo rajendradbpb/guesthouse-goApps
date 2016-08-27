@@ -9,35 +9,6 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   $scope.roomlistingTab = function(tab){
     $scope.currentTab = tab;
   }
-
-  // $scope.getuser = function(){
-  //   GuesthouseService.getuser(function(response){
-  //     console.log(response);
-  //     //$scope.user_list = response.data;
-  //   });
-  // }
-  $scope.submitguestHouse = function(){
-    // var obj={
-    //   "user":$scope.ghUser.username,
-    //   "name":$scope.ghUser.name,
-    //   "mobile":$scope.ghUser.mobile,
-    //   "phone":$scope.ghUser.phone,
-    //   "minPrice":$scope.ghUser.minprice,
-    //   "maxPrice":$scope.ghUser.maxprice,
-    //   "establishDate":$scope.ghuser.date
-    // }
-    // console.log(obj);
-    GuesthouseService.submitguestHouse($scope.ghUser,function(response){
-      console.log(response);
-      if(response.statusCode == 200){
-          Util.alertMessage('success', response.message);
-      }
-      else {
-          Util.alertMessage('danger', response.message);
-      }
-    })
-  }
-
   $scope.newRoomInit = function() {
     GuesthouseService.getFacilities(
       function(response){
@@ -55,7 +26,7 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       }
     )
   }
-  $scope.addRoom = function(form) {
+  $scope.addRoom = function() {
     console.log($scope.facilities);
     // get the selected facility ids
     $scope.room.facility = UtilityService.getSelectedIds($scope.facilities,"isChecked",true);
@@ -65,8 +36,8 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       function(response){
           console.log(response);
           if(response.statusCode == 200){
-              // Util.alertMessage('success', response.message);
-              $scope.facilities = response.data;
+               Util.alertMessage('success', response.message);
+              // $scope.facilities = response.data;
           }
           else {
               Util.alertMessage('danger', response.message);
@@ -77,5 +48,29 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       }
     )
   }
-
+  $scope.getRoom = function(_id,searchType){
+    var obj = {};
+    if(_id)
+      obj._id = _id;
+    GuesthouseService.getRoom(obj,function(response){
+      if(searchType == "details"){
+        $scope.currentTab = 'roomdetails';
+        $scope.room = response.data[0];
+      }
+      else {
+        // this is for listing
+        $scope.room_list = response.data;
+      }
+      angular.forEach($scope.facilities,function(item){
+        item.is_checked = false;
+        if(facilities.length > 0){
+          angular.forEach($scope.room ,function(_id){
+            if(_id == item._id){
+              item.is_checked = true;
+            }
+          })
+        }
+      });
+    })
+  }
 })

@@ -1,10 +1,10 @@
-<section class="content-header" ng-init="newRoomInit()">
+<section class="content-header"  >
   <h1>
     Add New Room
     <small>Control panel</small>
   </h1>
 </section>
-<section class="content">
+<section class="content" ng-init="newRoomInit()">
   <div class="">
     <div class="box box-info">
       <div class="box-header with-border">
@@ -15,17 +15,17 @@
           <div class="form-group" ng-class="{'has-error': (addroom.room_no.$invalid && addroom.room_no.$touched)}">
              <label for="inputEmail3" class="col-sm-3 control-label">Room No</label>
              <div class="col-sm-8">
-               <input type="text" class="form-control" name="room_no" ng-model="room.roomNo" placeholder="First Name" required >
+               <input type="text" class="form-control" name="room_no" ng-model="room.roomNo" placeholder="Room No" required ng-pattern="/^[a-zA-Z0-9]*$/">
                <span class="help-block" ng-show="addroom.room_no.$error.required && addroom.room_no.$touched">Please enter Room NO</span>
-               <span class="help-block" ng-show="addroom.room_no.$error.pattern && addroom.room_no.$touched">Name should not be numeric</span>
+               <span class="help-block" ng-show="addroom.room_no.$error.pattern && addroom.room_no.$touched">should not be special character</span>
              </div>
            </div>
            <div class="form-group" ng-class="{'has-error': (addroom.room_price.$invalid && addroom.room_price.$touched)}">
               <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" name="room_price" ng-model="room.price" placeholder="First Name" required ng-pattern="/\d[0-9]$/">
-                <span class="help-block" ng-show="addroom.room_price.$error.required && addroom.room_price.$touched">Please enter first name</span>
-                <span class="help-block" ng-show="addroom.room_price.$error.pattern && addroom.room_price.$touched">Name should not be numeric</span>
+                <input type="text" class="form-control" name="room_price" ng-model="room.price" placeholder="Price" required ng-pattern="/^[0-9]{1,7}$/">
+                <span class="help-block" ng-show="addroom.room_price.$error.required && addroom.room_price.$touched">Please enter Price</span>
+                <span class="help-block" ng-show="addroom.room_price.$error.pattern && addroom.room_price.$touched">Price should  be numeric</span>
               </div>
             </div>
              <div class="form-group">
@@ -69,12 +69,12 @@
 
                 </div>
                 </div>
-                <div class="form-group" ng-class="{'has-error': (addroom.first_name.$invalid && addroom.first_name.$touched)}">
+                <div class="form-group" ng-class="{'has-error': (addroom.room_capacity.$invalid && addroom.room_capacity.$touched)}">
                    <label for="inputEmail3" class="col-sm-3 control-label">Capacity</label>
                    <div class="col-sm-8">
-                     <input type="text" class="form-control" name="room_capacity" ng-model="room.capacity" placeholder="First Name" required ng-pattern="/\d[0-9]$/">
-                     <span class="help-block" ng-show="addroom.room_capacity.$error.required && addroom.room_capacity.$touched">Please enter first name</span>
-                     <span class="help-block" ng-show="addroom.room_capacity.$error.pattern && addroom.room_capacity.$touched">Name should not be numeric</span>
+                     <input type="text" class="form-control" name="room_capacity" ng-model="room.capacity" placeholder="Capacity" required ng-pattern="/^[0-9]{1,7}$/">
+                     <span class="help-block" ng-show="addroom.room_capacity.$error.required && addroom.room_capacity.$touched">Please enter Capacity</span>
+                     <span class="help-block" ng-show="addroom.room_capacity.$error.pattern && addroom.room_capacity.$touched">Capacity should be numeric</span>
                    </div>
                  </div>
         </div>

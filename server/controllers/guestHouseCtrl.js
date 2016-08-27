@@ -98,8 +98,12 @@ exports.addRoom = function (req, res) {
 }
 exports.getRoom = function (req, res) {
   var query = {
-    "isDelete" : false
+    "isDelete" : false,
+
   };
+  if(req.query._id){
+    query._id = req.query._id;
+  }
   // validating data as per the user requested
   var select = {};
   // no condition as admin can access all
@@ -107,13 +111,16 @@ exports.getRoom = function (req, res) {
     // select = "name  contactDetails establishDate rating MinPrice MaxPrice address";
   }
   else if(req.user._doc.role.type == "ghUser"){
+
     query.guestHouse = req.user._doc._id;
     // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
   }
   roomModelObj.find({})
   .deepPopulate("guestHouse")
+  .populate("facility")
   // .select(select)
   .exec()
+
     .then(function(guestHouse) {
       return res.json(response(200,"success",constants.messages.success.getCustomer,guestHouse))
     })
@@ -121,6 +128,7 @@ exports.getRoom = function (req, res) {
       return res.json(response(500,"error",constants.messages.errors.getCustomer,err))
     })
 }
+
 // exports.udpateGuestHouse = function (req, res) {
 //   var id = req.body._id;
 //   delete req.body['_id']; //  removed to avoid the _id mod error
@@ -153,6 +161,7 @@ exports.getRoom = function (req, res) {
 //     return res.json(response(500,"error",constants.messages.errors.deleteData,err))
 //   })
 // }
+
 /*
 * guest house crud operation ends
 */
