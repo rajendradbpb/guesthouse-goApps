@@ -10,6 +10,7 @@ var constants = {
 
   messages:{
     errors:{
+      "saveData"   :"save Data Error",
       "noUser"   :"No user found",
       "saveUser" : "Error in saving user",
       "undefined"                :   "undefined value",
@@ -52,6 +53,7 @@ var constants = {
         "deleteData"                 :   "delete Data Error",
     },
     success:{
+      "saveData"   :"save Data Success",
       "saveUser"                 : "Success in saving user",
       "undefined"                :   "undefined value",
       "undefinedRole"            :   "undefined role",

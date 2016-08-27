@@ -20,7 +20,7 @@ var userSchema = new mongoose.Schema({
     createdBy         : {type: Schema.Types.ObjectId /*, ref: 'user',required: constants.messages.undefinedEntererId*/},
     updatedDate       : {type: Date, default: new Date()},
     updatedBy         : {type: Schema.Types.ObjectId /*, ref: 'user' , required: constants.messages.undefinedUpdateUser*/},
-    idDelete          : {type: Boolean, default:false},
+    isDelete          : {type: Boolean, default:false},
     passwordToken     : {type: String, default:null},
     isAdmin           : {type:Boolean,default:false },
     address:{

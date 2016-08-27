@@ -1,5 +1,11 @@
-app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,GuesthouseService) {
+app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService) {
   $scope.currentTab = 'roomlists';
+  $scope.roomFeature = [
+    "Single bed",
+    "Double bed",
+    "AC",
+    "NON AC"
+  ];
   $scope.roomlistingTab = function(tab){
     $scope.currentTab = tab;
   }
@@ -31,4 +37,45 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       }
     })
   }
+
+  $scope.newRoomInit = function() {
+    GuesthouseService.getFacilities(
+      function(response){
+          console.log(response);
+          if(response.statusCode == 200){
+              // Util.alertMessage('success', response.message);
+              $scope.facilities = response.data;
+          }
+          else {
+              Util.alertMessage('danger', response.message);
+          }
+      },
+      function(err){
+            Util.alertMessage('danger', err.message);
+      }
+    )
+  }
+  $scope.addRoom = function(form) {
+    console.log($scope.facilities);
+    // get the selected facility ids
+    $scope.room.facility = UtilityService.getSelectedIds($scope.facilities,"isChecked",true);
+    //
+    GuesthouseService.addRoom(
+      $scope.room,
+      function(response){
+          console.log(response);
+          if(response.statusCode == 200){
+              // Util.alertMessage('success', response.message);
+              $scope.facilities = response.data;
+          }
+          else {
+              Util.alertMessage('danger', response.message);
+          }
+      },
+      function(err){
+            Util.alertMessage('danger', err.message);
+      }
+    )
+  }
+
 })

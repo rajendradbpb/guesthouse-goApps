@@ -5,6 +5,7 @@ var userRoutes = require("./userRoutes");
 var adminRoutes = require("./adminRoutes");
 var customerRoutes = require("./customerRoutes");
 var guestHouseRoutes = require("./guestHouseRoutes");
+var facilityRoutes = require("./facilityRoutes");
 
 var router = express.Router();
 
@@ -26,6 +27,7 @@ router.use('/user', userRoutes);
 router.use('/admin', adminRoutes);
 router.use('/customer', customerRoutes);
 router.use('/guestHouse', guestHouseRoutes);
+router.use('/facility', facilityRoutes);
 
 
 

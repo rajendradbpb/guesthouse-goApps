@@ -9,6 +9,7 @@ var roomSchema = new mongoose.Schema({
     roomType                : {type: String, enum: constants.role },
     price                   : {type: Number,required: constants.messages.errors.ghPriceRequired},
     facility                : [{type: Schema.Types.ObjectId, ref: 'facility'}],
+    capacity                : {type: Number,default:1},
     bookingStatus           : {type: String, enum: constants.bookingStatus },
     bookedOn                : {type: Date},
     bookedDate              : {type: Date},

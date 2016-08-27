@@ -45,9 +45,10 @@ exports.getUser = function (req, res) {
   };
   if(req.params.id)
     query._id = req.params.id;
+    console.log("query   ",query);
   userModelObj.find(query).exec()
     .then(function(users) {
-      return res.json(response(200,"success",constants.messages.success.saveUser))
+      return res.json(response(200,"success",constants.messages.success.saveUser,users))
     })
     .catch(function(err) {
       return res.json(response(500,"error",constants.messages.errors.saveUser,err))

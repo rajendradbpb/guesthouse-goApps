@@ -17,6 +17,22 @@ router.delete('/',passport.authenticate('isAdmin', {session:false}), function(re
   guestHouseCtrl.deleteGuestHouse(req, res);
 });
 
+/**
+ * crud operation for the rooms under the guest house 
+ */
+router.post('/room', passport.authenticate('ghAuth', {session:false}),function(req, res, next) {
+  guestHouseCtrl.addRoom(req, res);
+});
+router.get('/room', passport.authenticate('token', {session:false}),function(req, res, next) {
+  guestHouseCtrl.getRoom(req, res);
+});
+router.put('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
+  guestHouseCtrl.udpateRoom(req, res);
+});
+router.delete('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
+  guestHouseCtrl.deleteRoom(req, res);
+});
+
 
 
 
