@@ -7,7 +7,7 @@ var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var roomSchema = new mongoose.Schema({
     guestHouse              : {type: Schema.Types.ObjectId, ref: 'user' , required: constants.messages.errors.ghNameRequired},
     roomNo                  : {type: String, required: constants.messages.errors.roomNoRequired},
-    roomType                : {type: String, enum: constants.role },
+    roomType                : {type: String, enum: constants.roomType },
     price                   : {type: Number,required: constants.messages.errors.ghPriceRequired},
     facility                : [{type: Schema.Types.ObjectId, ref: 'facility'}],
     capacity                : {type: Number,default:1},

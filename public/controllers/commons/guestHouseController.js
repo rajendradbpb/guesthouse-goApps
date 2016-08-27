@@ -1,11 +1,6 @@
 app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService) {
   $scope.currentTab = 'roomlists';
-  $scope.roomFeature = [
-    "Single bed",
-    "Double bed",
-    "AC",
-    "NON AC"
-  ];
+  $scope.roomFeature = ["AC","NON-AC","FAMILY","DELUX"];
   $scope.roomlistingTab = function(tab){
     $scope.currentTab = tab;
   }
@@ -31,6 +26,7 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
     // get the selected facility ids
     $scope.room.facility = UtilityService.getSelectedIds($scope.facilities,"isChecked",true);
     //
+    console.log(JSON.stringify($scope.room));
     GuesthouseService.addRoom(
       $scope.room,
       function(response){
@@ -61,16 +57,16 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
         // this is for listing
         $scope.room_list = response.data;
       }
-      angular.forEach($scope.facilities,function(item){
-        item.is_checked = false;
-        if(facilities.length > 0){
-          angular.forEach($scope.room ,function(_id){
-            if(_id == item._id){
-              item.is_checked = true;
-            }
-          })
-        }
-      });
+      // angular.forEach($scope.facilities,function(item){
+      //   item.is_checked = false;
+      //   if(facilities.length > 0){
+      //     angular.forEach($scope.room ,function(_id){
+      //       if(_id == item._id){
+      //         item.is_checked = true;
+      //       }
+      //     })
+      //   }
+      // });
     })
   }
 })

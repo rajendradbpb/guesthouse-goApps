@@ -115,7 +115,7 @@ exports.getRoom = function (req, res) {
     query.guestHouse = req.user._doc._id;
     // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
   }
-  roomModelObj.find({})
+  roomModelObj.find(query)
   .deepPopulate("guestHouse")
   .populate("facility")
   // .select(select)
