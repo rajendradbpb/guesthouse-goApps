@@ -8,6 +8,7 @@ router.post('/', passport.authenticate('isAdmin', {session:false}) ,function(req
   guestHouseCtrl.addGuestHouse(req, res);
 });
 router.get('/', passport.authenticate('token', {session:false}),function(req, res, next) {
+
   guestHouseCtrl.getGuestHouse(req, res);
 });
 router.put('/', passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
