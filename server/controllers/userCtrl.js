@@ -18,6 +18,21 @@ try {
 } catch (e) {
   console.log(colors.red(e));
 }
+
+/**
+ * get the  confugration Settings Data
+ Info - for now it is being fetched from the constants file after this
+ we need to create a collection for this that can only accssible by the super admin
+ */
+ exports.getSettings = function (req, res) {
+   var result = {};
+   result.roles = constants.roles;
+   result.roomType = constants.roomType;
+   result.bookingStatus = constants.bookingStatus;
+   result.default = constants.default;
+   result.roles = constants.roles;
+   return res.json(response(200,"success",constants.messages.success.getData,result));
+ }
 /*
 * user crud operation starts
 */
