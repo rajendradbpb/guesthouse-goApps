@@ -19,6 +19,16 @@ app.factory("GuesthouseService", function($http,$resource,$localStorage,Constant
      method:'GET',
      url:"/guestHouse/room",
      headers:"application/json"
+  },
+  updateroomByID : {
+      method:'PUT',
+      url:"/guestHouse/room",
+      headers:"application/json"
+  },
+  deleteRoom : {
+    method: 'DELETE',
+    url:"/guestHouse/room",
+    headers:"application/json"
   }
   });
 })

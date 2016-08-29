@@ -4996,3 +4996,9 @@ input[type=checkbox], input[type=radio]{
 .pointer{
   cursor: pointer;
 }
+.btn-close{
+  position: absolute;
+  right: 9px;
+  top: -9px;
+  font-size: 18px;
+}

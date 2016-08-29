@@ -18,7 +18,7 @@ router.delete('/',passport.authenticate('isAdmin', {session:false}), function(re
 });
 
 /**
- * crud operation for the rooms under the guest house 
+ * crud operation for the rooms under the guest house
  */
 router.post('/room', passport.authenticate('ghAuth', {session:false}),function(req, res, next) {
   guestHouseCtrl.addRoom(req, res);
