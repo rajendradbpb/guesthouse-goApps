@@ -67,7 +67,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       "mobile"     : $scope.user.mobile,
       "establishDate" :moment($scope.user.date).format("YYYY-MM-DD")
     }
-    console.log(obj);
+    //console.log(obj);
     UserService.submitUserDetails(obj,function(response){
       console.log(response);
       Util.alertMessage('success', response.message);
@@ -96,8 +96,6 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
         }
       }
     }
-
     return '';
   }
-
 })

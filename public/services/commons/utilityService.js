@@ -8,7 +8,6 @@ app.factory("UtilityService", function($http,$resource,$localStorage,Constants) 
     });
     return arr;
   }
-
   return{
     getSelectedIds:getSelectedIds
   }

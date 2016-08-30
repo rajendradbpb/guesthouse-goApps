@@ -33,8 +33,4 @@ router.put('/room',passport.authenticate('ghAuth', {session:false}), function(re
 router.delete('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
   guestHouseCtrl.deleteRoom(req, res);
 });
-
-
-
-
 module.exports = router;

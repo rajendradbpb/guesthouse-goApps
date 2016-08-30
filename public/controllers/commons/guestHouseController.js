@@ -18,6 +18,7 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       function(response){
           if(response.statusCode == 200){
               $scope.facilities = response.data;
+              console.log($scope.facilities);
           }
           else {
               Util.alertMessage('danger', response.message);
@@ -101,4 +102,5 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
         }
      })
     }
+
 })

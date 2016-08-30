@@ -16,8 +16,4 @@ router.put('/', passport.authenticate('isAdmin', {session:false}), function(req,
 router.delete('/',passport.authenticate('isAdmin', {session:false}), function(req, res, next) {
   facilityCtrl.deleteFacility(req, res);
 });
-
-
-
-
 module.exports = router;

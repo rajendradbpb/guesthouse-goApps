@@ -6,19 +6,19 @@ app.factory("GuesthouseService", function($http,$resource,$localStorage,Constant
       headers:"application/json"
     },
     getFacilities: {
-      method:'GET',
-      url:"/facility",
-      headers:"application/json"
+        method:'GET',
+        url:"/facility",
+        headers:"application/json"
     },
   submitguestHouse:{
-     method: 'POST',
-     url:"/guestHouse",
-     headers:"application/json"
+       method: 'POST',
+       url:"/guestHouse",
+       headers:"application/json"
   },
   getRoom : {
-     method:'GET',
-     url:"/guestHouse/room",
-     headers:"application/json"
+       method:'GET',
+       url:"/guestHouse/room",
+       headers:"application/json"
   },
   updateroomByID : {
       method:'PUT',
@@ -26,9 +26,14 @@ app.factory("GuesthouseService", function($http,$resource,$localStorage,Constant
       headers:"application/json"
   },
   deleteRoom : {
-    method: 'DELETE',
-    url:"/guestHouse/room",
-    headers:"application/json"
+      method: 'DELETE',
+      url:"/guestHouse/room",
+      headers:"application/json"
+  },
+  loadRoomByStatus :{
+      method:'GET',
+      url:"/guestHouse/room?isDash=1",
+      headers:"application/json"
   }
   });
 })

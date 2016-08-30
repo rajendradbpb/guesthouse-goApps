@@ -20,7 +20,6 @@ app.controller("SignInController",["$scope","$rootScope","CommonService","$state
           $state.go("guest_house-dashboard");
           break;
           case "ghAdmin":
-
           break;
           default:
 
