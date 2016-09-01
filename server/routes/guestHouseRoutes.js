@@ -30,7 +30,7 @@ router.get('/room', passport.authenticate('token', {session:false}),function(req
 router.put('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
   guestHouseCtrl.udpateRoom(req, res);
 });
-router.delete('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
+router.delete('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next){
   guestHouseCtrl.deleteRoom(req, res);
 });
 module.exports = router;

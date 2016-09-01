@@ -3120,6 +3120,7 @@ fieldset[disabled] .btn-default.focus {
   color: #fff;
   background-color: #337ab7;
   border-color: #2e6da4;
+  width: 212px;
 }
 .btn-primary:focus,
 .btn-primary.focus {
@@ -3457,7 +3458,7 @@ fieldset[disabled] .btn-link:focus {
 }
 .btn-block {
   display: block;
-  width: 100%;
+  /*width: 100%;*/
 }
 .btn-block + .btn-block {
   margin-top: 5px;

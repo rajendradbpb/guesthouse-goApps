@@ -37,9 +37,6 @@ router.put('/forgetPassword', function(req, res, next) {
 router.put('/resetPassword', function(req, res, next) {
   userCtrl.resetPassword(req, res);
 });
-
-
-
 router.post('/signIn', passport.authenticate('local', {session:false}) ,userCtrl.signIn);
 router.get('/token', passport.authenticate('token', {session:false}) ,function(req,res) {
   // console.log(">>>>>>>>   verify err" , err);
@@ -48,6 +45,4 @@ router.get('/token', passport.authenticate('token', {session:false}) ,function(r
 router.get('/loggedin',passport.authenticate('token', {session:false}), function(req,res) {
   res.status(200).json({status:"OK",user:req.user._doc});
 });
-
-
 module.exports = router;

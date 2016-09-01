@@ -30,7 +30,6 @@ var userSchema = new mongoose.Schema({
       pincode :{type: String},
       country :{type: String,default:constants.default.country},
     }
-
 });
 
 //custom validations

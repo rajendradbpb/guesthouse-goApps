@@ -28,7 +28,7 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
   )
   }
   /*******************************************************/
-  /********This code is to load room details in dashboard******/
+  /********This code is to load room details in guest_house dashboard******/
   /*******************************************************/
   $scope.getAllRooms = function(){
     GuesthouseService.loadRoomByStatus(function(response){
@@ -47,7 +47,6 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
             $scope.roomStatus.DOUBLE_BED = item.count;
             break;
            default :
-
         }
       });
     });

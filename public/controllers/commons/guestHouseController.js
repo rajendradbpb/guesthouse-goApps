@@ -10,6 +10,10 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   $scope.roomlistingTab = function(tab){
     $scope.currentTab = tab;
   }
+  //$scope.currentTab = 'roomlists';
+  $scope.transactionTab = function(tab){
+    $scope.currentTab = tab;
+  }
   /*******************************************************/
   /********This is use for loading room facilities during page load******/
   /*******************************************************/

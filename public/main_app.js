@@ -139,9 +139,15 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             controller:'GuesthouseController',
             resolve: {loggedin: checkLoggedout},
         })
-        .state('newRoom_details', {
+        .state('newRoom_details',{
             templateUrl: 'pages/guestHouseUser/newRoomDetails.html',
             url: '/newRoom_details',
+            controller:'GuesthouseController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('transaction_details',{
+            templateUrl: 'pages/guestHouseUser/transaction_Details.html',
+            url: '/transaction_details',
             controller:'GuesthouseController',
             resolve: {loggedin: checkLoggedout},
         })
