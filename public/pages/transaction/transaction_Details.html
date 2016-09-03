@@ -1,0 +1,163 @@
+<section class="content-header">
+  <h1>
+    Room Profile
+  </h1>
+</section>
+<section class="content" ng-init="getRoom()" >
+  <div class="row">
+    <div class="col-md-12">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li ng-class="{'active':currentTab == 'roomlists'}"><a href="" data-toggle="tab" ng-click="transactionTab('roomlists')">Room Lists</a></li>
+          <li ng-class="{'active':currentTab == 'checkIn'}"><a href="" data-toggle="tab" >Check In</a></li>
+          <li><a href="" data-toggle="tab" ng-click="transactionTab('checkOut')">Check Out</a></li>
+          <li><a href="" data-toggle="tab" ng-click="transactionTab('transaction')">Transaction</a></li>
+          <li><a href="" data-toggle="tab" ng-click="transactionTab('transaction_Details')">Transaction Details</a></li>
+        </ul>
+        <div class="tab-content" >
+          <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
+            <section class="content section-gh-room_list">
+              <div class="row" >
+                <div class="col-sm-3 pointer"  ng-repeat = "room in room_list" >
+                  <a class="room-listing-box">
+                    <span>{{room.bookingStatus}}</span>
+                    <p>Capacity {{room.capacity}}</p>
+                    <p>Room No {{room.roomNo}}</p>
+                    <p>Price {{room.price}}</p>
+                  </a>
+                  <div class="checkbox btn-close" ng-if ="room.bookingStatus == 'AVAILABLE' ">
+                      <label>
+                        <input type="checkbox" ng-model="room.isChecked">
+                      </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Primary</button>
+              </div>
+            </section>
+          </div>
+          <div class="tab-pane" ng-class="{'active':currentTab == 'checkIn'}">
+            <section class="content " >
+              <div class="">
+                <div >
+                  <form class="form-horizontal" name="bookroom" >
+                    <div class="box-body">
+                      <div class="form-group" ng-class="{'has-error': (bookroom.otp_no.$invalid && bookroom.otp_no.$touched)}">
+                         <label for="inputEmail3" class="col-sm-3 control-label">Enter OTP Code</label>
+                         <div class="col-sm-8">
+                           <input type="text" class="form-control" name="otp_no" ng-model="transaction.otp" placeholder="Enter OTP Code" required ng-pattern="/^[a-zA-Z0-9]*$/">
+                           <span class="help-block" ng-show="bookroom.otp_no.$error.required && bookroom.otp_no.$touched">Please enter OTP Code</span>
+                           <span class="help-block" ng-show="bookroom.otp_no.$error.pattern && bookroom.otp_no.$touched">must be fill</span>
+                         </div>
+                       </div>
+                       <div class="form-group" ng-class="{'has-error': (bookroom.name.$invalid && bookroom.name.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Name</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" name="name" ng-model="transaction.cName" placeholder="Name" required ng-pattern="/^(\D)+$/">
+                            <span class="help-block" ng-show="bookroom.name.$error.required && bookroom.name.$touched">Please enter name</span>
+                            <span class="help-block" ng-show="bookroom.name.$error.pattern && bookroom.name.$touched">name should not be other than letter</span>
+                          </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.mobile_no.$invalid && bookroom.mobile_no.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Mobile No</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" name="mobile_no" ng-model="transaction.cMobile" placeholder="Mobile No" required ng-pattern="/^[0-9]{10,10}$/">
+                               <span class="help-block" ng-show="bookroom.mobile_no.$error.required && bookroom.mobile_no.$touched">Please enter Mobile No</span>
+                               <span class="help-block" ng-show="bookroom.mobile_no.$error.pattern && bookroom.mobile_no.$touched">Mobile No should be numeric</span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.address.$invalid && bookroom.address.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Address</label>
+                            <div class="col-sm-8">
+                               <textarea name="address" class="form-control" rows="4" placeholder="Enter address" ng-model="transaction.address" required></textarea>
+                               <span class="help-block" ng-show="bookroom.address.$error.required && bookroom.address.$touched">Please enter address</span>
+                               <span class="help-block" ng-show="bookroom.address.$error.pattern && bookroom.address.$touched">Address should not  be numeric</span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.room_no.$invalid && bookroom.room_no.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Room No</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" name="room_no" ng-model="selectedRoomsNo"  placeholder="Room No" readonly>
+                               <span class="help-block" ng-show="bookroom.room_no.$error.required && bookroom.room_no.$touched">Please enter Room No</span>
+                               <span class="help-block" ng-show="bookroom.room_no.$error.pattern && bookroom.room_no.$touched">Room No should be numeric</span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.room_price.$invalid && bookroom.room_price.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" name="room_price" ng-model="selectedRoomsPrice" placeholder="Price" readonly>
+                               <span class="help-block" ng-show="bookroom.room_price.$error.required && bookroom.room_price.$touched">Please enter Price</span>
+                               <span class="help-block" ng-show="bookroom.room_price.$error.pattern && bookroom.room_price.$touched">Price should be numeric</span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.transaction_no.$invalid && bookroom.transaction_no.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Transaction No</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" name="transaction_no" ng-model="transaction.transactionNo" placeholder="Transaction No" required ng-pattern="/^[0-9]{1,7}$/">
+                               <span class="help-block" ng-show="bookroom.transaction_no.$error.required && bookroom.transaction_no.$touched">Please enter Transaction No</span>
+                               <span class="help-block" ng-show="bookroom.transaction_no.$error.pattern && bookroom.transaction_no.$touched">Transaction No should be numeric</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="box-footer">
+                      <button type="submit" class="btn btn-default" ui-sref="guest_house-dashboard">Cancel</button>
+                      <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" >Submit</button>
+                      <section  align="center m-t-sm">
+                          <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+                      </section>
+                    </div> -->
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-2">
+                        <button type="submit" class="btn btn-default" ui-sref="guest_house-dashboard">Cancel</button>
+                        <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking()">Submit</button>
+                      </div>
+                      <div class="col-sm-12">
+                        <section  align="center" class="m-t-sm">
+                          <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+                        </section>
+                      </div>
+                    </div>
+                    <!-- /.box-footer -->
+                  </form>
+                </div>
+              </div>
+            </section>
+          </div>
+       <div class="tab-pane" ng-class="{'active':currentTab == 'transaction'}">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group input-search-field">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Mobile Number" ng-model="search.mobile" required>
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-info btn-flat"  ><i class="fa fa-search"></i></button>
+                    </span>
+                  </div>
+            </div>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="alert alert-info alert-dismissible">
+            <span class="pull-right">$2500</span>
+            <p align="center">12 jan 2016 </p>
+            <h4>Ganesh Guest House</h4>
+            <p>Visited for the medical emergency</p>
+          </div>
+          <div class="alert alert-info alert-dismissible">
+            <span class="pull-right">$2500</span>
+            <p align="center">12 jan 2016 </p>
+            <h4>Ganesh Guest House</h4>
+            <p>Visited for the medical emergency</p>
+          </div>
+          <div class="alert alert-info alert-dismissible">
+            <span class="pull-right">$2500</span>
+            <p align="center">12 jan 2016 </p>
+            <h4>Ganesh Guest House</h4>
+            <p>Visited for the medical emergency</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
