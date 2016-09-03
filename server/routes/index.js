@@ -6,6 +6,7 @@ var adminRoutes = require("./adminRoutes");
 var customerRoutes = require("./customerRoutes");
 var guestHouseRoutes = require("./guestHouseRoutes");
 var facilityRoutes = require("./facilityRoutes");
+var transactionRoutes = require("./transactionRoutes");
 
 var router = express.Router();
 
@@ -28,6 +29,7 @@ router.use('/admin', adminRoutes);
 router.use('/customer', customerRoutes);
 router.use('/guestHouse', guestHouseRoutes);
 router.use('/facility', facilityRoutes);
+router.use('/transaction', transactionRoutes);
 
 
 

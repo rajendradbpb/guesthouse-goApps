@@ -44,6 +44,15 @@ exports.getRoom = function (req, res) {
             },
             "count": { "$sum": 1 }
         }},
+        // {
+        //   // condition to group the room details
+        //   "$group": {
+        //     "_id": {
+        //         // "roomType": "$roomType",
+        //         "bookingStatus": "$bookingStatus"
+        //     },
+        //     "count": { "$sum": 1 }
+        // }},
 
 
       ], function (err, result) {
