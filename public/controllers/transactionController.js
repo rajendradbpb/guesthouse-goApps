@@ -1,4 +1,4 @@
-app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService) {
+app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout) {
   $scope.currentTab = 'roomlists';
   console.log($scope.roomFeature);
   $scope.transactionTab = function(tab){
@@ -115,5 +115,11 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
          Util.alertMessage('error', err.message);
        }
      )
+   }
+
+   $scope.onSelectTransaction = function(transaction){
+     console.log(">>>>>>>>>>>>>>>>");
+     $scope.selectedTransaction = transaction;
+     $scope.transactionTab('transactionDetails');
    }
 })
