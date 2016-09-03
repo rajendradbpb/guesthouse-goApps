@@ -1,0 +1,6 @@
+<div ng-repeat="transaction in trasactionList" class="alert alert-info alert-dismissible pointer">
+  <span class="pull-right">${{transaction.price}}</span>
+  <p align="center">{{transaction.createdDate}} </p>
+  <h4>{{transaction.createdBy.guestHouseName}}</h4>
+  <p>Visited for the medical emergency</p>
+</div>

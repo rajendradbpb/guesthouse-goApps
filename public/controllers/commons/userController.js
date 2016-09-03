@@ -67,6 +67,8 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       "mobile"     : $scope.user.mobile,
       "establishDate" :moment($scope.user.date).format("YYYY-MM-DD")
     }
+    if($scope.user.guestHouseName)
+      obj["guestHouseName"] = $scope.user.guestHouseName;
     //console.log(obj);
     UserService.submitUserDetails(obj,function(response){
       console.log(response);

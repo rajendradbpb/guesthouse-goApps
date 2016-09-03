@@ -10,9 +10,9 @@
         <ul class="nav nav-tabs">
           <li ng-class="{'active':currentTab == 'roomlists'}"><a href="" data-toggle="tab" ng-click="transactionTab('roomlists')">Room Lists</a></li>
           <li ng-class="{'active':currentTab == 'checkIn'}"><a href="" data-toggle="tab" >Check In</a></li>
-          <li><a href="" data-toggle="tab" ng-click="transactionTab('checkOut')">Check Out</a></li>
+          <li><a href="" data-toggle="tab" >Check Out</a></li>
           <li><a href="" data-toggle="tab" ng-click="transactionTab('transaction')">Transaction</a></li>
-          <li><a href="" data-toggle="tab" ng-click="transactionTab('transaction_Details')">Transaction Details</a></li>
+          <li><a href="" data-toggle="tab" >Transaction Details</a></li>
         </ul>
         <div class="tab-content" >
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
@@ -127,35 +127,22 @@
        <div class="tab-pane" ng-class="{'active':currentTab == 'transaction'}">
         <div class="row">
           <div class="col-sm-12">
-            <div class="form-group input-search-field">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Mobile Number" ng-model="search.mobile" required>
-                    <span class="input-group-btn">
-                      <button type="submit" class="btn btn-info btn-flat"  ><i class="fa fa-search"></i></button>
-                    </span>
-                  </div>
-            </div>
+            <form ng-submit="serchTransaction(searchStr)">
+              <div class="form-group input-search-field">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Mobile Number" ng-model="searchStr">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-info btn-flat"><i class="fa fa-search"></i></button>
+                  </span>
+                </div>
+              </div>
+
+            </form>
           </div>
         </div>
         <div class="box-body">
-          <div class="alert alert-info alert-dismissible">
-            <span class="pull-right">$2500</span>
-            <p align="center">12 jan 2016 </p>
-            <h4>Ganesh Guest House</h4>
-            <p>Visited for the medical emergency</p>
-          </div>
-          <div class="alert alert-info alert-dismissible">
-            <span class="pull-right">$2500</span>
-            <p align="center">12 jan 2016 </p>
-            <h4>Ganesh Guest House</h4>
-            <p>Visited for the medical emergency</p>
-          </div>
-          <div class="alert alert-info alert-dismissible">
-            <span class="pull-right">$2500</span>
-            <p align="center">12 jan 2016 </p>
-            <h4>Ganesh Guest House</h4>
-            <p>Visited for the medical emergency</p>
-          </div>
+          <!--added directives for the trasanction view  -->
+          <transaction-details></transaction-details>
         </div>
       </div>
     </div>

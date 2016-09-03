@@ -63,12 +63,57 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     console.log(obj);
     transactionService.addTransaction(obj,function(response){
        //console.log($scope.transaction);
-      // if(response.statusCode == 200){
+      if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
-      // }
+          // refresh the room list and change the tab to the room list
+          $scope.getRoom();
+          $scope.currentTab = 'roomlists';
+      }
       // else {
       //     Util.alertMessage('danger', response.message);
       // }
     })
-  }
+  };
+   /**
+    * $scope.changeTransactionTab
+    * This will caleed from the transaction listing page
+    * input : this takes as string for the trasaction numner , Customer name , mobile No etc
+    * output : list of the trasaction
+    * createdDate - 4-9- 2016
+    * updated on -  4-9- 2016
+    */
+
+   $scope.$watch('currentTab',function(value) {
+     if(value == "transaction"){
+       // call the service to get the trasactions
+       transactionService.getTransaction(function(response) {
+         $scope.trasactionList = response.data
+       },
+       function(err){
+         Util.alertMessage('error', err.message);
+       }
+     )
+     }
+   })
+   /**
+    * $scope.serchTransaction
+    * This will caleed from the transaction listing page
+    * input : this takes as string for the trasaction numner , Customer name , mobile No etc
+    * output : list of the trasaction
+    * createdDate - 4-9- 2016
+    * updated on -  4-9- 2016
+    */
+   $scope.serchTransaction = function(searchStr) {
+     // call the service to get the trasactions
+     var obj = {
+       searchStr:searchStr
+     }
+     transactionService.getTransaction(obj,function(response) {
+       $scope.trasactionList = response.data
+     },
+       function(err){
+         Util.alertMessage('error', err.message);
+       }
+     )
+   }
 })

@@ -4,6 +4,11 @@ app.factory("transactionService", function($http,$resource,$localStorage,Constan
        method: 'POST',
        url:"/transaction",
        headers:"application/json"
+    },
+    getTransaction:{
+       method: 'GET',
+       url:"/transaction",
+       headers:"application/json"
     }
   });
 })

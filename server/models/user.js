@@ -12,6 +12,7 @@ var userSchema = new mongoose.Schema({
     firstName         : {type: String,required: constants.messages.errors.undefinedFirstName},
     middleName        : {type: String},
     lastName          : {type: String},
+    guestHouseName    : {type: String},
     minPrice          : {type: String},
     maxPrice          : {type: String},
     mobile            : {type: String},

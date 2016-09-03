@@ -21,6 +21,7 @@ exports.addTranction = function (req, res) {
       if(data.length > 0){
         console.log("got the rooms");
         req.body.createdBy = req.body.updatedBy = req.user._doc._id;
+        req.body.tranctionNo = req.body.tranctionNo;
         return tranctionModelObj(req.body).save();
       }
       else {
@@ -44,7 +45,8 @@ exports.addTranction = function (req, res) {
           "new" : true,
           "multi":true
         };
-        roomModelObj.where(query).update(update).exec(function(err,updatedRooms) {
+        // roomModelObj.where(query).update(update).exec(function(err,updatedRooms) {
+        roomModelObj.update(query,update,options).exec(function(err,updatedRooms) {
           if(updatedRooms){
             return res.json(response(200,"success",constants.messages.success.saveData,transaction));
           }
@@ -63,30 +65,24 @@ exports.addTranction = function (req, res) {
 }
 exports.getTranction = function (req, res) {
   var query = {
-    "isDelete" : false
-  };
-  if(req.query._id){
-    query._id = req.query._id;
+      "$and": [
+          { "$or": [
+              // {_id : new RegExp(req.query.searchStr, 'i')},
+              {otp : new RegExp(req.query.searchStr, 'i')},
+              {cName : new RegExp(req.query.searchStr, 'i')},
+              {cMobile : new RegExp(req.query.searchStr, 'i')},
+              {tranctionNo : new RegExp(req.query.searchStr, 'i')},
+            ]
+          },
+          {"isDelete" : false}
+      ]
   }
-  if(req.query.otp){
-    query.otp = req.query.otp;
-  }
-  if(req.query.cName){
-    query.cName = req.query.cName;
-  }
-  if(req.query.cMobile){
-    query.cMobile = req.query.cMobile;
-  }
-  if(req.query.tranctionNo){
-    query.tranctionNo = req.query.tranctionNo;
-  }
-  // validating data as per the user requested
   var select = {};
   // // no condition as admin can access all
   if(req.user._doc.role.type == "ghUser"){
-    query.createdBy = req.user._doc._id; // filter added to extract the data specific to the ghuser
+    query["$and"].push({"createdBy" : req.user._doc._id}); // filter added to extract the data specific to the ghuser
   }
-  tranctionModelObj.find(query).select(select).exec()
+  tranctionModelObj.find(query).deepPopulate("createdBy").exec()
     .then(function(tranction) {
       return res.json(response(200,"success",constants.messages.success.getCustomer,tranction))
     })
@@ -94,38 +90,67 @@ exports.getTranction = function (req, res) {
       return res.json(response(500,"error",constants.messages.errors.getCustomer,err))
     })
 }
-exports.udpateFacility = function (req, res) {
+exports.udpateTranction = function (req, res) {
   var id = req.body._id;
   delete req.body['_id']; //  removed to avoid the _id mod error
   req.body.updatedBy = req.user._doc._id;
-  req.body.updatedDate = new Date();
-  tranctionModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,Facility) {
-    if(err)
-    {
-      return res.json(response(500,"error",constants.messages.errors.updateData,err))
-    }
-    else if (!Facility) {
-      return res.json(response(202,"success",constants.messages.errors.noData))
-    }
-    else {
-      // creating new token with the new user details
-      return res.json(response(200,"success",constants.messages.success.updateData))
-    }
-  });
+  req.body.checkOutDate = req.body.checkOutDate || new Date();
+
+  if(req.body.type == "checkOut"){
+      tranctionModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,transaction) {
+      if(err)
+      {
+        return res.json(response(500,"error",constants.messages.errors.updateData,err))
+      }
+      else if (!transaction) {
+        return res.json(response(202,"success",constants.messages.errors.noData))
+      }
+      else {
+        // update the room status to AVAILABLE
+        console.log("transaction updated");
+        var query = {
+          "_id": { "$in": transaction.rooms }
+        };
+        var update = {
+            "bookingStatus" : "AVAILABLE"
+        };
+        var options = {
+          "new" : true,
+          "multi":true
+        };
+        roomModelObj.where(query).update(update).exec(function(err,updatedRooms) {
+          if(err)
+          {
+            return res.json(response(500,"error",constants.messages.errors.updateData,err))
+          }
+          else if (!updatedRooms) {
+            return res.json(response(202,"success",constants.messages.errors.noData))
+          }
+          else {
+            // creating new token with the new user details
+            return res.json(response(200,"success",constants.messages.success.updateData))
+          }
+        })
+      }
+    });
+  }
+  else {
+    return res.json(response(402,"failed",constants.messages.errors.noOperation))
+  }
 }
-exports.deleteFacility = function (req, res) {
-  req.query.updatedBy = req.user._doc._id;
-  req.query.updatedDate = new Date();
-  console.log(">>>>>>>>>>>>>  ",req.body);
-  tranctionModelObj.findByIdAndUpdate(req.body._id,{"isDelete":true},{"new" :true})
-  .exec()
-  .then(function(data) {
-    return res.json(response(200,"success",constants.messages.success.deleteData));
-  })
-  .catch(function(err) {
-    return res.json(response(500,"error",constants.messages.errors.deleteData,err))
-  })
-}
+// exports.deleteFacility = function (req, res) {
+//   req.query.updatedBy = req.user._doc._id;
+//   req.query.updatedDate = new Date();
+//   console.log(">>>>>>>>>>>>>  ",req.body);
+//   tranctionModelObj.findByIdAndUpdate(req.body._id,{"isDelete":true},{"new" :true})
+//   .exec()
+//   .then(function(data) {
+//     return res.json(response(200,"success",constants.messages.success.deleteData));
+//   })
+//   .catch(function(err) {
+//     return res.json(response(500,"error",constants.messages.errors.deleteData,err))
+//   })
+// }
 /*
 * tranction crud operation ends
 */
