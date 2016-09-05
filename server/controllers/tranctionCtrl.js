@@ -82,7 +82,7 @@ exports.getTranction = function (req, res) {
   if(req.user._doc.role.type == "ghUser"){
     query["$and"].push({"createdBy" : req.user._doc._id}); // filter added to extract the data specific to the ghuser
   }
-  tranctionModelObj.find(query).deepPopulate("createdBy").exec()
+  tranctionModelObj.find(query).deepPopulate("createdBy rooms").exec()
     .then(function(tranction) {
       return res.json(response(200,"success",constants.messages.success.getCustomer,tranction))
     })
@@ -95,6 +95,7 @@ exports.udpateTranction = function (req, res) {
   delete req.body['_id']; //  removed to avoid the _id mod error
   req.body.updatedBy = req.user._doc._id;
   req.body.checkOutDate = req.body.checkOutDate || new Date();
+  req.body.isPayment = true;
 
   if(req.body.type == "checkOut"){
       tranctionModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,transaction) {
@@ -108,8 +109,9 @@ exports.udpateTranction = function (req, res) {
       else {
         // update the room status to AVAILABLE
         console.log("transaction updated");
+
         var query = {
-          "_id": { "$in": transaction.rooms }
+          "_id": { "$in": req.body.rooms },
         };
         var update = {
             "bookingStatus" : "AVAILABLE"
@@ -118,7 +120,8 @@ exports.udpateTranction = function (req, res) {
           "new" : true,
           "multi":true
         };
-        roomModelObj.where(query).update(update).exec(function(err,updatedRooms) {
+        // roomModelObj.where(query).update(update).exec(function(err,updatedRooms) {
+        roomModelObj.update(query,update,options).exec(function(err,updatedRooms) {
           if(err)
           {
             return res.json(response(500,"error",constants.messages.errors.updateData,err))

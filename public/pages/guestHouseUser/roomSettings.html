@@ -18,7 +18,7 @@
               <div class="row" >
                 <div class="col-sm-3 pointer"  ng-repeat = "room in room_list" >
                   <a class="room-listing-box" ng-click="getRoom(room._id,'details')">
-                    <span>Booked</span>
+                    <span>{{room.bookingStatus}}</span>
                     <p>Capacity {{room.capacity}}</p>
                     <p>Room No {{room.roomNo}}</p>
                     <p>Price {{room.price}}</p>

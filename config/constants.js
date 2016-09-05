@@ -34,6 +34,7 @@ var constants = {
       "tranctionNoRequired"      :   " tranctionNo Required",
       "tranctionNoExist"      :   " tranction No. already Exist",
       "transactionfailed"      :   " transaction failed",
+      "checkInDateRequired"      :   " checkIn Date Required",
       "userRequired"      :   "user Required",
       "lowerLimitRequired"      :   "lower Limit Required",
       "upperLimitRequired"      :   "upper Limit Required",

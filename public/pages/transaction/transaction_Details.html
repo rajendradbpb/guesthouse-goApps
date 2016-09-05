@@ -9,10 +9,10 @@
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
           <li ng-class="{'active':currentTab == 'roomlists'}"><a href="" data-toggle="tab" ng-click="transactionTab('roomlists')">Room Lists</a></li>
-          <li ng-class="{'active':currentTab == 'checkIn'}"><a href="" data-toggle="tab" >Check In</a></li>
-          <li><a href="" data-toggle="tab" >Check Out</a></li>
-          <li><a href="" data-toggle="tab" ng-click="transactionTab('transaction')">Transaction</a></li>
-          <li><a href="" >Transaction Details</a></li>
+          <li ng-class="{'active':currentTab == 'checkIn'}"><a href=""  >Check In</a></li>
+          <li ng-class="{'active':currentTab == 'checkOut'}"><a href=""  >Check Out</a></li>
+          <li ng-class="{'active':currentTab == 'transaction'}"><a href="" data-toggle="tab" ng-click="transactionTab('transaction')">Transaction</a></li>
+          <li ng-class="{'active':currentTab == 'transactionDetails'}"><a href="" >Transaction Details</a></li>
         </ul>
         <div class="tab-content" >
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
@@ -33,7 +33,7 @@
                 </div>
               </div>
               <div class="row">
-                <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Primary</button>
+                <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
               </div>
             </section>
           </div>
@@ -108,8 +108,8 @@
                       </section>
                     </div> -->
                     <div class="form-group">
-                      <div class="col-sm-offset-2 col-sm-2">
-                        <button type="submit" class="btn btn-default" ui-sref="guest_house-dashboard">Cancel</button>
+                      <div class="col-sm-offset-3 col-sm-3">
+                        <button type="button" class="btn btn-default" ng-click="transactionTab('roomlists')">Cancel</button>
                         <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking()">Submit</button>
                       </div>
                       <div class="col-sm-12">
@@ -145,6 +145,7 @@
           <transaction-details></transaction-details>
         </div>
       </div>
+      <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">
          <section class="content " >
            <div class="">
@@ -186,7 +187,7 @@
                      <div class="form-group" ng-class="{'has-error': (transactionDetails.room_no.$invalid && transactionDetails.room_no.$touched)}">
                        <label for="inputEmail3" class="col-sm-3 control-label">Room No</label>
                          <div class="col-sm-8">
-                            <input type="text" class="form-control" name="room_no" ng-model="selectedTransaction.rooms"  placeholder="Room No" readonly>
+                            <input type="text" class="form-control" name="room_no" ng-model="selectedTransaction.selectedRoomsNo"  placeholder="Room No" readonly>
                             <span class="help-block" ng-show="transactionDetails.room_no.$error.required && transactionDetails.room_no.$touched">Please enter Room No</span>
                             <span class="help-block" ng-show="transactionDetails.room_no.$error.pattern && transactionDetails.room_no.$touched">Room No should be numeric</span>
                          </div>
@@ -210,9 +211,9 @@
                  </div>
 
                  <div class="form-group">
-                   <div class="col-sm-offset-2 col-sm-2">
-                     <button type="submit" class="btn btn-default"  ng-click="transactionTab('roomlists')">Back</button>
-                     <!-- <button  ng-disabled="transactionDetails.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking()">Submit</button> -->
+                   <div class="col-sm-offset-3 col-sm-3">
+                     <button  ng-if="!selectedTransaction.isPayment" type="button" class="btn btn-info pull-left" ng-click="transactionTab('checkOut')">Check Out</button>
+                     <button type="submit" class="btn btn-default pull-right"  ng-click="transactionTab('roomlists')">Back</button>
                    </div>
                    <div class="col-sm-12">
                      <section  align="center" class="m-t-sm">
@@ -225,7 +226,69 @@
              </div>
            </div>
          </section>
-        </div>
+       </div> <!-- transaction details tab ends -->
+        <!-- check out tab starts -->
+        <div class="tab-pane" ng-class="{'active':currentTab == 'checkOut'}">
+          <section class="content " >
+            <div class="">
+              <div >
+                <form class="form-horizontal" name="transactionDetails" >
+                  <div class="box-body">
+                    <div class="form-group">
+                       <label for="inputEmail3" class="col-sm-3 control-label">Transaction No </label>
+                       <div class="col-sm-8">
+                         <input type="text" class="form-control" name="otp_no" ng-model="selectedTransaction.tranctionNo"  readonly>
+                       </div>
+                     </div>
+                     <div class="form-group" >
+                        <label for="inputPassword3" class="col-sm-3 control-label">Check In Date</label>
+                        <div class="col-sm-8">
+                             <p class="input-group">
+                              <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="selectedTransaction.checkInDate"  is-open="false" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                            </p>
+                        </div>
+                      </div>
+                      <div class="form-group" ng-class="{'has-error': !selectedTransaction.checkOutDate}">
+                        <label for="inputPassword3" class="col-sm-3 control-label">CheckOut Date</label>
+                        <div class="col-sm-8">
+                             <p class="input-group">
+                              <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="selectedTransaction.checkOutDate"  is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                            </p>
+                        </div>
+                      </div>
+                      <div class="form-group" >
+                        <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
+                          <div class="col-sm-8">
+                             <textarea name="address" class="form-control" rows="4" placeholder="Enter address" ng-model="selectedTransaction.price" readonly></textarea>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-3">
+                      <button   type="button" class="btn btn-info pull-left" ng-click="checkOut(selectedTransaction)">Check Out</button>
+                      <button type="submit" class="btn btn-default pull-right"  ng-click="transactionTab('roomlists')">Back</button>
+                    </div>
+                    <div class="col-sm-12">
+                      <section  align="center" class="m-t-sm">
+                        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+                      </section>
+                    </div>
+                  </div>
+                  <!-- /.box-footer -->
+                </form>
+              </div>
+            </div>
+          </section>
+         </div>
+         <!-- check out tab ends -->
+
       </div>
     </div>
   </div>

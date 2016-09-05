@@ -75,7 +75,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     })
   };
    /**
-    * $scope.changeTransactionTab
+    * $scope.$watch('currentTab')
     * This will caleed from the transaction listing page
     * input : this takes as string for the trasaction numner , Customer name , mobile No etc
     * output : list of the trasaction
@@ -94,7 +94,33 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      )
      }
+     else if(value == "checkOut"){
+       // assign  the checkin date with the check out date , user may change that
+       $scope.selectedTransaction.checkOutDate = $scope.selectedTransaction.checkInDate;
+     }
    })
+
+   /**
+    * $scope.$watch('selectedTransaction.checkOutDate')
+    * This is used to udpate the price of the transaction based on the checkInDate and the checkOutDate
+    *
+    * createdDate - 4-9- 2016
+    * updated on -  4-9- 2016
+    */
+
+   $scope.$watch('selectedTransaction.checkOutDate',function(value) {
+     if(!$scope.selectedTransaction)
+     return;
+     if(moment($scope.selectedTransaction.checkOutDate) < moment($scope.selectedTransaction.checkInDate)){
+       console.log("checkOutDate < checkInDate");
+       $scope.selectedTransaction.checkOutDate = null;
+     }
+     else {
+       console.log("checkOutDate > checkInDate");
+     }
+   })
+
+
    /**
     * $scope.serchTransaction
     * This will caleed from the transaction listing page
@@ -116,10 +142,71 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      )
    }
-
+   /**
+    * functionName : onSelectTransaction
+    * Info : keeps the data of the current selected transaction and show in the transaction detials
+    * input : ...
+    * output :...
+    * createdDate - 4-9-2016
+    * updated on -  4-9-2016 // reason for update
+    */
    $scope.onSelectTransaction = function(transaction){
-     console.log(">>>>>>>>>>>>>>>>");
      $scope.selectedTransaction = transaction;
+     $scope.selectedTransaction.selectedRoomsNo = UtilityService.getSelectedItemByProp($scope.selectedTransaction.rooms,null,null,"roomNo");
      $scope.transactionTab('transactionDetails');
    }
+   /**
+    * functionName : checkOut
+    * Info : used to make the room AVAILABLE and update the price as per the selected checkInDate and the checkOutDate and the payment
+    * input : transaction details
+    * output :...
+    * createdDate - 5-9-2016
+    * updated on -  5-9-2016 // reason for update
+    */
+   $scope.checkOut = function(transaction){
+     transaction.type = "checkOut"; // add the type of the transaction update operation
+     transactionService.updateTransaction(transaction,function(response) {
+         $scope.getRoom(); // refresh the rooms
+         $scope.transactionTab('roomlists');
+       },
+       function(err){
+         Util.alertMessage('error', err.message);
+       }
+     )
+
+   }
+
+   /**
+    * functionName : $scope.open2 and other dependencies
+    * Info : dependencies codes for the date picker
+    * input : ...
+    * output :...
+    * createdDate - 4-9-2016
+    * updated on -  4-9-2016 // reason for update
+    */
+    $scope.open2 = function() {
+     $scope.popup2.opened = true;
+    };
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
+    $scope.altInputFormats = ['M!/d!/yyyy'];
+    $scope.popup2 = {
+      opened: false
+    };
+    function getDayClass(data) {
+      var date = data.date,
+        mode = data.mode;
+      if (mode === 'day') {
+        var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+        for (var i = 0; i < $scope.events.length; i++) {
+          var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+          if (dayToCheck === currentDay) {
+            return $scope.events[i].status;
+          }
+        }
+      }
+      return '';
+    }
 })
