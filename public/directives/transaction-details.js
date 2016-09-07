@@ -22,3 +22,13 @@ angular.module('guest_house').directive("transactionDetails",function(){
     // link: link, //DOM manipulation
   };
 })
+define(['app', 'directive/datepickerCtrl'], function (app) {
+    app.directive('datepicker', function () {
+        return {
+            restrict: 'A',
+            controller: 'datepickerCtrl',
+            controllerAs: 'dp',
+            templateUrl: 'app/directive/datepicker.html',
+        };
+    });
+});

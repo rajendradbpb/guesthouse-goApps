@@ -1,5 +1,11 @@
 app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout) {
   $scope.currentTab = 'roomlists';
+  $scope.roomFeature = [
+    {"name":"Single bed","value":'SINGLE-BED'},
+    {"name":"Double bed","value":'DOUBLE-BED'},
+    {"name":"AC","value":'AC'},
+    {"name":"NON AC","value":'NON-AC'}
+  ];
   console.log($scope.roomFeature);
   $scope.transactionTab = function(tab){
     $scope.currentTab = tab;
@@ -7,12 +13,13 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   /*******************************************************/
   /********This code is used to get all the room lists******/
   /*******************************************************/
-  $scope.getRoom = function(_id,searchType){
+  $scope.getRoom = function(_id,searchType,Status){
     var obj = {};
     if(_id)
       obj._id = _id;
     GuesthouseService.getRoom(obj,function(response){
-      if(searchType == "details"){
+      //console.log(response);
+      if(searchType == "details" && Status == "AVAILABLE"){
         $scope.currentTab = 'roomdetails';
         $scope.room = response.data[0];
         angular.forEach($scope.facilities,function(item){
@@ -58,7 +65,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "address":$scope.transaction.address,
       "rooms" :$scope.selectedRoomID,
       "price" :$scope.selectedRoomsPrice,
-      "tranctionNo":$scope.transaction.transactionNo
+      "tranctionNo":$scope.transaction.transactionNo,
+      "identity" : $scope.transaction.identity
     }
     console.log(obj);
     transactionService.addTransaction(obj,function(response){
@@ -208,5 +216,29 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
         }
       }
       return '';
+    }
+    /**
+     * functionName : $scope.newRoomInit()
+     * Info : dependencies codes for the date picker
+     * input : ...
+     * output :...
+     * createdDate - 4-9-2016
+     * updated on -  4-9-2016 // reason for update
+     */
+    $scope.newRoomInit = function() {
+      transactionService.getFacilities(
+        function(response){
+            if(response.statusCode == 200){
+                $scope.facilities = response.data;
+                console.log($scope.facilities);
+            }
+            else {
+                Util.alertMessage('danger', response.message);
+            }
+        },
+        function(err){
+              Util.alertMessage('danger', err.message);
+        }
+      )
     }
 })

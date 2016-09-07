@@ -15,7 +15,7 @@
           <div class="form-group" ng-class="{'has-error': (adduser.first_name.$invalid && adduser.first_name.$touched)}">
              <label for="inputEmail3" class="col-sm-3 control-label">First Name</label>
              <div class="col-sm-8">
-               <input type="text" class="form-control" name="first_name" ng-model="user.first_name" placeholder="First Name" required ng-pattern="/^(\D)+$/">
+               <input type="text" class="form-control" name="first_name" ng-model="user.firstName" placeholder="First Name" required ng-pattern="/^(\D)+$/">
                <span class="help-block" ng-show="adduser.first_name.$error.required && adduser.first_name.$touched">Please enter first name</span>
                <span class="help-block" ng-show="adduser.first_name.$error.pattern && adduser.first_name.$touched">Name should not be numeric</span>
              </div>
@@ -23,7 +23,7 @@
            <div class="form-group" ng-class="{'has-error': (adduser.middle_name.$invalid && adduser.middle_name.$touched)}">
               <label for="inputEmail3" class="col-sm-3 control-label">Middle Name</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" name="middle_name" ng-model="user.middle_name" placeholder="Middle Name" required ng-pattern="/^(\D)+$/">
+                <input type="text" class="form-control" name="middle_name" ng-model="user.middleName" placeholder="Middle Name" required ng-pattern="/^(\D)+$/">
                 <span class="help-block" ng-show="adduser.middle_name.$error.required && adduser.middle_name.$touched">Please enter middle name</span>
                 <span class="help-block" ng-show="adduser.middle_name.$error.pattern && adduser.middle_name.$touched">Name should not be numeric</span>
               </div>
@@ -31,7 +31,7 @@
            <div class="form-group" ng-class="{'has-error': (adduser.last_name.$invalid && adduser.last_name.$touched)}">
               <label for="inputEmail3" class="col-sm-3 control-label">Last Name</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" name="last_name" ng-model="user.last_name" placeholder="Last Name" required ng-pattern="/^(\D)+$/">
+                <input type="text" class="form-control" name="last_name" ng-model="user.lastName" placeholder="Last Name" required ng-pattern="/^(\D)+$/">
                 <span class="help-block" ng-show="adduser.last_name.$error.required && adduser.last_name.$touched">Please enter last name</span>
                 <span class="help-block" ng-show="adduser.last_name.$error.pattern && adduser.last_name.$touched">Name should not be numeric</span>
               </div>
@@ -46,14 +46,14 @@
            <div class="form-group" ng-class="{'has-error': (adduser.user_role.$invalid && adduser.user_role.$touched)}">
              <label for="inputPassword3" class="col-sm-3 control-label">Assign Role</label>
              <div class="col-sm-8">
-               <select class="form-control"  ng-model="user.user_role" name="user_role" ng-init="getRoleType()"  required>
+               <select class="form-control"  ng-model="user.role" name="user_role" ng-init="getRoleType()"  required>
                  <option value="">Select User Role</option>
-                 <option value="{{role.type}}" ng-repeat="role in roleType">{{role.type}}</option>
+                 <option value="{{role._id}}" ng-repeat="role in roleType">{{role.type}}</option>
                </select>
                <span class="help-block" ng-show="adduser.user_roleType.$error.required && adduser.user_roleType.$touched">Please add user role type</span>
              </div>
            </div>
-           <div  ng-if="user.user_role == 'ghUser'" >
+           <div  ng-if="user.role == '57b80fbcabb2a1900e6c0147'" >
              <div class="form-group" ng-class="{'has-error': (adduser.guestHouseName.$invalid && adduser.guestHouseName.$touched)}">
                <label for="inputPassword3" class="col-sm-3 control-label">Guest House Name</label>
                <div class="col-sm-8">
@@ -65,7 +65,7 @@
              <div class="form-group" ng-class="{'has-error': (adduser.min_price.$invalid && adduser.min_price.$touched)}">
                <label for="inputPassword3" class="col-sm-3 control-label">Min Price</label>
                <div class="col-sm-8">
-                 <input type="text" class="form-control" name="min_price" ng-model="user.minprice" placeholder="Min Price" required  >
+                 <input type="text" class="form-control" name="min_price" ng-model="user.minPrice" placeholder="Min Price" required  >
                  <span class="help-block" ng-show="adduser.min_price.$error.required && adduser.min_price.$touched">Please enter min price</span>
                  <span class="help-block" ng-show="adduser.min_price.$error.pattern && adduser.min_price.$touched"> min price should  be numeric</span>
                </div>
@@ -73,7 +73,7 @@
              <div class="form-group" ng-class="{'has-error': (adduser.max_price.$invalid && adduser.max_price.$touched)}">
                <label for="inputPassword3" class="col-sm-3 control-label">Max Price</label>
                <div class="col-sm-8">
-                 <input type="text" class="form-control" name="max_price" ng-model="user.maxprice" placeholder="Max Price" required  >
+                 <input type="text" class="form-control" name="max_price" ng-model="user.maxPrice" placeholder="Max Price" required  >
                  <!-- <span class="help-block" ng-show="adduser.max_price.$error.required && adduser.max_price.$touched">Please enter max price</span>
                  <span class="help-block" ng-show="adduser.max_price.$error.pattern && adduser.max_price.$touched"> max price should be numeric</span> -->
                </div>
@@ -90,7 +90,7 @@
                <label for="inputPassword3" class="col-sm-3 control-label">Establish Date</label>
                <div class="col-sm-8">
                     <p class="input-group">
-                     <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="user.date"  is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                     <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="user.establishDate"  is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
                      <span class="input-group-btn">
                        <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                      </span>
@@ -101,7 +101,7 @@
           <div class="form-group" ng-class="{'has-error': (adduser.user_name.$invalid && adduser.user_name.$touched)}">
              <label for="inputEmail3" class="col-sm-3 control-label">User Name</label>
              <div class="col-sm-8">
-               <input type="text" class="form-control" name="user_name" ng-model="user.user_name" placeholder="User Name" required ng-pattern="/^(\D)+$/">
+               <input type="text" class="form-control" name="user_name" ng-model="user.userName" placeholder="User Name" required ng-pattern="/^(\D)+$/">
                <span class="help-block" ng-show="adduser.user_name.$error.required && adduser.user_name.$touched">Please enter user name</span>
                <span class="help-block" ng-show="adduser.user_name.$error.pattern && adduser.user_name.$touched">Name should not be numeric</span>
              </div>

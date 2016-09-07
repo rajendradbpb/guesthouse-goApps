@@ -47,6 +47,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /*******************************************************/
   $scope.getRoleType = function(){
     UserService.getRoleType(function(response){
+      console.log(response);
       $scope.roleType = response.data;
     });
   }
@@ -54,24 +55,23 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /**************This is use for submit user details**********/
   /*******************************************************/
   $scope.submitUserDetails = function(){
-    var obj={
-      "firstName"  : $scope.user.first_name,
-      "middleName" : $scope.user.middle_name,
-      "lastName"   : $scope.user.last_name,
-      "email"      : $scope.user.email,
-      "role"       : $scope.user.user_role,
-      "userName"   : $scope.user.user_name,
-      "password"   : $scope.user.password,
-      "minPrice"   : $scope.user.minprice,
-      "maxPrice"   : $scope.user.maxprice,
-      "mobile"     : $scope.user.mobile,
-      "establishDate" :moment($scope.user.date).format("YYYY-MM-DD")
-    }
-    if($scope.user.guestHouseName)
-      obj["guestHouseName"] = $scope.user.guestHouseName;
+    // var obj={
+    //   "firstName"  : $scope.user.first_name,
+    //   "middleName" : $scope.user.middle_name,
+    //   "lastName"   : $scope.user.last_name,
+    //   "email"      : $scope.user.email,
+    //   "role"       : $scope.user.user_role,
+    //   "userName"   : $scope.user.user_name,
+    //   "password"   : $scope.user.password,
+    //   "minPrice"   : $scope.user.minprice,
+    //   "maxPrice"   : $scope.user.maxprice,
+    //   "mobile"     : $scope.user.mobile,
+    //   "establishDate" :moment($scope.user.date).format("YYYY-MM-DD")
+    // }
+    // if($scope.user.guestHouseName)
+    //   obj["guestHouseName"] = $scope.user.guestHouseName;
     //console.log(obj);
-    UserService.submitUserDetails(obj,function(response){
-      console.log(response);
+    UserService.submitUserDetails($scope.user,function(response){
       Util.alertMessage('success', response.message);
     });
   }

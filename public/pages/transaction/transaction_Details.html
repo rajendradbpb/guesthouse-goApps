@@ -9,6 +9,7 @@
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
           <li ng-class="{'active':currentTab == 'roomlists'}"><a href="" data-toggle="tab" ng-click="transactionTab('roomlists')">Room Lists</a></li>
+          <li ng-class="{'active':currentTab == 'roomdetails'}"><a href="" >Room Details</a></li>
           <li ng-class="{'active':currentTab == 'checkIn'}"><a href=""  >Check In</a></li>
           <li ng-class="{'active':currentTab == 'checkOut'}"><a href=""  >Check Out</a></li>
           <li ng-class="{'active':currentTab == 'transaction'}"><a href="" data-toggle="tab" ng-click="transactionTab('transaction')">Transaction</a></li>
@@ -19,7 +20,7 @@
             <section class="content section-gh-room_list">
               <div class="row" >
                 <div class="col-sm-3 pointer"  ng-repeat = "room in room_list" >
-                  <a class="room-listing-box">
+                  <a class="room-listing-box" ng-click="getRoom(room._id,'details','AVAILABLE')" >
                     <span>{{room.bookingStatus}}</span>
                     <p>Capacity {{room.capacity}}</p>
                     <p>Room No {{room.roomNo}}</p>
@@ -34,6 +35,57 @@
               </div>
               <div class="row">
                 <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
+              </div>
+            </section>
+
+          </div>
+          <div class="tab-pane"   ng-class="{'active':currentTab == 'roomdetails'}"  >
+            <section class="content" ng-init="newRoomInit()">
+              <div class="">
+                  <form class="form-horizontal" name="update_room">
+                    <div class="box-body">
+                      <div class="form-group" ng-class="{'has-error': (update_room.room_no.$invalid && update_room.room_no.$touched)}">
+                         <label for="inputEmail3" class="col-sm-3 control-label">Room No</label>
+                         <div class="col-sm-8">
+                           <input type="text" class="form-control" name="room_no" ng-model="room.roomNo" placeholder="Room No" readonly>
+                         </div>
+                       </div>
+                       <div class="form-group" ng-class="{'has-error': (update_room.room_price.$invalid && update_room.room_price.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" name="room_price" ng-model="room.price" placeholder="Price" readonly>
+                          </div>
+                        </div>
+                         <div class="form-group">
+                           <label for="inputEmail3" class="col-sm-3 control-label">Room Features</label>
+                           <div class="col-sm-8">
+                                <div class="radio" ng-repeat="feature in roomFeature" >
+                                  <label for="inputEmail3" class="col-sm-3 control-label">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="room.roomType" value="{{feature.value}}"  disabled>
+                                   {{feature.name}}
+                                  </label>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">Facilities</label>
+                             <div class="col-sm-8" >
+                              <div class="checkbox" ng-repeat="facility in facilities" >
+                                <label for="inputEmail3" class="col-sm-3 control-label">
+                                  <input type="checkbox" ng-model="facility.isChecked" disabled>
+                                  {{facility.name}}
+                                </label>
+                              </div>
+                            </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': (update_room.room_capacity.$invalid && update_room.room_capacity.$touched)}">
+                               <label for="inputEmail3" class="col-sm-3 control-label">Capacity</label>
+                               <div class="col-sm-8">
+                                 <input type="text" class="form-control" name="room_capacity" ng-model="room.capacity" placeholder="Capacity" readonly>
+                               </div>
+                             </div>
+                    </div>
+                  </form>
               </div>
             </section>
           </div>
@@ -75,6 +127,20 @@
                                <span class="help-block" ng-show="bookroom.address.$error.pattern && bookroom.address.$touched">Address should not  be numeric</span>
                             </div>
                         </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.idproof.$invalid && bookroom.idproof.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Identity Proof</label>
+                          <div class="col-sm-8">
+                              <select class="form-control" ng-model="transaction.identity" name="idproof" required>
+                                <option value="">Select One</option>
+                                <option value="Adhar">Adhar Card</option>
+                                <option value="Dl">Driving License</option>
+                                <option value="Panno">Pan Card</option>
+                                <option value="Passport">Passport</option>
+                                <option value="Voterid">Voter ID Card</option>
+                              </select>
+                              <span class="help-block" ng-show="bookroom.idproof.$error.required && bookroom.idproof.$touched">select one</span>
+                          </div>
+                        </div>
                         <div class="form-group" ng-class="{'has-error': (bookroom.room_no.$invalid && bookroom.room_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Room No</label>
                             <div class="col-sm-8">
@@ -91,6 +157,14 @@
                                <span class="help-block" ng-show="bookroom.room_price.$error.pattern && bookroom.room_price.$touched">Price should be numeric</span>
                             </div>
                         </div>
+                        <!-- <div class="form-group" ng-class="{'has-error': (bookroom.discount.$invalid && bookroom.discount.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Discount</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" name="discount" ng-model="selectedRoomsPrice.discount" placeholder="Discount" >
+                               <!<span class="help-block" ng-show="bookroom.discount.$error.required && bookroom.discount.$touched">Please enter Price</span>
+                               <span class="help-block" ng-show="bookroom.discount.$error.pattern && bookroom.discount.$touched">Price should be numeric</span> -->
+                            <!-- </div>
+                        </div> --> -->
                         <div class="form-group" ng-class="{'has-error': (bookroom.transaction_no.$invalid && bookroom.transaction_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Transaction No</label>
                             <div class="col-sm-8">
@@ -125,25 +199,52 @@
             </section>
           </div>
        <div class="tab-pane" ng-class="{'active':currentTab == 'transaction'}">
-        <div class="row">
+        <div class="row alert">
           <div class="col-sm-12">
             <form ng-submit="serchTransaction(searchStr)">
               <div class="form-group input-search-field">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Mobile Number" ng-model="searchStr">
+                  <input type="text" class="form-control" placeholder="Mobile Number/Transaction Number" ng-model="searchStr">
                   <span class="input-group-btn">
                     <button type="submit" class="btn btn-info btn-flat"><i class="fa fa-search"></i></button>
                   </span>
                 </div>
               </div>
-
             </form>
           </div>
         </div>
-        <div class="box-body">
+        <div class="form-group ">
           <!--added directives for the trasanction view  -->
           <transaction-details></transaction-details>
         </div>
+        <section class=" side-banner ">
+            <h1></h1>
+            <p>
+               <div class="col-sm-12">
+               <input type="text" class="form-control" name="min_price" ng-model="search.minprice" placeholder="Min Price" required >
+             </div>
+           </p>
+           <p>
+             <div class="col-sm-12">
+             <input type="text" class="form-control" name="max_price" ng-model="search.maxprice" placeholder="Max Price" required >
+           </div>
+         </p>
+           <div class="form-group p" ng-init="newRoomInit()">
+             <label for="inputEmail3 p" class="col-sm-3 control-label">Facilities</label>
+              <div class="col-sm-8">
+               <div class="checkbox" ng-repeat="facility in facilities" >
+                 <label for="inputEmail3" class="col-sm-3 control-label">
+                   <input type="checkbox" ng-model="facility.isChecked">
+                   {{facility.name}}
+                 </label>
+               </div>
+             </div>
+             </div>
+             <div class="form-group ">
+               <button type="button" class="button" >Apply</button>
+               <button type="button" class="" >Clear</button>
+             </div>
+        </section>
       </div>
       <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">
@@ -244,7 +345,7 @@
                         <label for="inputPassword3" class="col-sm-3 control-label">Check In Date</label>
                         <div class="col-sm-8">
                              <p class="input-group">
-                              <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="selectedTransaction.checkInDate"  is-open="false" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                              <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="selectedTransaction.checkInDate"  is-open="false" datepicker-options="dateOptions" ng-required="true" close-text="Close" readonly/>
                               <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ><i class="glyphicon glyphicon-calendar"></i></button>
                               </span>
@@ -262,14 +363,13 @@
                             </p>
                         </div>
                       </div>
-                      <div class="form-group" >
-                        <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
-                          <div class="col-sm-8">
-                             <textarea name="address" class="form-control" rows="4" placeholder="Enter address" ng-model="selectedTransaction.price" readonly></textarea>
-                          </div>
-                      </div>
+                      <div class="form-group">
+                         <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
+                         <div class="col-sm-8">
+                           <input type="text" class="form-control" name="price"  ng-model="selectedTransaction.price"  readonly>
+                         </div>
+                       </div>
                   </div>
-
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-3">
                       <button   type="button" class="btn btn-info pull-left" ng-click="checkOut(selectedTransaction)">Check Out</button>

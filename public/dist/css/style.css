@@ -4987,12 +4987,9 @@ input[type=checkbox], input[type=radio]{
     left: 10px;
     background: #3C8DBC;
     padding: 2px 10px;
-    color: #000;
+    color: #fff;
 }
-.room-listing-box:hover {
-    font-size: 15px;
-    font-weight: bold
-}
+
 .pointer{
   cursor: pointer;
 }
@@ -5001,4 +4998,34 @@ input[type=checkbox], input[type=radio]{
   right: 9px;
   top: -9px;
   font-size: 18px;
+}
+.side-banner{
+  position: fixed;
+  background-color: #3C8DBC;
+  top: 190px;
+  right: 0;
+  padding: 20px;
+}
+.side-banner label{
+  color:#fff;
+}
+/*.background {
+    width: 20px;
+    height: 100px;
+    background-color: blue;
+    color: white;
+}*/
+.side-banner h1{
+}
+.side-banner p
+{
+  /*position:  relative;*/
+  height: 30px;
+}
+.side-banner button{
+   height: 30px;
+   right:  30px;
+}
+.alert{
+  width: 795px;
 }

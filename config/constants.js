@@ -27,6 +27,7 @@ var constants = {
       "undefinedUpdateUser"      :   "undefined Update  User Id",
       "ghNameRequired"      :   "guest house Name Required",
       "nameRequired"      :   " Name Required",
+      "IDproofRequired"    :  "Idproof Required",
       "mobileRequired"      :   " mobile Required",
       "addressRequired"      :   " address Required",
       "priceRequired"      :   " price Required",

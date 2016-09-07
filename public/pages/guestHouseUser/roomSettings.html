@@ -26,7 +26,35 @@
                 <i class="fa fa-times btn-close" ng-click="deleteRoom(room._id)"></i>
                 </div>
               </div>
+
+              <div class="side-banner">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="min_price" ng-model="search.minprice" placeholder="Min Price" required >
+                  </div>
+                  <div class="form-group">
+                     <input type="text" class="form-control" name="max_price" ng-model="search.maxprice" placeholder="Max Price" required >
+                  </div>
+                  <div class="form-group" ng-init="newRoomInit()">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox"> gdzsg
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox"> gdzsg
+                      </label>
+                    </div>
+
+                  </div>
+                    <div class="form-group ">
+                      <button type="btn btn-default" class="button" >Apply</button>
+                      <button type="btn btn-danger" class="" >Clear</button>
+                    </div>
+              </div>
+
             </section>
+
           </div>
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomdetails'}">
             <section class="content" ng-init="newRoomInit()">
