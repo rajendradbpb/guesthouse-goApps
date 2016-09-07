@@ -1,20 +1,4 @@
 angular.module('guest_house').directive("transactionDetails",function(){
-  // var link = function ($scope, element, attrs) {
-  //   /**
-  //    * functionName :$scope.onSelectTransaction
-  //    * Info : used to show the selected trasaction details
-  //    * input : ...
-  //    * output :...
-  //    * createdDate - 4-9-2016
-  //    * updated on -  4-9-2016// used to show the selected trasaction details
-  //    */
-  //   // $scope.onSelectTransaction = function(transaction){
-  //   //   console.log(">>>>>>>>>>>>>>>>");
-  //   //   $scope.selectedTransaction = transaction;
-  //   //   $scope.currentTab = "transactionDetails";
-  //   //
-  //   // }
-  //  }
   return {
     restrict: 'EA',
     templateUrl: 'directives/views/transaction-details.html',
@@ -22,13 +6,11 @@ angular.module('guest_house').directive("transactionDetails",function(){
     // link: link, //DOM manipulation
   };
 })
-define(['app', 'directive/datepickerCtrl'], function (app) {
-    app.directive('datepicker', function () {
+app.directive('datepicker', function () {
         return {
             restrict: 'A',
             controller: 'datepickerCtrl',
             controllerAs: 'dp',
             templateUrl: 'app/directive/datepicker.html',
         };
-    });
 });

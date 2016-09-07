@@ -12,7 +12,6 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /*******************************************************/
   $scope.$watch($rootScope.logedInUser,function(){
     $scope.userProfile = angular.copy($rootScope.logedInUser);
-    console.log($scope.userProfile);
   })
   /*******************************************************/
   /********This is use for update the profile details*****/
