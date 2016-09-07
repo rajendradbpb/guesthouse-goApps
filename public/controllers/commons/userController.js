@@ -1,5 +1,6 @@
 app.controller("UserController", function($scope,$rootScope,CommonService,$state,Constants,$localStorage,UserService,Util) {
   $scope.currentTab = 'myprofile';
+  $scope.user = {};
   /*******************************************************/
   /*************This is use for change the tab************/
   /*******************************************************/
@@ -46,9 +47,14 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /**************This is use for getting all role type in asign role dropdown**********/
   /*******************************************************/
   $scope.getRoleType = function(){
+    if($scope.roleType && $scope.roleType.length > 0)
+    return;
     UserService.getRoleType(function(response){
       console.log(response);
       $scope.roleType = response.data;
+       // to udpate the user role on init roles
+      $scope.selectedRole = $scope.roleType[0];
+      $scope.onSelectRole();
     });
   }
   /*******************************************************/
@@ -75,6 +81,16 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       Util.alertMessage('success', response.message);
     });
   }
+  /**
+   * functionName :onSelectRole
+   * Info : to udpate the user role id
+   *
+   * createdDate - 8-9-16
+   * updated on -  8-9-16 // reason for update
+   */
+   $scope.onSelectRole = function(){
+     $scope.user.role = $scope.selectedRole._id;
+   }
   $scope.open2 = function() {
    $scope.popup2.opened = true;
   };

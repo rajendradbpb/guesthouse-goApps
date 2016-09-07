@@ -46,14 +46,11 @@
            <div class="form-group" ng-class="{'has-error': (adduser.user_role.$invalid && adduser.user_role.$touched)}">
              <label for="inputPassword3" class="col-sm-3 control-label">Assign Role</label>
              <div class="col-sm-8">
-               <select class="form-control"  ng-model="user.role" name="user_role" ng-init="getRoleType()"  required>
-                 <option value="">Select User Role</option>
-                 <option value="{{role._id}}" ng-repeat="role in roleType">{{role.type}}</option>
+               <select name="user_role" ng-options="role as role.type for role in roleType track by role._id" ng-model="selectedRole" ng-init="getRoleType()" ng-change="onSelectRole()">
                </select>
-               <span class="help-block" ng-show="adduser.user_roleType.$error.required && adduser.user_roleType.$touched">Please add user role type</span>
              </div>
            </div>
-           <div  ng-if="user.role == '57b80fbcabb2a1900e6c0147'" >
+           <div  ng-if="selectedRole.type == 'ghUser'" >
              <div class="form-group" ng-class="{'has-error': (adduser.guestHouseName.$invalid && adduser.guestHouseName.$touched)}">
                <label for="inputPassword3" class="col-sm-3 control-label">Guest House Name</label>
                <div class="col-sm-8">
