@@ -5,7 +5,7 @@ var constants = require("./../../config/constants");
 var password = require('password-hash-and-salt');
 var config = require("config");
 var tranctionModelObj = require("./../models/tranction");
-var roomModelObj = require("./../models/room");
+var roomMraodelObj = require("./../models/room");
 
 /*
 * Tranction crud operation starts
@@ -76,6 +76,13 @@ exports.getTranction = function (req, res) {
           },
           {"isDelete" : false}
       ]
+  }
+  // adding price filter
+  if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
+      query.price = {
+        "$gte":parseInt(req.query.minPrice),
+        "$lte":parseInt(req.query.maxPrice)
+    }
   }
   var select = {};
   // // no condition as admin can access all
