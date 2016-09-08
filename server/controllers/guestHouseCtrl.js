@@ -73,6 +73,19 @@ exports.getRoom = function (req, res) {
     if(req.query.status){
       query.bookingStatus = req.query.status;
     }
+    // adding price filter
+    if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
+        query.price = {
+          "$gte":parseInt(req.query.minPrice),
+          "$lte":parseInt(req.query.maxPrice)
+      }
+    }
+    // adding filter for the facility
+    if(req.query.facility.split(",").length > 0 ){
+        query.facility = {
+          "$in":req.query.facility.split(",")
+      }
+    }
     // validating data as per the user requested
     var select = {};
     // no condition as admin can access all

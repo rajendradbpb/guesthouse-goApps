@@ -18,7 +18,7 @@
         <div class="tab-content" >
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
             <section class="content section-gh-room_list">
-              <div class="row" >
+              <div class="row col-md-10" >
                 <div class="col-sm-3 pointer"  ng-repeat = "room in room_list" >
                   <a class="room-listing-box" ng-click="getRoom(room._id,'details','AVAILABLE')" >
                     <span>{{room.bookingStatus}}</span>
@@ -33,11 +33,11 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
+              <div class="row col-md-10">
                 <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
               </div>
             </section>
-
+            <room-filter type="2"></room-filter>
           </div>
           <div class="tab-pane"   ng-class="{'active':currentTab == 'roomdetails'}"  >
             <section class="content" ng-init="newRoomInit()">
