@@ -11,6 +11,8 @@ var tranctionSchema = new mongoose.Schema({
     address             : {type: String, required:constants.messages.errors.addressRequired },
     rooms             : [{type: Schema.Types.ObjectId, ref: 'room', required:constants.messages.errors.roomIdRequired }],
     identity          : {type: String, required:constants.messages.errors.IDproofRequired },
+    idproofno         : {type: String },
+    purpose           : {type: String, default:null },
     discount          : {type: String },
     price             : {type: Number, required:constants.messages.errors.priceRequired},// this will be updated 2nd time when the user will be check out
     isPayment           : {type: Boolean, default:false}, // this will be true in case of the checkOut

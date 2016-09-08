@@ -141,6 +141,14 @@
                               <span class="help-block" ng-show="bookroom.idproof.$error.required && bookroom.idproof.$touched">select one</span>
                           </div>
                         </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.id_no.$invalid && bookroom.id_no.$touched)}">
+                          <label for="inputEmail3" class="col-sm-3 control-label">Identity Card No</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" name="id_no" ng-model="transaction.idproofno"  placeholder="ID Proof No" required ng-pattern="/^[a-zA-Z0-9]*$/" >
+                               <span class="help-block" ng-show="bookroom.id_no.$error.required && bookroom.id_no.$touched">Please enter ID Proof No</span>
+                               <span class="help-block" ng-show="bookroom.id_no.$error.pattern && bookroom.id_no.$touched">ID Proof should be numeric</span>
+                            </div>
+                        </div>
                         <div class="form-group" ng-class="{'has-error': (bookroom.room_no.$invalid && bookroom.room_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Room No</label>
                             <div class="col-sm-8">
@@ -157,6 +165,14 @@
                                <span class="help-block" ng-show="bookroom.room_price.$error.pattern && bookroom.room_price.$touched">Price should be numeric</span>
                             </div>
                         </div>
+                        <div class="form-group" ng-class="{'has-error': (bookroom.visit_purpose.$invalid && bookroom.visit_purpose.$touched)}">
+                           <label for="inputEmail3" class="col-sm-3 control-label">Purpose</label>
+                           <div class="col-sm-8">
+                             <input type="text" class="form-control" name="visit_purpose" ng-model="transaction.purpose" placeholder="purpose" required ng-pattern="/^(\D)+$/">
+                             <span class="help-block" ng-show="bookroom.visit_purpose.$error.required && bookroom.visit_purpose.$touched">Please enter purpose</span>
+                             <span class="help-block" ng-show="bookroom.visit_purpose.$error.pattern && bookroom.visit_purpose.$touched">purpose should not be other than letter</span>
+                           </div>
+                         </div>
                         <!-- <div class="form-group" ng-class="{'has-error': (bookroom.discount.$invalid && bookroom.discount.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Discount</label>
                             <div class="col-sm-8">
@@ -164,7 +180,7 @@
                                <!<span class="help-block" ng-show="bookroom.discount.$error.required && bookroom.discount.$touched">Please enter Price</span>
                                <span class="help-block" ng-show="bookroom.discount.$error.pattern && bookroom.discount.$touched">Price should be numeric</span> -->
                             <!-- </div>
-                        </div> --> -->
+                        </div> -->
                         <div class="form-group" ng-class="{'has-error': (bookroom.transaction_no.$invalid && bookroom.transaction_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Transaction No</label>
                             <div class="col-sm-8">
@@ -217,35 +233,19 @@
           <!--added directives for the trasanction view  -->
           <transaction-details></transaction-details>
         </div>
-        <room-filter type="2"></room-filter>
-        <!-- <section class=" side-banner ">
-            <h1></h1>
-            <p>
-               <div class="col-sm-12">
-               <input type="text" class="form-control" name="min_price" ng-model="search.minprice" placeholder="Min Price" required >
-             </div>
-           </p>
-           <p>
-             <div class="col-sm-12">
-             <input type="text" class="form-control" name="max_price" ng-model="search.maxprice" placeholder="Max Price" required >
-           </div>
-         </p>
-           <div class="form-group p" ng-init="newRoomInit()">
-             <label for="inputEmail3 p" class="col-sm-3 control-label">Facilities</label>
-              <div class="col-sm-8">
-               <div class="checkbox" ng-repeat="facility in facilities" >
-                 <label for="inputEmail3" class="col-sm-3 control-label">
-                   <input type="checkbox" ng-model="facility.isChecked">
-                   {{facility.name}}
+ <div class="form-group" ng-init="newRoomInit()">
+               <label for="inputEmail3" >Facilities</label>
+               <div class="checkbox" ng-repeat="facility in facilities">
+                 <label>
+                   <input type="checkbox" ng-model="facility.isChecked"> {{facility.name}}
                  </label>
                </div>
              </div>
-             </div>
              <div class="form-group ">
-               <button type="button" class="button" >Apply</button>
-               <button type="button" class="" >Clear</button>
+               <button type="btn btn-default" class="button" >Apply</button>
+               <button type="btn btn-danger" class="" >Clear</button>
              </div>
-        </section> -->
+
       </div>
       <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">
@@ -311,7 +311,6 @@
                          </div>
                      </div>
                  </div>
-
                  <div class="form-group">
                    <div class="col-sm-offset-3 col-sm-3">
                      <button  ng-if="!selectedTransaction.isPayment" type="button" class="btn btn-info pull-left" ng-click="transactionTab('checkOut')">Check Out</button>
@@ -342,28 +341,14 @@
                          <input type="text" class="form-control" name="otp_no" ng-model="selectedTransaction.tranctionNo"  readonly>
                        </div>
                      </div>
-                     <div class="form-group" >
-                        <label for="inputPassword3" class="col-sm-3 control-label">Check In Date</label>
-                        <div class="col-sm-8">
-                             <p class="input-group">
-                              <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="selectedTransaction.checkInDate"  is-open="false" datepicker-options="dateOptions" ng-required="true" close-text="Close" readonly/>
-                              <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ><i class="glyphicon glyphicon-calendar"></i></button>
-                              </span>
-                            </p>
-                        </div>
-                      </div>
-                      <div class="form-group" ng-class="{'has-error': !selectedTransaction.checkOutDate}">
-                        <label for="inputPassword3" class="col-sm-3 control-label">CheckOut Date</label>
-                        <div class="col-sm-8">
-                             <p class="input-group">
-                              <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="selectedTransaction.checkOutDate"  is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
-                              <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-                              </span>
-                            </p>
-                        </div>
-                      </div>
+                     <div class="form-group ">
+                     <label for="inputPassword3" class="col-sm-3 control-label">CheckIn Date</label>
+                     <dateviewer></dateviewer>
+                    </div>
+                    <div class="form-group ">
+                    <label for="inputPassword3" class="col-sm-3 control-label">CheckOut Date</label>
+                    <dateviewer></dateviewer>
+                   </div>
                       <div class="form-group">
                          <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
                          <div class="col-sm-8">
@@ -389,7 +374,6 @@
           </section>
          </div>
          <!-- check out tab ends -->
-
       </div>
     </div>
   </div>

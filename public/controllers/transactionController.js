@@ -6,7 +6,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     {"name":"AC","value":'AC'},
     {"name":"NON AC","value":'NON-AC'}
   ];
-  console.log($scope.roomFeature);
   $scope.transactionTab = function(tab){
     $scope.currentTab = tab;
   }
@@ -66,7 +65,9 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "rooms" :$scope.selectedRoomID,
       "price" :$scope.selectedRoomsPrice,
       "tranctionNo":$scope.transaction.transactionNo,
-      "identity" : $scope.transaction.identity
+      "idproofno" :$scope.transaction.idproofno,
+      "identity" : $scope.transaction.identity,
+      "purpose"    : $scope.transaction.purpose
     }
     console.log(obj);
     transactionService.addTransaction(obj,function(response){
@@ -184,39 +185,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
 
    }
 
-   /**
-    * functionName : $scope.open2 and other dependencies
-    * Info : dependencies codes for the date picker
-    * input : ...
-    * output :...
-    * createdDate - 4-9-2016
-    * updated on -  4-9-2016 // reason for update
-    */
-    $scope.open2 = function() {
-     $scope.popup2.opened = true;
-    };
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-    $scope.altInputFormats = ['M!/d!/yyyy'];
-    $scope.popup2 = {
-      opened: false
-    };
-    function getDayClass(data) {
-      var date = data.date,
-        mode = data.mode;
-      if (mode === 'day') {
-        var dayToCheck = new Date(date).setHours(0,0,0,0);
 
-        for (var i = 0; i < $scope.events.length; i++) {
-          var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
-
-          if (dayToCheck === currentDay) {
-            return $scope.events[i].status;
-          }
-        }
-      }
-      return '';
-    }
     /**
      * functionName : $scope.newRoomInit()
      * Info : dependencies codes for the date picker
@@ -230,7 +199,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
         function(response){
             if(response.statusCode == 200){
                 $scope.facilities = response.data;
-                console.log($scope.facilities);
             }
             else {
                 Util.alertMessage('danger', response.message);

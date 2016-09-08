@@ -35,17 +35,12 @@
                      <input type="text" class="form-control" name="max_price" ng-model="search.maxprice" placeholder="Max Price" required >
                   </div>
                   <div class="form-group" ng-init="newRoomInit()">
-                    <div class="checkbox">
+                    <label for="inputEmail3" >Facilities</label>
+                    <div class="checkbox" ng-repeat="facility in facilities">
                       <label>
-                        <input type="checkbox"> gdzsg
+                        <input type="checkbox" ng-model="facility.isChecked"> {{facility.name}}
                       </label>
                     </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"> gdzsg
-                      </label>
-                    </div>
-
                   </div>
                     <div class="form-group ">
                       <button type="btn btn-default" class="button" >Apply</button>
