@@ -233,19 +233,7 @@
           <!--added directives for the trasanction view  -->
           <transaction-details></transaction-details>
         </div>
- <div class="form-group" ng-init="newRoomInit()">
-               <label for="inputEmail3" >Facilities</label>
-               <div class="checkbox" ng-repeat="facility in facilities">
-                 <label>
-                   <input type="checkbox" ng-model="facility.isChecked"> {{facility.name}}
-                 </label>
-               </div>
-             </div>
-             <div class="form-group ">
-               <button type="btn btn-default" class="button" >Apply</button>
-               <button type="btn btn-danger" class="" >Clear</button>
-             </div>
-
+         <room-filter type="2"></room-filter>
       </div>
       <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">
