@@ -13,10 +13,12 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   /********This code is used to get all the room lists******/
   /*******************************************************/
   $scope.getRoom = function(_id,searchType,Status){
+    $rootScope.showPreloader = true;
     var obj = {};
     if(_id)
       obj._id = _id;
     GuesthouseService.getRoom(obj,function(response){
+    $rootScope.showPreloader = false;
       //console.log(response);
       if(searchType == "details" && Status == "AVAILABLE"){
         $scope.currentTab = 'roomdetails';
@@ -57,6 +59,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     console.log($scope.selectedRoomID);
   }
   $scope.submitNewBooking = function(){
+    $rootScope.showPreloader = true;
     var obj ={
       "otp":$scope.transaction.otp,
       "cName":$scope.transaction.cName,
@@ -71,6 +74,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     }
     console.log(obj);
     transactionService.addTransaction(obj,function(response){
+    $rootScope.showPreloader = false;
        //console.log($scope.transaction);
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
@@ -208,5 +212,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
               Util.alertMessage('danger', err.message);
         }
       )
+    }
+    $scope.searchMinPrice = function(){
+
     }
 })

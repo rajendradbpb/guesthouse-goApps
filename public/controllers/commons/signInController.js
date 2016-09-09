@@ -1,7 +1,9 @@
 app.controller("SignInController",["$scope","$rootScope","CommonService","$state","Constants","$localStorage",function($scope,$rootScope,CommonService,$state,Constants,$localStorage) {
   $scope.user = {};
   $scope.signIn = function(user){
+    $rootScope.showPreloader = true;
     CommonService.signIn(user,function(pres) {
+    $rootScope.showPreloader = false;
       // saving the token if exists
       // $localStorage[Constants.storagePrefix+"$token"] =
       if(pres.data.token){

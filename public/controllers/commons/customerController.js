@@ -16,21 +16,23 @@ $scope.changeBookingTab = function(tab){
 /********This is use for submitting customer details******/
 /*******************************************************/
 $scope.submitCustDetails = function(){
-    console.log($scope.customer);
+      $rootScope.showPreloader = true;
   CustomerService.submitCustDetails($scope.customer,function(response){
+      $rootScope.showPreloader = false;
     if(response.statusCode == 200){
         Util.alertMessage('success', response.message);
     }
-    else {
-        Util.alertMessage('danger', response.message);
-    }
-  });
+  },function(err) {
+    Util.alertMessage('danger', err.message);
+  })
 }
 /*******************************************************/
 /********This is use to load all customer details******/
 /*******************************************************/
 $scope.loadAllCustomer = function(){
+  $rootScope.showPreloader = true;
   CustomerService.getCustomerList(function(response){
+    $rootScope.showPreloader = false;
       $scope.allcoustomers = response.data;
   })
 }
@@ -47,21 +49,25 @@ $scope.getCustomerbyID = function(){
     var obj ={
       "id":$stateParams._id
     }
+    $rootScope.showPreloader = true;
     CustomerService.getCustomerList(obj,function(response){
-          $scope.customer = response.data[0];
+     $rootScope.showPreloader = false;
+      $scope.customer = response.data[0];
     })
   }
   /*******************************************************/
   /********This is use to update customer data******/
   /*******************************************************/
   $scope.updateCustomer = function(){
+    $rootScope.showPreloader = true;
     CustomerService.updateCustomerbyID($scope.customer,function(response){
+      $rootScope.showPreloader = false;
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
       }
-      else {
-          Util.alertMessage('danger', response.message);
-      }
+
+   },function(err) {
+     Util.alertMessage('danger', err.message);
    })
  }
  /*******************************************************/
@@ -71,7 +77,9 @@ $scope.getCustomerbyID = function(){
      var obj = {
       "_id":id
      }
+     $rootScope.showPreloader = true;
      CustomerService.deleteCustomer(obj,function(response) {
+       $rootScope.showPreloader = false;
        $scope.loadAllCustomer();
     })
    }
@@ -84,7 +92,9 @@ $scope.getCustomerbyID = function(){
      var mobile = {
        "mobile" :$scope.find.mobile
      }
+     $rootScope.showPreloader = true;
      CustomerService.getCustomerList(mobile,function(response) {
+       $rootScope.showPreloader = false;
        if(response.data.length > 0){
         $scope.customer =  response.data[0];
         $scope.customerFound = true;

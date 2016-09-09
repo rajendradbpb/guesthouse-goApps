@@ -16,5 +16,6 @@ angular.module('guest_house').directive("roomFilter",function(){
     restrict: 'EA',
     templateUrl: 'directives/views/roomFilter.html',
     link: link, //DOM manipulation
+    controller:'MainController'
   };
 });

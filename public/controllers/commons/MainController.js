@@ -1,4 +1,6 @@
 app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService) {
+  $rootScope.showPreloader = false;
+   $scope.find = {};
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
   $scope.signOut = function() {
     $rootScope.loggedin = false;
@@ -30,7 +32,9 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
   /********This code is to load room details in guest_house dashboard******/
   /*******************************************************/
   $scope.getAllRooms = function(){
+      $rootScope.showPreloader = true;
     GuesthouseService.loadRoomByStatus(function(response){
+      $rootScope.showPreloader = false;
       angular.forEach(response.data,function(item){
         switch(item._id.roomType){
           case 'AC':
@@ -75,4 +79,43 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
     }
     return '';
   }
+  $scope.open = function() {
+   $scope.popup.opened = true;
+  };
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  $scope.altInputFormats = ['M!/d!/yyyy'];
+  $scope.popup = {
+    opened: false
+  };
+  function getDayClass(data) {
+    var date = data.date,
+      mode = data.mode;
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+    return '';
+  }
+  $scope.getRoomInfo = function(){
+    // $rootScope.showPreloader = true;
+    var obj = {
+      "minPrice" :$scope.find.minPrice,
+      "maxPrice" :$scope.find.maxPrice
+    }
+  GuesthouseService.getRoom(obj,function(response){
+    if(response.data.length > 0){
+      console.log(response);
+        $scope.room_list = response.data;
+        console.log($scope.room_list);
+    }
+  })
+}
 })

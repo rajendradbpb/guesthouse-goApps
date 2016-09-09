@@ -18,8 +18,10 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   /********This is use for loading room facilities during page load******/
   /*******************************************************/
   $scope.newRoomInit = function() {
+    $rootScope.showPreloader = true;
     GuesthouseService.getFacilities(
       function(response){
+          $rootScope.showPreloader = false;
           if(response.statusCode == 200){
               $scope.facilities = response.data;
               console.log($scope.facilities);
@@ -38,7 +40,9 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   /*******************************************************/
   $scope.addRoom = function(form) {
     $scope.room.facility = UtilityService.getSelectedIds($scope.facilities,"isChecked",true);
+    $rootScope.showPreloader = true;
     GuesthouseService.addRoom($scope.room, function(response){
+    $rootScope.showPreloader = false;
       console.log($scope.room);
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
@@ -54,10 +58,12 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   /********This code is used to get all the room lists******/
   /*******************************************************/
   $scope.getRoom = function(_id,searchType){
+    $rootScope.showPreloader = true;
     var obj = {};
     if(_id)
       obj._id = _id;
     GuesthouseService.getRoom(obj,function(response){
+      $rootScope.showPreloader = false;
       if(searchType == "details"){
         $scope.currentTab = 'roomdetails';
         $scope.room = response.data[0];
@@ -83,14 +89,18 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   /*******************************************************/
   $scope.updateRoomDetails = function(){
     $scope.room.facility = UtilityService.getSelectedIds($scope.facilities,"isChecked",true);
+    $rootScope.showPreloader = true;
     GuesthouseService.updateroomByID($scope.room,function(response){
+      $rootScope.showPreloader = false;
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
       }
       else {
           Util.alertMessage('danger', response.message);
       }
-    })
+    },function(err){
+      Util.alertMessage('danger', err.message);
+    });
   }
   /*******************************************************/
   /********This code is to delete room details******/
@@ -100,11 +110,14 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       var obj = {
        "_id":id
       }
+      $rootScope.showPreloader = true;
       GuesthouseService.deleteRoom(obj,function(response) {
+      $rootScope.showPreloader = false;
         if(response.statusCode == 200){
             $scope.getRoom();
         }
      })
     }
+  
 
 })

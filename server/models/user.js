@@ -25,11 +25,11 @@ var userSchema = new mongoose.Schema({
     passwordToken     : {type: String, default:null},
     isAdmin           : {type:Boolean,default:false },
     address:{
-      city :{type: String},
+      city     :{type: String},
       district :{type: String},
-      state :{type: String,default:constants.default.state},
-      pincode :{type: String},
-      country :{type: String,default:constants.default.country},
+      state    :{type: String,default:constants.default.state},
+      pincode  :{type: String},
+      country  :{type: String,default:constants.default.country},
     }
 });
 

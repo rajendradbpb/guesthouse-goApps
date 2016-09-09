@@ -23,7 +23,9 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       "middleName": $scope.userProfile.middleName,
       "email": $scope.userProfile.email
     }
+    $rootScope.showPreloader = true;
     UserService.updateUser(obj,function(response){
+    $rootScope.showPreloader = false;
       $localStorage[Constants.getTokenKey()] = response.data.token;
       $rootScope.logedInUser = response.data.user;
       Util.alertMessage('success', response.message);
@@ -38,7 +40,9 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
       "oldPassword": $scope.password.current,
       "newPassword": $scope.password.confirm
     }
+    $rootScope.showPreloader = true;
     UserService.changePassword(obj,function(response){
+    $rootScope.showPreloader = false;
       Util.alertMessage('success', response.message);
     });
   }
@@ -46,9 +50,11 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /**************This is use for getting all role type in asign role dropdown**********/
   /*******************************************************/
   $scope.getRoleType = function(){
+    $rootScope.showPreloader = true;
     if($scope.roleType && $scope.roleType.length > 0)
     return;
     UserService.getRoleType(function(response){
+    $rootScope.showPreloader = false;
       console.log(response);
       $scope.roleType = response.data;
        // to udpate the user role on init roles
@@ -60,6 +66,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /**************This is use for submit user details**********/
   /*******************************************************/
   $scope.submitUserDetails = function(){
+      $rootScope.showPreloader = true;
     // var obj={
     //   "firstName"  : $scope.user.first_name,
     //   "middleName" : $scope.user.middle_name,
@@ -77,6 +84,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
     //   obj["guestHouseName"] = $scope.user.guestHouseName;
     //console.log(obj);
     UserService.submitUserDetails($scope.user,function(response){
+      $rootScope.showPreloader = false;
       Util.alertMessage('success', response.message);
     });
   }
@@ -90,29 +98,4 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
    $scope.onSelectRole = function(){
      $scope.user.role = $scope.selectedRole._id;
    }
-  $scope.open2 = function() {
-   $scope.popup2.opened = true;
-  };
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
-  $scope.altInputFormats = ['M!/d!/yyyy'];
-  $scope.popup2 = {
-    opened: false
-  };
-  function getDayClass(data) {
-    var date = data.date,
-      mode = data.mode;
-    if (mode === 'day') {
-      var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-      for (var i = 0; i < $scope.events.length; i++) {
-        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
-
-        if (dayToCheck === currentDay) {
-          return $scope.events[i].status;
-        }
-      }
-    }
-    return '';
-  }
 })

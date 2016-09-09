@@ -5,25 +5,25 @@ var validator = require('validator');
 var Schema = mongoose.Schema;
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var tranctionSchema = new mongoose.Schema({
-    otp                    : {type: String, default:null },
-    cName                    : {type: String, required:constants.messages.errors.nameRequired },
-    cMobile             : {type: String, required:constants.messages.errors.mobileRequired },
-    address             : {type: String, required:constants.messages.errors.addressRequired },
+    otp               : {type: String, default:null },
+    cName             : {type: String, required:constants.messages.errors.nameRequired },
+    cMobile           : {type: String, required:constants.messages.errors.mobileRequired },
+    address           : {type: String, required:constants.messages.errors.addressRequired },
     rooms             : [{type: Schema.Types.ObjectId, ref: 'room', required:constants.messages.errors.roomIdRequired }],
     identity          : {type: String, required:constants.messages.errors.IDproofRequired },
     idproofno         : {type: String },
     purpose           : {type: String, default:null },
     discount          : {type: String },
     price             : {type: Number, required:constants.messages.errors.priceRequired},// this will be updated 2nd time when the user will be check out
-    isPayment           : {type: Boolean, default:false}, // this will be true in case of the checkOut
-    tranctionNo             : {type:String , required:constants.messages.errors.tranctionNoRequired,unique:true},
+    isPayment         : {type: Boolean, default:false}, // this will be true in case of the checkOut
+    tranctionNo       : {type:String , required:constants.messages.errors.tranctionNoRequired,unique:true},
     createdDate       : {type: Date, default: null},
     checkInDate       : {type: Date, required:constants.messages.errors.checkInDateRequired , default:Date()},
-    checkOutDate       : {type: Date, default: null},
-    createdBy               : {type: Schema.Types.ObjectId ,ref: 'user', required:"user id not mentioned"}, // this is be the ghUser always
-    updatedDate             : {type: Date, default: new Date()},
-    updatedBy               : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
-    isDelete                : {type: Boolean, default:false},
+    checkOutDate      : {type: Date, default: null},
+    createdBy         : {type: Schema.Types.ObjectId ,ref: 'user', required:"user id not mentioned"}, // this is be the ghUser always
+    updatedDate       : {type: Date, default: new Date()},
+    updatedBy         : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
+    isDelete          : {type: Boolean, default:false},
 
 });
 

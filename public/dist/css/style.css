@@ -5015,8 +5015,6 @@ input[type=checkbox], input[type=radio]{
     background-color: blue;
     color: white;
 }*/
-.side-banner h1{
-}
 .side-banner p
 {
   /*position:  relative;*/
@@ -5028,4 +5026,29 @@ input[type=checkbox], input[type=radio]{
 }
 .alert{
   width: 795px;
+}
+.preloader{
+  background-color: rgba(0,0,0,0.7);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1061;
+  color: #fff;
+}
+.loader-icon{
+  /* margin-left:49%;
+  margin-top:23%; */
+  position:absolute;
+  left:45%;
+  top:45%;
+}
+.offer-view{
+    background-color: #3C8DBC;
+    /*top: 171px;*/
+    /*right: 17px;*/
+    padding: 15px;
+    margin-right: -15px;
+    margin-left: -15px;
 }
