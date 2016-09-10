@@ -5,7 +5,7 @@ var constants = require("./../../config/constants");
 var password = require('password-hash-and-salt');
 var config = require("config");
 var tranctionModelObj = require("./../models/tranction");
-var roomMraodelObj = require("./../models/room");
+var roomModelObj = require("./../models/room");
 
 /*
 * Tranction crud operation starts
@@ -18,6 +18,7 @@ exports.addTranction = function (req, res) {
     }
     roomModelObj.find(query).exec()
     .then(function(data) {
+      console.log("2222222");
       if(data.length > 0){
         console.log("got the rooms");
         req.body.createdBy = req.body.updatedBy = req.user._doc._id;
@@ -45,7 +46,6 @@ exports.addTranction = function (req, res) {
           "new" : true,
           "multi":true
         };
-        // roomModelObj.where(query).update(update).exec(function(err,updatedRooms) {
         roomModelObj.update(query,update,options).exec(function(err,updatedRooms) {
           if(updatedRooms){
             return res.json(response(200,"success",constants.messages.success.saveData,transaction));
@@ -53,7 +53,7 @@ exports.addTranction = function (req, res) {
           else {
             return res.json(response(402,"failed",constants.messages.errors.transactionfailed));
           }
-        });
+        } );
       }
       else {
         return res.json(response(402,"failed",constants.messages.errors.transactionfailed));
