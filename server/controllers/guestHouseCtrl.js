@@ -81,7 +81,7 @@ exports.getRoom = function (req, res) {
       }
     }
     // adding filter for the facility
-    if(req.query.facility.split(",").length > 0 ){
+    if(req.query.facility && req.query.facility.split(",").length > 0 ){
         query.facility = {
           "$in":req.query.facility.split(",")
       }
