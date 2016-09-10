@@ -1,6 +1,7 @@
 app.controller("UserController", function($scope,$rootScope,CommonService,$state,Constants,$localStorage,UserService,Util) {
   $scope.currentTab = 'myprofile';
   $scope.user = {};
+  $scope.user.establishDate = "11-02-2016";
   /*******************************************************/
   /*************This is use for change the tab************/
   /*******************************************************/
@@ -67,22 +68,6 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /*******************************************************/
   $scope.submitUserDetails = function(){
       $rootScope.showPreloader = true;
-    // var obj={
-    //   "firstName"  : $scope.user.first_name,
-    //   "middleName" : $scope.user.middle_name,
-    //   "lastName"   : $scope.user.last_name,
-    //   "email"      : $scope.user.email,
-    //   "role"       : $scope.user.user_role,
-    //   "userName"   : $scope.user.user_name,
-    //   "password"   : $scope.user.password,
-    //   "minPrice"   : $scope.user.minprice,
-    //   "maxPrice"   : $scope.user.maxprice,
-    //   "mobile"     : $scope.user.mobile,
-    //   "establishDate" :moment($scope.user.date).format("YYYY-MM-DD")
-    // }
-    // if($scope.user.guestHouseName)
-    //   obj["guestHouseName"] = $scope.user.guestHouseName;
-    //console.log(obj);
     UserService.submitUserDetails($scope.user,function(response){
       $rootScope.showPreloader = false;
       Util.alertMessage('success', response.message);
