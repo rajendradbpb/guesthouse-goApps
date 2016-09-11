@@ -1,5 +1,6 @@
 app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout) {
   $scope.currentTab = 'roomlists';
+  $scope.filterType = 1;
   $scope.roomFeature = [
     {"name":"Single bed","value":'SINGLE-BED'},
     {"name":"Double bed","value":'DOUBLE-BED'},
@@ -98,6 +99,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
 
    $scope.$watch('currentTab',function(value) {
      if(value == "transaction"){
+       $scope.filterType = 2;
        // call the service to get the trasactions
        transactionService.getTransaction(function(response) {
          $scope.trasactionList = response.data
@@ -110,6 +112,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      else if(value == "checkOut"){
        // assign  the checkin date with the check out date , user may change that
        $scope.selectedTransaction.checkOutDate = $scope.selectedTransaction.checkInDate;
+     }
+     else if(value == "roomlists"){
+       // update the filter type = 1
+       $scope.filterType = 1;
      }
    })
 
@@ -212,8 +218,5 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
               Util.alertMessage('danger', err.message);
         }
       )
-    }
-    $scope.searchMinPrice = function(){
-
     }
 })

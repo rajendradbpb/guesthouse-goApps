@@ -1,4 +1,4 @@
-app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService) {
+app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService) {
   $rootScope.showPreloader = false;
    $scope.find = {};
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
@@ -104,18 +104,5 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
     }
     return '';
   }
-  $scope.getRoomInfo = function(){
-    // $rootScope.showPreloader = true;
-    var obj = {
-      "minPrice" :$scope.find.minPrice,
-      "maxPrice" :$scope.find.maxPrice
-    }
-  GuesthouseService.getRoom(obj,function(response){
-    if(response.data.length > 0){
-      console.log(response);
-        $scope.room_list = response.data;
-        console.log($scope.room_list);
-    }
-  })
-}
+  
 })

@@ -37,7 +37,7 @@
                 <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
               </div>
             </section>
-            <room-filter type="2"></room-filter>
+            <room-filter filter="1" ng-model="room_list"></room-filter>
           </div>
           <div class="tab-pane"   ng-class="{'active':currentTab == 'roomdetails'}"  >
             <section class="content" ng-init="newRoomInit()">
@@ -84,7 +84,7 @@
                                  <input type="text" class="form-control" name="room_capacity" ng-model="room.capacity" placeholder="Capacity" readonly>
                                </div>
                              </div>
-                    </div>
+                     </div>
                   </form>
               </div>
             </section>
@@ -233,7 +233,7 @@
           <!--added directives for the trasanction view  -->
           <transaction-details></transaction-details>
         </div>
-         <room-filter type="2"></room-filter>
+         <room-filter filter="2" ng-model="trasactionList"></room-filter>
       </div>
       <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">
@@ -331,11 +331,11 @@
                      </div>
                      <div class="form-group ">
                        <label for="inputPassword3" class="col-sm-3 control-label">CheckIn Date</label>
-                       <dateviewer></dateviewer>
+                        <date-viewer ng-model="selectedTransaction.checkInDate"></date-viewer>
                     </div>
                     <div class="form-group ">
                       <label for="inputPassword3" class="col-sm-3 control-label">CheckOut Date</label>
-                      <date></date>
+                       <date-viewer ng-model="selectedTransaction.checkOutDate"></date-viewer>
                    </div>
                       <div class="form-group">
                          <label for="inputEmail3" class="col-sm-3 control-label">Price</label>

@@ -5000,9 +5000,9 @@ input[type=checkbox], input[type=radio]{
   font-size: 18px;
 }
 .side-banner{
-  position: fixed;
+  position: absolute;
     background-color: #3C8DBC;
-    top: 171px;
+    top: 47px;
     right: 17px;
     padding: 41px;
 }
