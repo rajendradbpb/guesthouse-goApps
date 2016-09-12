@@ -10,10 +10,7 @@ var facilitySchema = new mongoose.Schema({
     updatedDate             : {type: Date, default: new Date()},
     updatedBy               : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
     isDelete                : {type: Boolean, default:false},
-
 });
-
 facilitySchema.plugin(uniqueValidator, {message: constants.messages.errors.facilityExist});
-
 var facilitySchemaModel = mongoose.model('facility', facilitySchema);
 module.exports = facilitySchemaModel;

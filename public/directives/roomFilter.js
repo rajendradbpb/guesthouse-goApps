@@ -12,20 +12,24 @@
 */
 app.directive("roomFilter",function(){
   return {
-    require: "ngModel",
     restrict: 'EA',
     templateUrl: 'directives/views/roomFilter.html',
-    // link: link, //DOM manipulation
-     controller:'RoomFilterController',
+    controller:'RoomFilterController',
     scope:{
       filter:"=",
-      ngModel:'='
+      modelValue:'='
+    },
+    link: function(scope, element, attrs) {
+      console.log(scope.modelValue);
+      scope.$watch('filtered_array', function(value) {
+          console.log(value);
+          scope.modelValue = value;
+      });
     }
   };
 })
 .controller("RoomFilterController",["$scope","$rootScope","transactionService","GuesthouseService",function($scope,$rootScope,transactionService,GuesthouseService) {
   $scope.find ={};
-
   $scope.getRoomInfo = function(filter){
    //$rootScope.showPreloader = false;
    var obj = {
@@ -35,17 +39,33 @@ app.directive("roomFilter",function(){
     if(filter=="1"){
      GuesthouseService.getRoom(obj,function(response){
       ///  $rootScope.showPreloader = true;
-       console.log(response);
-       
-       room_list= response.data;
-       console.log( room_list);
+       $scope.filtered_array = [];
+       $scope.room_list = response.data;
+       angular.forEach($scope.room_list, function(item){
+         angular.forEach($scope.facilities, function(obj){
+          if(obj.isChecked){
+            angular.forEach(item.facility,function(facility){
+              if(facility.name == obj.name){
+                if ($scope.filtered_array.indexOf(item) < 0) {
+                  $scope.filtered_array.push(item);
+                }
+              }
+            })
+          }
+        })
+      })
+       console.log($scope.filtered_array);
      })
     }
     else if(filter=="2"){
       transactionService.getTransaction(obj,function(response) {
+        $scope.filtered_array = [];
+        angular.forEach($scope.trasactionList,function(item){
+
+        })
       //$rootScope.showPreloader = true;
-      trasactionList = response.data
-        console.log(trasactionList);
+      // trasactionList = response.data
+      //   console.log(trasactionList);
       })
     }
 }

@@ -37,7 +37,7 @@
                 <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
               </div>
             </section>
-            <room-filter filter="1" ng-model="room_list"></room-filter>
+            <room-filter filter="1" model-value="room_list"></room-filter>
           </div>
           <div class="tab-pane"   ng-class="{'active':currentTab == 'roomdetails'}"  >
             <section class="content" ng-init="newRoomInit()">
@@ -233,7 +233,7 @@
           <!--added directives for the trasanction view  -->
           <transaction-details></transaction-details>
         </div>
-         <room-filter filter="2" ng-model="trasactionList"></room-filter>
+         <room-filter filter="2" model-value="trasactionList"></room-filter>
       </div>
       <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">
