@@ -22,7 +22,6 @@ app.directive("roomFilter",function(){
     link: function(scope, element, attrs) {
       console.log(scope.modelValue);
       scope.$watch('filtered_array', function(value) {
-          console.log(value);
           scope.modelValue = value;
       });
     }
@@ -36,14 +35,19 @@ app.directive("roomFilter",function(){
      "minPrice" :$scope.find.minPrice,
      "maxPrice" :$scope.find.maxPrice,
    }
+
     if(filter=="1"){
+      var checked_count = 0;
      GuesthouseService.getRoom(obj,function(response){
       ///  $rootScope.showPreloader = true;
        $scope.filtered_array = [];
        $scope.room_list = response.data;
        angular.forEach($scope.room_list, function(item){
+           //$scope.filtered_array.push(item);
+           checked_count = 0;
          angular.forEach($scope.facilities, function(obj){
           if(obj.isChecked){
+            checked_count++;
             angular.forEach(item.facility,function(facility){
               if(facility.name == obj.name){
                 if ($scope.filtered_array.indexOf(item) < 0) {
@@ -54,18 +58,21 @@ app.directive("roomFilter",function(){
           }
         })
       })
-       console.log($scope.filtered_array);
-     })
-    }
+     console.log($scope.filtered_array);
+     //used for search rooms without checking the facilities
+     if(checked_count == 0){
+         $scope.filtered_array = $scope.room_list;
+     }
+   })
+ }
     else if(filter=="2"){
       transactionService.getTransaction(obj,function(response) {
+        //$rootScope.showPreloader = true;
         $scope.filtered_array = [];
+        $scope.trasactionList = response.data;
         angular.forEach($scope.trasactionList,function(item){
-
+           $scope.filtered_array.push(item);
         })
-      //$rootScope.showPreloader = true;
-      // trasactionList = response.data
-      //   console.log(trasactionList);
       })
     }
 }

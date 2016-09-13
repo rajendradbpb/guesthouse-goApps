@@ -38,6 +38,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       else {
         // this is for listing
         $scope.room_list = response.data;
+        console.log($scope.room_list);
       }
     })
   }
