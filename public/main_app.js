@@ -151,6 +151,12 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             controller:'transactionController',
             resolve: {loggedin: checkLoggedout},
         })
+        .state('transaction_Report',{
+            templateUrl: 'pages/transaction/transaction_report.html',
+            url: '/transaction_Report',
+            controller:'transactionController',
+            resolve: {loggedin: checkLoggedout},
+        })
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
     var Util = {};

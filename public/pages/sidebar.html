@@ -30,6 +30,11 @@
           <i class="fa  fa-home"></i> <span>Transaction</span>
         </a>
       </li>
+      <li class="active treeview" ng-if="logedInUser.role.type =='ghUser'">
+        <a href="" ui-sref="transaction_Report">
+          <i class="fa fa-file-o"></i> <span>Reports</span>
+        </a>
+      </li>
       <li class="treeview" ng-if="logedInUser.role.type =='admin'">
         <a href="">
           <i class="fa fa-cogs" aria-hidden="true"></i>
@@ -58,13 +63,12 @@
         <span>Bookings</span>
       </a>
     </li>
-      <li class="treeview">
-       <a href="" ui-sref="userProfile">
-         <i class="fa fa-cogs"></i>
-         <span>My Profile</span>
-       </a>
-     </li>
-
-    </ul>
-  </section>
+    <li class="treeview">
+      <a href="" ui-sref="userProfile">
+        <i class="fa fa-cogs"></i>
+        <span>My Profile</span>
+      </a>
+   </li>
+  </ul>
+</section>
 </aside>

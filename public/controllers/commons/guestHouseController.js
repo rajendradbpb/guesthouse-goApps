@@ -118,6 +118,4 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
         }
      })
     }
-  
-
 })

@@ -10,6 +10,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.transactionTab = function(tab){
     $scope.currentTab = tab;
   }
+   $scope.currentTab1 = 'ReportList';
+  $scope.ReportListTab = function(tab){
+    $scope.currentTab1 = tab;
+  }
   /*******************************************************/
   /********This code is used to get all the room lists******/
   /*******************************************************/
@@ -174,6 +178,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      $scope.selectedTransaction = transaction;
      $scope.selectedTransaction.selectedRoomsNo = UtilityService.getSelectedItemByProp($scope.selectedTransaction.rooms,null,null,"roomNo");
      $scope.transactionTab('transactionDetails');
+     $scope.ReportListTab('Transactiondetails');
    }
    /**
     * functionName : checkOut
@@ -193,10 +198,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
          Util.alertMessage('error', err.message);
        }
      )
-
    }
-
-
     /**
      * functionName : $scope.newRoomInit()
      * Info : dependencies codes for the date picker
@@ -219,5 +221,18 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
               Util.alertMessage('danger', err.message);
         }
       )
+    }
+    $scope.checkDate = function(){
+      if(moment($scope.transactionReport.endDate) < moment($scope.transactionReport.startDate)){
+        //console.log("endDate < startDate");
+        $scope.transactionReport.endDate = null;
+      }
+      else {
+        $scope.currentTab1 = 'Reportdetails';
+        //console.log("endDate > startDate");
+        transactionService.getTransaction(function(response) {
+          $scope.trasactionList = response.data
+        })
+      }
     }
 })

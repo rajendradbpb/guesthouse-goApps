@@ -17,7 +17,7 @@
         </ul>
         <div class="tab-content" >
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
-            <section class="content section-gh-room_list">
+          <section class="content section-gh-room_list">
               <div class="row col-md-10" >
                 <div class="col-sm-3 pointer"  ng-repeat = "room in room_list" >
                   <a class="room-listing-box" ng-click="getRoom(room._id,'details','AVAILABLE')" >
@@ -31,12 +31,12 @@
                         <input type="checkbox" ng-model="room.isChecked">
                       </label>
                   </div>
-                </div>
               </div>
+            </div>
               <div class="row col-md-10">
                 <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
               </div>
-            </section>
+          </section>
             <room-filter filter="1" model-value="room_list"></room-filter>
           </div>
           <div class="tab-pane"   ng-class="{'active':currentTab == 'roomdetails'}"  >
@@ -66,8 +66,8 @@
                                   </label>
                                 </div>
                             </div>
-                          </div>
-                          <div class="form-group">
+                        </div>
+                        <div class="form-group">
                             <label for="inputEmail3" class="col-sm-3 control-label">Facilities</label>
                              <div class="col-sm-8" >
                               <div class="checkbox" ng-repeat="facility in facilities" >
@@ -77,13 +77,13 @@
                                 </label>
                               </div>
                             </div>
-                            </div>
-                            <div class="form-group" ng-class="{'has-error': (update_room.room_capacity.$invalid && update_room.room_capacity.$touched)}">
-                               <label for="inputEmail3" class="col-sm-3 control-label">Capacity</label>
-                               <div class="col-sm-8">
-                                 <input type="text" class="form-control" name="room_capacity" ng-model="room.capacity" placeholder="Capacity" readonly>
-                               </div>
-                             </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (update_room.room_capacity.$invalid && update_room.room_capacity.$touched)}">
+                            <label for="inputEmail3" class="col-sm-3 control-label">Capacity</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" name="room_capacity" ng-model="room.capacity" placeholder="Capacity" readonly>
+                              </div>
+                        </div>
                      </div>
                   </form>
               </div>
@@ -214,8 +214,8 @@
               </div>
             </section>
           </div>
-       <div class="tab-pane" ng-class="{'active':currentTab == 'transaction'}">
-        <div class="row alert">
+          <div class="tab-pane" ng-class="{'active':currentTab == 'transaction'}">
+          <div class="row alert">
           <div class="col-sm-12">
             <form ng-submit="serchTransaction(searchStr)">
               <div class="form-group input-search-field">
