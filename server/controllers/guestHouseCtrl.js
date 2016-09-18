@@ -86,6 +86,12 @@ exports.getRoom = function (req, res) {
           "$in":req.query.facility.split(",")
       }
     }
+    // adding filter for the room type
+    if(req.query.roomType && req.query.roomType.split(",").length > 0 ){
+        query.roomType = {
+          "$in":req.query.roomType.split(",")
+      }
+    }
     // validating data as per the user requested
     var select = {};
     // no condition as admin can access all
