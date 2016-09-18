@@ -28,7 +28,7 @@ router.get('/room', passport.authenticate('token', {session:false}),function(req
   guestHouseCtrl.getRoom(req, res);
 });
 router.put('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
-  guestHouseCtrl.udpateRoom(req, res);
+  guestHouseCtrl.updateRoom(req, res);
 });
 router.delete('/room',passport.authenticate('ghAuth', {session:false}), function(req, res, next){
   guestHouseCtrl.deleteRoom(req, res);

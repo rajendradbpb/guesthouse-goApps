@@ -32,6 +32,8 @@ var constants = {
       "addressRequired"      :   " address Required",
       "priceRequired"      :   " price Required",
       "roomIdRequired"      :   " roomID Required",
+      "invalidRoomType"      :   " invalid Room Type",
+      "roomTypeRequired"      :   " Room Type Required",
       "tranctionNoRequired"      :   " tranctionNo Required",
       "tranctionNoExist"      :   " tranction No. already Exist",
       "transactionfailed"      :   " transaction failed",

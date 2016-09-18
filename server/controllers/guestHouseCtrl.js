@@ -5,6 +5,7 @@ var password = require('password-hash-and-salt');
 var config = require("config");
 var roomModelObj = require("./../models/room");
 var mongoose = require("mongoose");
+var validator = require("validator");
 
 /*
 * guest house rooms crud operation starts
@@ -33,6 +34,7 @@ exports.getRoom = function (req, res) {
           // condition to match the logged in user
           $match: {
             guestHouse: mongoose.Types.ObjectId(req.user._doc._id),  //$region is the column name in collection
+            isDelete:false,
           }
         },
         {
@@ -118,7 +120,20 @@ exports.getRoom = function (req, res) {
 
   }
 }
-exports.udpateRoom = function (req, res) {
+/**
+ * functionName :updateRoom
+ * Info : used to update the room information
+ * input : room data with the room id
+ * output : success / error
+ * createdDate - 19-9-16
+ * updated on -  19-9-16 // reason for update
+ */
+exports.updateRoom = function (req, res) {
+  // adding custom validation before update
+  if(validator.isNull(req.body._id))
+    return res.status(402).json(response(402,"failed",constants.messages.errors.roomIdRequired))
+  if(validator.isNull(req.body.roomType) || constants.roomType.indexOf(req.body.roomType) == -1)
+    return res.status(402).json(response(402,"failed",constants.messages.errors.invalidRoomType))
   var id = req.body._id;
   delete req.body['_id']; //  removed to avoid the _id mod error
   req.body.updatedBy = req.user._doc._id;
