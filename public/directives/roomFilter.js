@@ -28,14 +28,19 @@ app.directive("roomFilter",function(){
   };
 })
 .controller("RoomFilterController",["$scope","$rootScope","transactionService","GuesthouseService",function($scope,$rootScope,transactionService,GuesthouseService) {
-  $scope.find ={};
+  $scope.find = {};
+  $scope.room = {};
+  $scope.roomFeature = [
+    {"name":"AC SINGLE_BED","value":'AC-SB'},
+    {"name":"AC DOUBLE_BED","value":'AC-DB'},
+    {"name":"NON-AC SINGLE_BED","value":'NON-AC-SB'},
+    {"name":" NON-AC DOUBLE_BED","value":'NON-AC-DB'}
+  ];
   $scope.getRoomInfo = function(filter){
-   //$rootScope.showPreloader = false;
    var obj = {
      "minPrice" :$scope.find.minPrice,
      "maxPrice" :$scope.find.maxPrice,
    }
-
     if(filter=="1"){
       var checked_count = 0;
      GuesthouseService.getRoom(obj,function(response){
@@ -43,13 +48,16 @@ app.directive("roomFilter",function(){
        $scope.filtered_array = [];
        $scope.room_list = response.data;
        angular.forEach($scope.room_list, function(item){
-           //$scope.filtered_array.push(item);
-           checked_count = 0;
+         checked_count = 0;
+         if($scope.room.roomType == item.roomType){
+           checked_count ++;
+           $scope.filtered_array.push(item);
+         }
          angular.forEach($scope.facilities, function(obj){
           if(obj.isChecked){
             checked_count++;
             angular.forEach(item.facility,function(facility){
-              if(facility.name == obj.name){
+              if(facility.name == obj.name ){
                 if ($scope.filtered_array.indexOf(item) < 0) {
                   $scope.filtered_array.push(item);
                 }
@@ -58,7 +66,6 @@ app.directive("roomFilter",function(){
           }
         })
       })
-     console.log($scope.filtered_array);
      //used for search rooms without checking the facilities
      if(checked_count == 0){
          $scope.filtered_array = $scope.room_list;

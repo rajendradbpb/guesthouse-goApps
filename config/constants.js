@@ -1,7 +1,7 @@
 var config = require('config');
 var constants = {
   roles : ["spAdmin","admin","ccare","ghUser"],
-  roomType:["AC","NON-AC","FAMILY","DELUX","SINGLE-BED","DOUBLE-BED"],
+  roomType:["AC-SB","AC-DB","NON-AC-SB","NON-AC-DB"],
   bookingStatus:["AVAILABLE","CHECKED-IN","BOOKED"],
   default:{
     "country" :"India",

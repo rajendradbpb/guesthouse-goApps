@@ -5,6 +5,15 @@
       <div class="form-group">
            <input type="text" class="form-control" name="max_price" ng-model="find.maxPrice" placeholder="Max Price" required >
       </div>
+      <div class="form-group">
+        <label for="inputEmail3">Room Features</label>
+             <div class="radio" ng-repeat="feature in roomFeature">
+               <label>
+                 <input type="radio" name="optionsRadios" id="optionsRadios_{{$index}}" ng-model="room.roomType" value="{{feature.value}}">
+                {{feature.name}}
+               </label>
+             </div>
+       </div>
     <div class="form-group" ng-init="newRoomInit()">
         <label for="inputEmail3" >Facilities</label>
           <div class="checkbox" ng-repeat="facility in facilities">
@@ -25,6 +34,15 @@
   <div class="form-group">
        <input type="text" class="form-control" name="max_price" ng-model="find.maxPrice" placeholder="Max Price" required >
   </div>
+  <!-- <div class="form-group">
+    <label for="inputEmail3">Room Features</label>
+         <div class="radio" ng-repeat="feature in roomFeature">
+           <label>
+             <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="room.roomType" value="{{feature.value}}">
+            {{feature.name}}
+           </label>
+         </div>
+   </div> -->
   <!-- <div class="form-group" ng-init="newRoomInit()">
       <label for="inputEmail3" >Facilities</label>
         <div class="checkbox" ng-repeat="facility in facilities">

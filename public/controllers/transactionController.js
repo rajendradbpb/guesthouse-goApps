@@ -176,9 +176,16 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     */
    $scope.onSelectTransaction = function(transaction){
      $scope.selectedTransaction = transaction;
-     $scope.selectedTransaction.selectedRoomsNo = UtilityService.getSelectedItemByProp($scope.selectedTransaction.rooms,null,null,"roomNo");
+     angular.forEach($scope.selectedTransaction.rooms,function(room){
+       room.isSelect = false;
+     });
+
      $scope.transactionTab('transactionDetails');
      $scope.ReportListTab('Transactiondetails');
+   }
+   $scope.gotoCheckOut = function(){
+     console.log($scope.selectedTransaction.rooms);
+     $scope.transactionTab('checkOut');
    }
    /**
     * functionName : checkOut
