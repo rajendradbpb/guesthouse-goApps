@@ -35,5 +35,15 @@ utility.sendVerificationMail = function(userObj,callback) {
     }
   });
 }
-
+/**
+ * functionName :utility.stringify()
+ * Info : used to stringify the content of the object or the array of object
+ * input : object or the array of object
+ * output :string
+ * createdDate - 22-9-16
+ * updated on - 22-9-16
+ */
+utility.stringify = function(objData) {
+  return JSON.stringify(objData);
+}
 module.exports = utility;

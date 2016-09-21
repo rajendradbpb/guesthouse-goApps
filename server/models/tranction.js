@@ -31,11 +31,11 @@ var tranctionSchema = new mongoose.Schema({
     purpose           : {type: String, default:null },
     discount          : {type: String },
     // price             : {type: Number, required:constants.messages.errors.priceRequired},// this will be updated 2nd time when the user will be check out
-    isPayment         : {type: Boolean, default:false}, // this will be true in case of the checkOut
-    tranctionNo       : {type:String , required:constants.messages.errors.tranctionNoRequired,unique:true},
+    // isPayment         : {type: Boolean, default:false}, // this will be true in case of the checkOut
+    transactionNo       : {type:String , required:constants.messages.errors.tranctionNoRequired,unique:true},
     createdDate       : {type: Date, default: null},
-    checkInDate       : {type: Date, required:constants.messages.errors.checkInDateRequired , default:Date()},
-    checkOutDate      : {type: Date, default: null},
+    // checkInDate       : {type: Date, required:constants.messages.errors.checkInDateRequired , default:Date()},
+    // checkOutDate      : {type: Date, default: null},
     createdBy         : {type: Schema.Types.ObjectId ,ref: 'user', required:"user id not mentioned"}, // this is be the ghUser always
     updatedDate       : {type: Date, default: new Date()},
     updatedBy         : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
@@ -47,13 +47,13 @@ tranctionSchema.plugin(uniqueValidator, {message: constants.messages.errors.tran
 tranctionSchema.plugin(deepPopulate, {
   whitelist: [
     'createdBy',
-    'rooms'
+    'roomsDetails.room'
   ],
   populate: {
     'createdBy': {
       select: 'guestHouseName email  mobile  address',
     },
-    'rooms': {
+    'roomsDetails.room': {
       select: 'roomNo',
     },
   }
