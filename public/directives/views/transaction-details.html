@@ -1,5 +1,5 @@
 <div ng-repeat="transaction in trasactionList" ng-click="onSelectTransaction(transaction)" class="alert alert-info alert-dismissible pointer">
-  <span class="pull-right">${{transaction.price}}</span>
+  <span class="pull-right">${{transaction.roomsDetails[0].price}}</span>
   <p align="center">{{transaction.createdDate}} </p>
   <h4>{{transaction.cName}}</h4>
   <h5>{{transaction.purpose}}</h5>

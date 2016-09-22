@@ -1,4 +1,5 @@
 app.factory("UtilityService", function($http,$resource,$localStorage,Constants) {
+  var userSettings;
   var getSelectedIds = function(array,prop,matchValue){
     var arr = [];
     angular.forEach(array,function(value,key) {
@@ -42,9 +43,17 @@ app.factory("UtilityService", function($http,$resource,$localStorage,Constants) 
     });
     return arr;
   };
+  var getUserSettings = function(){
+    return userSettings;
+  };
+  var setUserSettings = function(obj){
+    userSettings = obj;
+  }
   return{
     getSelectedIds:getSelectedIds,
     getSelectedItemByProp:getSelectedItemByProp,
-    getSelectedItemByID:getSelectedItemByID
+    getSelectedItemByID:getSelectedItemByID,
+    getUserSettings    : getUserSettings,
+    setUserSettings    : setUserSettings
   }
 })

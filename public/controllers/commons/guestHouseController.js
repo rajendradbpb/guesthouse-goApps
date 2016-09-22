@@ -1,11 +1,6 @@
 app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService) {
   $scope.currentTab = 'roomlists';
-  $scope.roomFeature = [
-    {"name":"AC SINGLE_BED","value":'AC-SB'},
-    {"name":"AC DOUBLE_BED","value":'AC-DB'},
-    {"name":"NON-AC SINGLE_BED","value":'NON-AC-SB'},
-    {"name":" NON-AC DOUBLE_BED","value":'NON-AC-DB'}
-  ];
+  $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   console.log($scope.roomFeature);
   $scope.roomlistingTab = function(tab){
     $scope.currentTab = tab;

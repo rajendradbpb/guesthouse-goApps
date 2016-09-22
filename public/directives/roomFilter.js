@@ -27,15 +27,18 @@ app.directive("roomFilter",function(){
     }
   };
 })
-.controller("RoomFilterController",["$scope","$rootScope","transactionService","GuesthouseService",function($scope,$rootScope,transactionService,GuesthouseService) {
+.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService) {
   $scope.find = {};
   $scope.room = {};
-  $scope.roomFeature = [
-    {"name":"AC SINGLE_BED","value":'AC-SB'},
-    {"name":"AC DOUBLE_BED","value":'AC-DB'},
-    {"name":"NON-AC SINGLE_BED","value":'NON-AC-SB'},
-    {"name":" NON-AC DOUBLE_BED","value":'NON-AC-DB'}
-  ];
+  $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
+  /**
+   * functionName : getRoomInfo
+   * Info : keeps the data of the current selected transaction and show in the transaction detials
+   * input : ...
+   * output :...
+   * createdDate - 4-9-2016
+   * updated on -  4-9-2016 // reason for update
+   */
   $scope.getRoomInfo = function(filter){
    var obj = {
      "minPrice" :$scope.find.minPrice,
@@ -44,7 +47,7 @@ app.directive("roomFilter",function(){
     if(filter=="1"){
       var checked_count = 0;
      GuesthouseService.getRoom(obj,function(response){
-      ///  $rootScope.showPreloader = true;
+      // $rootScope.showPreloader = true;
        $scope.filtered_array = [];
        $scope.room_list = response.data;
        angular.forEach($scope.room_list, function(item){
@@ -74,6 +77,7 @@ app.directive("roomFilter",function(){
  }
     else if(filter=="2"){
       transactionService.getTransaction(obj,function(response) {
+        console.log(response);
         //$rootScope.showPreloader = true;
         $scope.filtered_array = [];
         $scope.trasactionList = response.data;
@@ -83,6 +87,51 @@ app.directive("roomFilter",function(){
       })
     }
 }
+/**
+ * functionName : allroomLists()
+ * Info : keeps the data of the current selected transaction and show in the transaction detials
+ * input : ...
+ * output :...
+ * createdDate - 4-9-2016
+ * updated on -  4-9-2016 // reason for update
+ */
+$scope.allroomLists = function(){
+  $rootScope.showPreloader = true;
+    GuesthouseService.getRoom(function(response){
+      $scope.filtered_array = [];
+      $rootScope.showPreloader = false;
+      $scope.room_list = response.data;
+      angular.forEach($scope.room_list, function(item){
+          $scope.filtered_array.push(item);
+      })
+    })
+}
+/**
+ * functionName : allTransactions()
+ * Info : keeps the data of the current selected transaction and show in the transaction detials
+ * input : ...
+ * output :...
+ * createdDate - 4-9-2016
+ * updated on -  4-9-2016 // reason for update
+ */
+  $scope.allTransactions = function(){
+    transactionService.getTransaction(function(response) {
+      //$rootScope.showPreloader = true;
+      $scope.filtered_array = [];
+      $scope.trasactionList = response.data;
+      angular.forEach($scope.trasactionList,function(item){
+         $scope.filtered_array.push(item);
+      })
+    })
+  }
+/**
+ * functionName : newRoomInit()
+ * Info : keeps the data of the current selected transaction and show in the transaction detials
+ * input : ...
+ * output :...
+ * createdDate - 4-9-2016
+ * updated on -  4-9-2016 // reason for update
+ */
 $scope.newRoomInit = function() {
   transactionService.getFacilities(
     function(response){
@@ -98,4 +147,4 @@ $scope.newRoomInit = function() {
     }
   )
 }
-}])
+})

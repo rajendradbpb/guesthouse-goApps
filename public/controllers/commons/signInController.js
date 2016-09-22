@@ -24,9 +24,7 @@ app.controller("SignInController",["$scope","$rootScope","CommonService","$state
           case "ghAdmin":
           break;
           default:
-
         }
-
       }
       else {
         // clear existing token

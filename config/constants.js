@@ -1,12 +1,19 @@
 var config = require('config');
 var constants = {
   roles : ["spAdmin","admin","ccare","ghUser"],
-  roomType:["AC-SB","AC-DB","NON-AC-SB","NON-AC-DB"],
+  // roomType:[
+  //   {"name":"AC SINGLE BED","value":"AC-SB"},
+  //   "AC-DB","NON-AC-SB","NON-AC-DB"],
   bookingStatus:["AVAILABLE","CHECKED-IN","BOOKED"],
   default:{
     "country" :"India",
     "state" :"Odisha",
   },
+  roomFeature : [
+  {"name":"AC SINGLE_BED","value":'AC-SB'},
+  {"name":"AC DOUBLE_BED","value":'AC-DB'},
+  {"name":"NON-AC SINGLE_BED","value":'NON-AC-SB'},
+  {"name":" NON-AC DOUBLE_BED","value":'NON-AC-DB'}],
 
   messages:{
     errors:{

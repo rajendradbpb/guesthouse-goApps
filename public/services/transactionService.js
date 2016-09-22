@@ -20,5 +20,10 @@ app.factory("transactionService", function($http,$resource,$localStorage,Constan
         url:"/facility",
         headers:"application/json"
     },
+    getReport: {
+        method:'GET',
+        url:"/report",
+        headers:"application/json"
+    }
   });
 })

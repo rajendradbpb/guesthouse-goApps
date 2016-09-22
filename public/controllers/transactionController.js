@@ -1,12 +1,8 @@
 app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout) {
   $scope.currentTab = 'roomlists';
+  $scope.bookingStatus ="CHECKED-IN";
   $scope.filterType = 1;
-  $scope.roomFeature = [
-    {"name":"Single bed","value":'SINGLE-BED'},
-    {"name":"Double bed","value":'DOUBLE-BED'},
-    {"name":"AC","value":'AC'},
-    {"name":"NON AC","value":'NON-AC'}
-  ];
+  $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   $scope.transactionTab = function(tab){
     $scope.currentTab = tab;
   }
@@ -76,7 +72,9 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "tranctionNo":$scope.transaction.transactionNo,
       "idproofno" :$scope.transaction.idproofno,
       "identity" : $scope.transaction.identity,
-      "purpose"    : $scope.transaction.purpose
+      "purpose"    : $scope.transaction.purpose,
+      "checkInDate" : $scope.transaction.checkInDate,
+      "bookingStatus" : $scope.bookingStatus
     }
     console.log(obj);
     transactionService.addTransaction(obj,function(response){
@@ -88,9 +86,9 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
           $scope.getRoom();
           $scope.currentTab = 'roomlists';
       }
-      // else {
-      //     Util.alertMessage('danger', response.message);
-      // }
+      else {
+          Util.alertMessage('danger', response.message);
+      }
     })
   };
    /**
@@ -176,7 +174,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     */
    $scope.onSelectTransaction = function(transaction){
      $scope.selectedTransaction = transaction;
-     angular.forEach($scope.selectedTransaction.rooms,function(room){
+     console.log($scope.selectedTransaction);
+     angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        room.isSelect = false;
      });
 
@@ -229,7 +228,19 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
         }
       )
     }
+    /**
+     * functionName :   $scope.checkDate
+     * Info : dependencies codes for Transaction report
+     * input : ...
+     * output :...
+     * createdDate -21-9-2016
+     * updated on -  21-9-2016 // reason for update
+     */
     $scope.checkDate = function(){
+      var obj={
+        "fromDate" : $scope.transactionReport.startDate,
+        "toDate" : $scope.transactionReport.endDate
+      }
       if(moment($scope.transactionReport.endDate) < moment($scope.transactionReport.startDate)){
         //console.log("endDate < startDate");
         $scope.transactionReport.endDate = null;
@@ -237,8 +248,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       else {
         $scope.currentTab1 = 'Reportdetails';
         //console.log("endDate > startDate");
-        transactionService.getTransaction(function(response) {
-          $scope.trasactionList = response.data
+        transactionService.getReport(obj,function(response) {
+          $scope.trasactionList = response.data;
         })
       }
     }

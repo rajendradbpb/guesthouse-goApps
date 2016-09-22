@@ -27,10 +27,10 @@ try {
  exports.getSettings = function (req, res) {
    var result = {};
    result.roles = constants.roles;
-   result.roomType = constants.roomType;
    result.bookingStatus = constants.bookingStatus;
    result.default = constants.default;
    result.roles = constants.roles;
+   result.roomFeature = constants.roomFeature;
    return res.json(response(200,"success",constants.messages.success.getData,result));
  }
 /*

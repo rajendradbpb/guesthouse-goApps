@@ -45,10 +45,15 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
 
       return deferred.promise;
   };
-  function checkLoggedout ($q, $timeout, $http, $location, $rootScope, $state,$localStorage,UserService) {
+  function checkLoggedout ($q, $timeout,UtilityService, $http, $location, $rootScope, $state,$localStorage,UserService) {
       var deferred = $q.defer();
       $http.get('/user/loggedin').success(function (response) {
         $rootScope.logedInUser = response.user;
+          if(typeof UtilityService.getUserSettings() != 'object'){
+            $http.get('/user/settings').success(function (res) {
+              UtilityService.setUserSettings(res.data);
+            })
+          }
           if (response.status == 'OK') {
               $timeout(deferred.resolve, 0);
           }
