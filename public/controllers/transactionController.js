@@ -1,6 +1,5 @@
 app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout) {
   $scope.currentTab = 'roomlists';
-  $scope.bookingStatus ="CHECKED-IN";
   $scope.filterType = 1;
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   $scope.transactionTab = function(tab){
@@ -54,12 +53,28 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     $scope.initCheckIn();
     $scope.currentTab = 'checkIn';
   }
+  /**
+   * functionName : initCheckIn
+   * Info : codes to get room id of selected rooms
+   * input : ...
+   * output :...
+   * createdDate - 4-9-2016
+   * updated on -  4-9-2016 // reason for update
+   */
   $scope.initCheckIn = function() {
     // get the selected rooms No
     $scope.selectedRoomsNo = UtilityService.getSelectedItemByProp($scope.selectedRooms,"isChecked",true,"roomNo");
     $scope.selectedRoomID = UtilityService.getSelectedItemByID($scope.selectedRooms,"isChecked",true,"_id");
     console.log($scope.selectedRoomID);
   }
+  /**
+   * functionName : submitNewBooking
+   * Info : codes for submitting new booking/transaction details
+   * input : ...
+   * output :...
+   * createdDate - 4-9-2016
+   * updated on -  4-9-2016 // reason for update
+   */
   $scope.submitNewBooking = function(){
     $rootScope.showPreloader = true;
     var obj ={
@@ -68,13 +83,13 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "cMobile":$scope.transaction.cMobile,
       "address":$scope.transaction.address,
       "rooms" :$scope.selectedRoomID,
-      "price" :$scope.selectedRoomsPrice,
-      "tranctionNo":$scope.transaction.transactionNo,
+      // "price" :$scope.selectedRoomsPrice,
+      "transactionNo":$scope.transaction.transactionNo,
       "idproofno" :$scope.transaction.idproofno,
       "identity" : $scope.transaction.identity,
       "purpose"    : $scope.transaction.purpose,
       "checkInDate" : $scope.transaction.checkInDate,
-      "bookingStatus" : $scope.bookingStatus
+      "bookingStatus" : $scope.transaction.status
     }
     console.log(obj);
     transactionService.addTransaction(obj,function(response){
@@ -182,6 +197,14 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      $scope.transactionTab('transactionDetails');
      $scope.ReportListTab('Transactiondetails');
    }
+   /**
+    * functionName : gotoCheckOut
+    * Info : used to make the room AVAILABLE and update the price as per the selected checkInDate and the checkOutDate and the payment
+    * input : transaction details
+    * output :...
+    * createdDate - 5-9-2016
+    * updated on -  5-9-2016 // reason for update
+    */
    $scope.gotoCheckOut = function(){
      console.log($scope.selectedTransaction.rooms);
      $scope.transactionTab('checkOut');
@@ -252,5 +275,34 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
           $scope.trasactionList = response.data;
         })
       }
+    }
+    /**
+     * functionName :   $scope.checkDate
+     * Info :codes for check all rooms by checking select all checkbox
+     * input : ...
+     * output :...
+     * createdDate -23-9-2016
+     * updated on -  23-9-2016 // reason for update
+     */
+     $scope.checkAll = function () {
+        if ($scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+        angular.forEach($scope.selectedTransaction.roomsDetails, function (room) {
+            room.isSelect = $scope.selectedAll;
+        });
+    };
+    /**
+     * functionName :   $scope.changeStatus
+     * Info :codes for check all rooms by checking select all checkbox
+     * input : ...
+     * output :...
+     * createdDate -23-9-2016
+     * updated on -  23-9-2016 // reason for update
+     */
+    $scope.changeStatus = function(){
+      $scope.transaction.checkInDate = ($scope.transaction.status == 'CHECKED-IN') ? moment().format("YYYY-MM-DD") :'';
     }
 })

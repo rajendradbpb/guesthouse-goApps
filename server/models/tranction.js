@@ -16,7 +16,7 @@ var roomDetailsSchema = new mongoose.Schema({
   room              : {type: Schema.Types.ObjectId, ref: 'room', required:constants.messages.errors.roomIdRequired },
   checkInDate       : {type:Date , required:constants.messages.errors.dateRequired },
   checkOutDate      : {type:Date , default:null }, // will be updated at checkOut
-  price             : {type:Number , required:constants.messages.errors.dateRequired }, // here the price may the original or the offer price
+  price             : {type:Number , default:null }, // here the price may the original or the offer price
   isOffer           : {type:Boolean , default:false  }, // checks the offer price or not
   bookingStatus     : {type: String, enum: constants.bookingStatus, required:constants.messages.errors.bookingStatusRequired},
 })
@@ -29,7 +29,7 @@ var tranctionSchema = new mongoose.Schema({
     identity          : {type: String, required:constants.messages.errors.IDproofRequired },
     idproofno         : {type: String },
     purpose           : {type: String, default:null },
-    discount          : {type: String },
+    discount          : {type: String,default:null },
     // price             : {type: Number, required:constants.messages.errors.priceRequired},// this will be updated 2nd time when the user will be check out
     // isPayment         : {type: Boolean, default:false}, // this will be true in case of the checkOut
     transactionNo       : {type:String , required:constants.messages.errors.tranctionNoRequired,unique:true},
@@ -40,9 +40,7 @@ var tranctionSchema = new mongoose.Schema({
     updatedDate       : {type: Date, default: new Date()},
     updatedBy         : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
     isDelete          : {type: Boolean, default:false},
-
 });
-
 tranctionSchema.plugin(uniqueValidator, {message: constants.messages.errors.tranctionNoExist});
 tranctionSchema.plugin(deepPopulate, {
   whitelist: [

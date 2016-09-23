@@ -23,107 +23,10 @@ exports.addRoom = function (req, res) {
       }
     });
 }
-// exports.getRoom = function (req, res) {
-//   if(req.query.isDash == "1")
-//   {
-//     if(req.user._doc.role.type == "ccare")
-//       return res.json(response(200,"success",constants.messages.errors.auth))
-//
-//       roomModelObj.aggregate([
-//         {
-//           // condition to match the logged in user
-//           $match: {
-//             guestHouse: mongoose.Types.ObjectId(req.user._doc._id),  //$region is the column name in collection
-//             isDelete:false,
-//           }
-//         },
-//         {
-//           // condition to group the room details
-//           "$group": {
-//             "_id": {
-//                 "roomType": "$roomType",
-//                 "bookingStatus": "$bookingStatus"
-//             },
-//             "count": { "$sum": 1 }
-//         }},
-//       ], function (err, result) {
-//         if (err) {
-//           return res.json(response(500,"error",constants.messages.success.getData,err));
-//         } else {
-//           return res.json(response(200,"success",constants.messages.success.getData,result));
-//         }
-//       });
-//   }
-//   else {
-//     var query = {
-//       "isDelete" : false,
-//     };
-//     if(req.query._id){
-//       query._id = req.query._id;
-//     }
-//     if(req.query.status){
-//       query.bookingStatus = req.query.status;
-//     }
-//     // adding price filter
-//     if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
-//         query.price = {
-//           "$gte":parseInt(req.query.minPrice),
-//           "$lte":parseInt(req.query.maxPrice)
-//       }
-//     }
-//     // adding filter for the facility
-//     if(req.query.facility && req.query.facility.split(",").length > 0 ){
-//         query.facility = {
-//           "$in":req.query.facility.split(",")
-//       }
-//     }
-//     // adding filter for the room type
-//     if(req.query.roomType && req.query.roomType.split(",").length > 0 ){
-//         query.roomType = {
-//           "$in":req.query.roomType.split(",")
-//       }
-//     }
-//     // validating data as per the user requested
-//     var select = {};
-//     // no condition as admin can access all
-//     if(req.user._doc.role.type == "ccare"){
-//       // select = "name  contactDetails establishDate rating MinPrice MaxPrice address";
-//     }
-//     else if(req.user._doc.role.type == "ghUser"){
-//
-//       query.guestHouse = req.user._doc._id;
-//       // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
-//     }
-//     roomModelObj.find(query)
-//     .deepPopulate("guestHouse")
-//     .populate("facility")
-//     // .select(select)
-//     .exec()
-//
-//     .then(function(guestHouse) {
-//       return res.json(response(200,"success",constants.messages.success.getData,guestHouse));
-//     })
-//     .catch(function(err) {
-//       return res.json(response(500,"error",constants.messages.errors.getData,err))
-//     })
-//
-//   }
-// }
-
-/**
- * functionName :exports.getRoom()
- * Info : used to get the rooms as per the user basis
- * here the results can be dash board , list , based on the filters and status
- *Note here the room status can be get from transaction
- * input :isDash,isStatus , filters like price , facility, roomType
- * output :array of rooms
- * createdDate - 23-9-16
- * updated on - 23-9-16 // reason for update
- */
 exports.getRoom = function (req, res) {
   if(req.query.isDash == "1")
   {
-    if(req.user._doc.role.type != "ghUser")
+    if(req.user._doc.role.type == "ccare")
       return res.json(response(200,"success",constants.messages.errors.auth))
 
       roomModelObj.aggregate([
@@ -206,6 +109,103 @@ exports.getRoom = function (req, res) {
 
   }
 }
+
+/**
+ * functionName :exports.getRoom()
+ * Info : used to get the rooms as per the user basis
+ * here the results can be dash board , list , based on the filters and status
+ *Note here the room status can be get from transaction
+ * input :isDash,isStatus , filters like price , facility, roomType
+ * output :array of rooms
+ * createdDate - 23-9-16
+ * updated on - 23-9-16 // reason for update
+ */
+// exports.getRoom = function (req, res) {
+//   if(req.query.isDash == "1")
+//   {
+//     if(req.user._doc.role.type != "ghUser")
+//       return res.json(response(200,"success",constants.messages.errors.auth))
+//
+//       roomModelObj.aggregate([
+//         {
+//           // condition to match the logged in user
+//           $match: {
+//             guestHouse: mongoose.Types.ObjectId(req.user._doc._id),  //$region is the column name in collection
+//             isDelete:false,
+//           }
+//         },
+//         {
+//           // condition to group the room details
+//           "$group": {
+//             "_id": {
+//                 "roomType": "$roomType",
+//                 "bookingStatus": "$bookingStatus"
+//             },
+//             "count": { "$sum": 1 }
+//         }},
+//       ], function (err, result) {
+//         if (err) {
+//           return res.json(response(500,"error",constants.messages.success.getData,err));
+//         } else {
+//           return res.json(response(200,"success",constants.messages.success.getData,result));
+//         }
+//       });
+//   }
+//   else {
+//     var query = {
+//       "isDelete" : false,
+//     };
+//     if(req.query._id){
+//       query._id = req.query._id;
+//     }
+//     if(req.query.status){
+//       query.bookingStatus = req.query.status;
+//     }
+//     // adding price filter
+//     if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
+//         query.price = {
+//           "$gte":parseInt(req.query.minPrice),
+//           "$lte":parseInt(req.query.maxPrice)
+//       }
+//     }
+//     // adding filter for the facility
+//     if(req.query.facility && req.query.facility.split(",").length > 0 ){
+//         query.facility = {
+//           "$in":req.query.facility.split(",")
+//       }
+//     }
+//     // adding filter for the room type
+//     if(req.query.roomType && req.query.roomType.split(",").length > 0 ){
+//         query.roomType = {
+//           "$in":req.query.roomType.split(",")
+//       }
+//     }
+//     // validating data as per the user requested
+//     var select = {};
+//     // no condition as admin can access all
+//     if(req.user._doc.role.type == "ccare"){
+//       // select = "name  contactDetails establishDate rating MinPrice MaxPrice address";
+//     }
+//     else if(req.user._doc.role.type == "ghUser"){
+//
+//       query.guestHouse = req.user._doc._id;
+//       // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
+//     }
+//     roomModelObj.find(query)
+//     .deepPopulate("guestHouse")
+//     .populate("facility")
+//     // .select(select)
+//     .exec()
+//
+//     .then(function(guestHouse) {
+//       return res.json(response(200,"success",constants.messages.success.getData,guestHouse));
+//     })
+//     .catch(function(err) {
+//       return res.json(response(500,"error",constants.messages.errors.getData,err))
+//     })
+//
+//   }
+// }
 /**
  * functionName :updateRoom
  * Info : used to update the room information
