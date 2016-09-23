@@ -69,7 +69,7 @@ exports.addTranction = function (req, res) {
       _id: { $in: req.body.rooms },
       guestHouse:req.user._doc._id
     }
-    console.log("query    ",query);
+
     roomModelObj.find(query).exec()
     .then(function(rooms) {
       if(rooms.length > 0){

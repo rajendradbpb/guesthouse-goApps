@@ -63,7 +63,6 @@ exports.udpateFacility = function (req, res) {
 exports.deleteFacility = function (req, res) {
   req.query.updatedBy = req.user._doc._id;
   req.query.updatedDate = new Date();
-  console.log(">>>>>>>>>>>>>  ",req.body);
   facilityModelObj.findByIdAndUpdate(req.body._id,{"isDelete":true},{"new" :true})
   .exec()
   .then(function(data) {
