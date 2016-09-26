@@ -27,7 +27,7 @@ app.directive("roomFilter",function(){
     }
   };
 })
-.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService) {
+.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util) {
   $scope.find = {};
   $scope.room = {};
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
@@ -40,16 +40,20 @@ app.directive("roomFilter",function(){
    * updated on -  4-9-2016 // reason for update
    */
   $scope.getRoomInfo = function(filter){
+
    var obj = {
      "minPrice" :$scope.find.minPrice,
      "maxPrice" :$scope.find.maxPrice,
+     "checkInDate":"9/25/2016"
    }
     if(filter=="1"){
       var checked_count = 0;
      GuesthouseService.getRoom(obj,function(response){
+       console.log(response);
       // $rootScope.showPreloader = true;
        $scope.filtered_array = [];
-       $scope.room_list = response.data;
+       $scope.room_list = response.data.availableRooms;
+       console.log($scope.room_list);
        angular.forEach($scope.room_list, function(item){
          checked_count = 0;
          if($scope.room.roomType == item.roomType){
@@ -146,5 +150,30 @@ $scope.newRoomInit = function() {
           Util.alertMessage('danger', err.message);
     }
   )
+}
+$scope.open = function() {
+ $scope.popup.opened = true;
+};
+$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+$scope.format = $scope.formats[0];
+$scope.altInputFormats = ['M!/d!/yyyy'];
+$scope.popup = {
+  opened: false
+};
+function getDayClass(data) {
+  var date = data.date,
+    mode = data.mode;
+  if (mode === 'day') {
+    var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+    for (var i = 0; i < $scope.events.length; i++) {
+      var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+      if (dayToCheck === currentDay) {
+        return $scope.events[i].status;
+      }
+    }
+  }
+  return '';
 }
 })

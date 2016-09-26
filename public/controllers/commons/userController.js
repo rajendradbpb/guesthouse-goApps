@@ -69,6 +69,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   $scope.submitUserDetails = function(){
       $rootScope.showPreloader = true;
     UserService.submitUserDetails($scope.user,function(response){
+      console.log(response);
       $rootScope.showPreloader = false;
       Util.alertMessage('success', response.message);
     });

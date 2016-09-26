@@ -13,7 +13,8 @@ var constants = {
   {"name":"AC SINGLE_BED","value":'AC-SB'},
   {"name":"AC DOUBLE_BED","value":'AC-DB'},
   {"name":"NON-AC SINGLE_BED","value":'NON-AC-SB'},
-  {"name":" NON-AC DOUBLE_BED","value":'NON-AC-DB'}],
+  {"name":" NON-AC DOUBLE_BED","value":'NON-AC-DB'}
+],
 
   messages:{
     errors:{

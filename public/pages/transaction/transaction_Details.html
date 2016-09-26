@@ -3,7 +3,7 @@
     Room Profile
   </h1>
 </section>
-<section class="content" ng-init="getRoom()" >
+<section class="content"  >
   <div class="row">
     <div class="col-md-12">
       <div class="nav-tabs-custom">
@@ -17,18 +17,38 @@
         </ul>
         <div class="tab-content" >
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
-          <section class="content section-gh-room_list">
+          <!-- <section class="content section-gh-room_list" ng-init="getRoom()">
               <div class="row col-md-10" >
-                <div class="col-sm-3 pointer"  ng-repeat = "room in room_list" >
+                <div class="col-sm-3 pointer"  ng-repeat = "nonAvailebleRooms in room_list" >
                   <a class="room-listing-box" ng-click="getRoom(room._id,'details','AVAILABLE')" >
-                    <span>{{room.bookingStatus}}</span>
-                    <p>Capacity {{room.capacity}}</p>
-                    <p>Room No {{room.roomNo}}</p>
-                    <p>Price {{room.price}}</p>
+                    <span>{{nonAvailebleRooms.bookingStatus}}</span>
+                    <p>Capacity {{nonAvailebleRooms.capacity}}</p>
+                    <p>Room No {{nonAvailebleRooms.roomNo}}</p>
+                    <p>Price {{nonAvailebleRooms.price}}</p>
                   </a>
-                  <div class="checkbox btn-close" ng-if ="room.bookingStatus == 'AVAILABLE' ">
+                  <div class="checkbox btn-close" ng-if ="nonAvailebleRooms.bookingStatus == 'AVAILABLE' ">
                       <label>
                         <input type="checkbox" ng-model="room.isChecked">
+                      </label>
+                  </div>
+              </div>
+            </div>
+              <div class="row col-md-10">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
+              </div>
+          </section> -->
+          <section class="content section-gh-room_list" ng-init="getRoom()">
+              <div class="row col-md-10" >
+                <div class="col-sm-3 pointer"  ng-repeat = "availableRooms in room_list" >
+                  <a class="room-listing-box" ng-click="getRoom(room._id,'details','AVAILABLE')" >
+                    <span>{{availableRooms.bookingStatus}}</span>
+                    <p>Capacity {{availableRooms.capacity}}</p>
+                    <p>Room No {{availableRooms.roomNo}}</p>
+                    <p>Price {{availableRooms.price}}</p>
+                  </a>
+                  <div class="checkbox btn-close" ng-if ="availableRooms.bookingStatus == 'AVAILABLE' ">
+                      <label>
+                        <input type="checkbox" ng-model="availableRooms.isChecked">
                       </label>
                   </div>
               </div>

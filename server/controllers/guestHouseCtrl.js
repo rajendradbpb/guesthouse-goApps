@@ -93,7 +93,6 @@ exports.addRoom = function (req, res) {
 //       // select = "name  contactDetails establishDate rating MinPrice MaxPrice address";
 //     }
 //     else if(req.user._doc.role.type == "ghUser"){
-//
 //       query.guestHouse = req.user._doc._id;
 //       // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
 //     }
@@ -155,6 +154,7 @@ exports.getRoom = function (req, res) {
       });
   }
   else {
+
     var match = {};
     var aggregrate = [];
     // req.query.checkInDate ? req.query.checkInDate = new Date(req.query.checkInDate) : new Date();
@@ -162,11 +162,44 @@ exports.getRoom = function (req, res) {
       {'roomsDetails.checkInDate':{'$gte':new Date(req.query.checkInDate)}},
       {'roomsDetails.checkInDate':{'$lt': utility.getDateFormat({operation:"add",mode:"day",count:1,startDate:new Date(req.query.checkInDate)})}}
     ]
+
+    var query = {
+      "isDelete" : false,
+    };
+    if(req.query._id){
+      query._id = req.query._id;
+    }
+    if(req.query.status){
+      query.bookingStatus = req.query.status;
+    }
+    // adding price filter
+    if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
+        query.price = {
+          "$gte":parseInt(req.query.minPrice),
+          "$lte":parseInt(req.query.maxPrice)
+      }
+    }
+    // adding filter for the facility
+    if(req.query.facility && req.query.facility.split(",").length > 0 ){
+        query.facility = {
+          "$in":req.query.facility.split(",")
+      }
+    }
+    // adding filter for the room type
+    if(req.query.roomType && req.query.roomType.split(",").length > 0 ){
+        query.roomType = {
+          "$in":req.query.roomType.split(",")
+      }
+    }
+    // validating data as per the user requested
+    var select = {};
+
     // no condition as admin can access all
     if(req.user._doc.role.type == "ccare"){
       // select = "name  contactDetails establishDate rating MinPrice MaxPrice address";
     }
     else if(req.user._doc.role.type == "ghUser"){
+
       match['roomsDetails.guestHouse'] = mongoose.Types.ObjectId(req.user._doc._id);
       // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
     }
@@ -197,16 +230,30 @@ exports.getRoom = function (req, res) {
         }
         return res.json(response(200,"success",constants.messages.success.getData,data));
       })
+      query.guestHouse = req.user._doc._id;
+      // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
+    })
+    roomModelObj.find(query)
+    .deepPopulate("guestHouse")
+    .populate("facility")
+    // .select(select)
+    .exec()
+
+    .then(function(guestHouse) {
+      return res.json(response(200,"success",constants.messages.success.getData,guestHouse));
+
     })
     .catch(function(err) {
       return res.json(response(500,"error",constants.messages.errors.getData,err))
     })
+
     // tranctionModelObj.find({})
     // .populate('roomsDetails.room')
     // .exec()
     // .then(function(data) {
     //    return res.json(response(200,"success",constants.messages.success.getData,data));
     // })
+
 
   }
 }

@@ -58,6 +58,7 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
     if(_id)
       obj._id = _id;
     GuesthouseService.getRoom(obj,function(response){
+      console.log(response);
       $rootScope.showPreloader = false;
       if(searchType == "details"){
         $scope.currentTab = 'roomdetails';
@@ -75,7 +76,8 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       }
       else {
         // this is for listing
-        $scope.room_list = response.data;
+        $scope.room_list = response.data.availableRooms;
+        console.log($scope.room_list);
       }
     })
   }

@@ -14,10 +14,13 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   /*******************************************************/
   $scope.getRoom = function(_id,searchType,Status){
     $rootScope.showPreloader = true;
-    var obj = {};
+    var obj = {
+      "checkInDate" : Date()
+    };
     if(_id)
       obj._id = _id;
     GuesthouseService.getRoom(obj,function(response){
+      console.log(response);
     $rootScope.showPreloader = false;
       //console.log(response);
       if(searchType == "details" && Status == "AVAILABLE"){
@@ -36,7 +39,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       }
       else {
         // this is for listing
-        $scope.room_list = response.data;
+        $scope.room_list = response.data.availableRooms;
         console.log($scope.room_list);
       }
     })
