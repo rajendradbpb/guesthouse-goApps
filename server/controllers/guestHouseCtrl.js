@@ -226,7 +226,6 @@ exports.getRoom = function (req, res) {
             filters.price
             && trans1[i].roomsDetails[j].price >= req.query.minPrice
             && trans1[i].roomsDetails[j].price <= req.query.maxPrice ){
-              console.log("%%%%%%%%%%%%%%%%%%%%%%%%",trans1[i].roomsDetails[j].price);
               nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
               nonAvailableRooms.push(trans1[i].roomsDetails[j]);
 
@@ -240,7 +239,17 @@ exports.getRoom = function (req, res) {
         }
       }
       // getting availble rooms
-      roomModelObj.find({ _id: { $nin: nonAvailbleRoomsId }})
+      var query= {
+         "_id": { "$nin": nonAvailbleRoomsId }
+      }
+      // adding price filter
+      if(filters.price){
+        query.price = {
+            "$gte":parseInt(req.query.minPrice),
+            "$lte":parseInt(req.query.maxPrice)
+        }
+      }
+      roomModelObj.find(query)
       .lean()
       .exec(function(err,availableRooms) {
         var data = {
@@ -249,31 +258,9 @@ exports.getRoom = function (req, res) {
         }
         return res.json(response(200,"success",constants.messages.success.getData,data));
       })
-      query.guestHouse = req.user._doc._id;
+      // query.guestHouse = req.user._doc._id;
       // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
     })
-    roomModelObj.find(query)
-    .deepPopulate("guestHouse")
-    .populate("facility")
-    // .select(select)
-    .exec()
-
-    .then(function(guestHouse) {
-      return res.json(response(200,"success",constants.messages.success.getData,guestHouse));
-
-    })
-    .catch(function(err) {
-      return res.json(response(500,"error",constants.messages.errors.getData,err))
-    })
-
-    // tranctionModelObj.find({})
-    // .populate('roomsDetails.room')
-    // .exec()
-    // .then(function(data) {
-    //    return res.json(response(200,"success",constants.messages.success.getData,data));
-    // })
-
-
   }
 }
 /**
