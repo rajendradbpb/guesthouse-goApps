@@ -15,7 +15,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.getRoom = function(_id,searchType,Status){
     $rootScope.showPreloader = true;
     var obj = {
-      "checkInDate" : Date()
+      "checkInDate" : moment().format("MM-DD-YYYY")
     };
     if(_id)
       obj._id = _id;
