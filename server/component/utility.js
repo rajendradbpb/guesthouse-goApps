@@ -3,6 +3,7 @@ var responseObj = require('./../component/response');
 
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
+var moment = require('moment');
 var utility = {};
 utility.sendVerificationMail = function(userObj,callback) {
   var transporter = nodemailer.createTransport("SMTP", {
@@ -45,5 +46,28 @@ utility.sendVerificationMail = function(userObj,callback) {
  */
 utility.stringify = function(objData) {
   return JSON.stringify(objData);
+}
+/**
+ * functionName :utility.getDateFormat()
+ * Info : used to get the calculated date from the given paramereres with the format
+ * @param
+      operation - date operaton like add,substract
+      startDate - start date of the calculation
+      mode      - mode of calculation like day , hour etc
+      count     - count to of the operation
+ * output :string
+ * createdDate - 24-9-16
+ * updated on - 24-9-16
+ */
+utility.getDateFormat = function(objData) {
+  var formatDate = null;
+  switch (objData.operation) {
+    case 'add':
+      formatDate =  moment(new Date(objData.startDate)).add(objData.mode,objData.count).format()
+      break;
+    default:
+      console.log("getDateFormat  not mentioned ");
+  }
+  return new Date(formatDate); // here we converted to the javascript format as mongo db do not recognise momoment format
 }
 module.exports = utility;

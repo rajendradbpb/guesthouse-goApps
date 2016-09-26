@@ -43,6 +43,7 @@ var constants = {
       "roomIdRequired"      :   " roomID Required",
       "fromDateRequired"      :   " from Date Required",
       "toDateRequired"      :   " to Date Required",
+      "guestHouseRequried"      :   " guest House Requried",
       "inValidDateLimit"      :   " inValid Date Limit",
       "invalidRoomType"      :   " invalid Room Type",
       "roomTypeRequired"      :   " Room Type Required",

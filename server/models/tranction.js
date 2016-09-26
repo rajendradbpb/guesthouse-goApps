@@ -13,6 +13,7 @@ var deepPopulate = require('mongoose-deep-populate')(mongoose);
  * updated on -  21-9-2016 // reason for update
  */
 var roomDetailsSchema = new mongoose.Schema({
+  guestHouse        : {type: Schema.Types.ObjectId, ref: 'user', required:constants.messages.errors.guestHouseRequried },
   room              : {type: Schema.Types.ObjectId, ref: 'room', required:constants.messages.errors.roomIdRequired },
   checkInDate       : {type:Date , required:constants.messages.errors.dateRequired },
   checkOutDate      : {type:Date , default:null }, // will be updated at checkOut

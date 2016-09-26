@@ -6,7 +6,7 @@ var password = require('password-hash-and-salt');
 var config = require("config");
 var tranctionModelObj = require("./../models/tranction");
 var roomModelObj = require("./../models/room");
-
+var DateOnly = require('mongoose-dateonly')(mongoose);
 /*
 * Tranction crud operation starts
 */
@@ -69,11 +69,12 @@ exports.addTranction = function (req, res) {
       _id: { $in: req.body.rooms },
       guestHouse:req.user._doc._id
     }
-    console.log("query    ",query);
+    // console.log("query    ",query);
     roomModelObj.find(query).exec()
     .then(function(rooms) {
       if(rooms.length > 0){
         req.body.createdBy = req.body.updatedBy = req.user._doc._id;
+        req.body.createdDate = new Date();
         req.body.tranctionNo = req.body.tranctionNo;
         // creating rooms details array
         req.body.roomsDetails = [];
@@ -81,6 +82,7 @@ exports.addTranction = function (req, res) {
           req.body.roomsDetails[i] = {};
           req.body.roomsDetails[i]['room'] = rooms[i]._id;
           req.body.roomsDetails[i]['bookingStatus'] = req.body.bookingStatus; // keeping booking status same at create transaction
+          req.body.roomsDetails[i]['guestHouse'] = req.body.guestHouse; // adding guest house id
           if(req.body.checkInDate)
           {
             req.body.checkInDate = new Date(req.body.checkInDate);
@@ -175,6 +177,7 @@ exports.getTranction = function (req, res) {
     ]
   }
   aggregrate.push({$match:match});
+  // console.log("transaction  aggregrate",aggregrate);
   tranctionModelObj.aggregate(aggregrate).exec()
       .then(function(tranction) {
         // populate room after the aggregration
