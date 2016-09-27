@@ -30,10 +30,14 @@ roomSchema.plugin(uniqueValidator, {message: constants.messages.errors.guestHous
 roomSchema.plugin(deepPopulate, {
   whitelist: [
     'guestHouse',
+    'facility'
   ],
   populate: {
     'guestHouse': {
       select: 'email firstName lastName middleName minPrice maxPrice mobile establishDate address',
+    },
+    'facility': {
+      select: 'name',
     },
   }
 });

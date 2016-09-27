@@ -153,6 +153,20 @@ exports.getRoom = function (req, res) {
         }
       });
   }
+  // if user selects a room to get the details of the room
+  else if (req.query._id) {
+    var query = {
+      "_id":mongoose.Types.ObjectId(req.query._id)
+    }
+    if(req.user._doc.role.type == "ghUser"){
+          query.guestHouse = mongoose.Types.ObjectId(req.user._doc._id);
+    }
+    roomModelObj.find(query).deepPopulate("facility")
+    .exec()
+    .then(function(room) {
+      return res.json(response(200,"success",constants.messages.success.getData,room));
+    })
+  }
   else {
 
     var match = {};
@@ -173,16 +187,12 @@ exports.getRoom = function (req, res) {
       {'roomsDetails.checkInDate':{'$lt': utility.getDateFormat({operation:"add",mode:"day",count:1,startDate:new Date(req.query.checkInDate)})}}
     ]
 
-    var query = {
-      "isDelete" : false,
-    };
-    if(req.query._id){
-      query._id = req.query._id;
-    }
-    if(req.query.status){
-      query.bookingStatus = req.query.status;
-    }
-
+    // var query = {
+    //   "isDelete" : false,
+    // };
+    // if(req.query._id){
+    //   query._id = req.query._id;
+    // }
     // // adding filter for the facility
     // if(req.query.facility && req.query.facility.split(",").length > 0 ){
     //     query.facility = {
@@ -234,8 +244,6 @@ exports.getRoom = function (req, res) {
             nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
             nonAvailableRooms.push(trans1[i].roomsDetails[j]);
           }
-          // nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
-          // nonAvailableRooms.push(trans1[i].roomsDetails[j]);
         }
       }
       // getting availble rooms
@@ -258,8 +266,6 @@ exports.getRoom = function (req, res) {
         }
         return res.json(response(200,"success",constants.messages.success.getData,data));
       })
-      // query.guestHouse = req.user._doc._id;
-      // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
     })
   }
 }
