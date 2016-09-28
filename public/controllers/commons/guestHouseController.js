@@ -52,34 +52,29 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   /*******************************************************/
   /********This code is used to get all the room lists******/
   /*******************************************************/
-  $scope.getRoom = function(_id,searchType){
+  $scope.getRoom = function(){
     $rootScope.showPreloader = true;
-    var obj = {};
-    if(_id)
-      obj._id = _id;
+    var obj = {
+      "checkInDate" : moment().format("MM-DD-YYYY")
+    };
     GuesthouseService.getRoom(obj,function(response){
-      console.log(response);
       $rootScope.showPreloader = false;
-      if(searchType == "details"){
-        $scope.currentTab = 'roomdetails';
-        $scope.room = response.data[0];
-        angular.forEach($scope.facilities,function(item){
-           item.isChecked = false;
-          if($scope.room.facility.length > 0){
-            angular.forEach($scope.room.facility,function(facility){
-              if(facility._id == item._id){
-                 item.isChecked = true;
-              }
-            })
-          }
-        });
-      }
-      else {
-        // this is for listing
-        $scope.room_list = response.data.availableRooms;
-        console.log($scope.room_list);
-      }
+      $scope.room_list = response.data;
     })
+  }
+  $scope.getRoomDetails = function(room){
+    $scope.currentTab = 'roomdetails';
+    $scope.room = room;
+    angular.forEach($scope.facilities,function(item){
+       item.isChecked = false;
+      if($scope.room.facility.length > 0){
+        angular.forEach($scope.room.facility,function(facility){
+          if(facility == item._id){
+             item.isChecked = true;
+          }
+        })
+      }
+    });
   }
   /*******************************************************/
   /********This code is to update room details******/

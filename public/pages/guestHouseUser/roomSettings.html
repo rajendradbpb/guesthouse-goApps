@@ -14,19 +14,35 @@
         </ul>
         <div class="tab-content" >
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
-            <section class="content section-gh-room_list">
-              <div class="row" >
-                <div class="col-sm-3 pointer"  ng-repeat = "room in room_list" >
-                  <a class="room-listing-box" ng-click="getRoom(room._id,'details')">
-                    <span>{{room.bookingStatus}}</span>
-                    <p>Capacity {{room.capacity}}</p>
-                    <p>Room No {{room.roomNo}}</p>
-                    <p>Price {{room.price}}</p>
-                  </a>
-                <i class="fa fa-times btn-close" ng-click="deleteRoom(room._id)"></i>
+            <section class="content section-gh-room_list" ng-init="getRoom()">
+                <div class="row col-md-10" >
+                  <div class="col-sm-3 pointer"  ng-repeat = "availableRooms in room_list.availableRooms" >
+                    <a class="room-listing-box" ng-click="getRoomDetails(availableRooms)" >
+                      <span>{{availableRooms.bookingStatus}}</span>
+                      <p>Capacity {{availableRooms.capacity}}</p>
+                      <p>Room No {{availableRooms.roomNo}}</p>
+                      <p>Price {{availableRooms.price}}</p>
+                    </a>
+                    <div class="checkbox btn-close" ng-if ="availableRooms.bookingStatus == 'AVAILABLE' ">
+                        <label>
+                          <input type="checkbox" ng-model="availableRooms.isChecked">
+                        </label>
+                    </div>
                 </div>
               </div>
-              <!-- <room-filter type="1"></room-filter> -->
+              <div class="row col-md-10">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
+              </div>
+              <div class="row col-md-10 m-t-lg" >
+                <div class="col-sm-3 pointer"  ng-repeat = "room in room_list.nonAvailebleRooms" >
+                  <a class="room-listing-box" ng-click="getRoomDetails(room.room)" >
+                    <span>{{room.bookingStatus}}</span>
+                    <p>Capacity {{room.room.capacity}}</p>
+                    <p>Room No {{room.room.roomNo}}</p>
+                    <p>Price {{room.room.price}}</p>
+                  </a>
+              </div>
+            </div>
             </section>
             <room-filter filter="1" model-value="room_list"></room-filter>
           </div>

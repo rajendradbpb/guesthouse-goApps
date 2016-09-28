@@ -10,39 +10,31 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     $scope.currentTab1 = tab;
   }
   /*******************************************************/
-  /********This code is used to get all the room lists******/
+  /*******This code is used to get all the room lists*****/
   /*******************************************************/
-  $scope.getRoom = function(_id,searchType,Status){
+  $scope.getRoom = function(){
     $rootScope.showPreloader = true;
     var obj = {
       "checkInDate" : moment().format("MM-DD-YYYY")
     };
-    if(_id)
-      obj._id = _id;
     GuesthouseService.getRoom(obj,function(response){
-      console.log(response);
-    $rootScope.showPreloader = false;
-      //console.log(response);
-      if(searchType == "details" && Status == "AVAILABLE"){
-        $scope.currentTab = 'roomdetails';
-        $scope.room = response.data[0];
-        angular.forEach($scope.facilities,function(item){
-           item.isChecked = false;
-          if($scope.room.facility.length > 0){
-            angular.forEach($scope.room.facility,function(facility){
-              if(facility._id == item._id){
-                 item.isChecked = true;
-              }
-            })
-          }
-        });
-      }
-      else {
-        // this is for listing
-        $scope.room_list = response.data.availableRooms;
-        console.log($scope.room_list);
-      }
+      $rootScope.showPreloader = false;
+      $scope.room_list = response.data;
     })
+  }
+  $scope.getRoomDetails = function(room){
+    $scope.currentTab = 'roomdetails';
+    $scope.room = room;
+    angular.forEach($scope.facilities,function(item){
+       item.isChecked = false;
+      if($scope.room.facility.length > 0){
+        angular.forEach($scope.room.facility,function(facility){
+          if(facility == item._id){
+             item.isChecked = true;
+          }
+        })
+      }
+    });
   }
   $scope.bookRoom = function(_id){
     $scope.selectedRooms = [];
@@ -92,12 +84,12 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "identity" : $scope.transaction.identity,
       "purpose"    : $scope.transaction.purpose,
       "checkInDate" : $scope.transaction.checkInDate,
-      "bookingStatus" : $scope.transaction.status
+      "bookingStatus" : $scope.transaction.status,
+      "guestHouse" : $rootScope.logedInUser._id
     }
     console.log(obj);
     transactionService.addTransaction(obj,function(response){
     $rootScope.showPreloader = false;
-       //console.log($scope.transaction);
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
           // refresh the room list and change the tab to the room list
