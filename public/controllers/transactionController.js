@@ -15,12 +15,25 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.getRoom = function(){
     $rootScope.showPreloader = true;
     var obj = {
-      "checkInDate" : moment().format("MM-DD-YYYY")
+       "checkInDate" : moment().format("MM-DD-YYYY")
     };
     GuesthouseService.getRoom(obj,function(response){
       $rootScope.showPreloader = false;
+      // var availableRooms = [];
+      // var nonAvailebleRooms = [];
+      // $scope.filtered_object = {};
       $scope.room_list = response.data;
-    })
+      console.log($scope.room_list);
+    //   angular.forEach($scope.room_list.availableRooms, function(item){
+    //       availableRooms.push(item);
+    //  })
+    //used for search rooms without checking the facilities
+  //   $scope.filtered_object.availableRooms = availableRooms;
+  //   angular.forEach($scope.room_list.nonAvailebleRooms, function(item){
+  //       nonAvailebleRooms.push(item);
+  //  })
+  //  $scope.filtered_object.nonAvailebleRooms = nonAvailebleRooms;
+   })
   }
   $scope.getRoomDetails = function(room){
     $scope.currentTab = 'roomdetails';
@@ -39,7 +52,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.bookRoom = function(_id){
     $scope.selectedRooms = [];
     $scope.selectedRoomsPrice = 0;
-    angular.forEach($scope.room_list,function(room,key) {
+    angular.forEach($scope.room_list.availableRooms,function(room,key) {
       if(room.isChecked){
         $scope.selectedRooms.push(room);
         $scope.selectedRoomsPrice+=room.price;

@@ -35,8 +35,23 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   /*******************************************************/
   $scope.addRoom = function(form) {
     $scope.room.facility = UtilityService.getSelectedIds($scope.facilities,"isChecked",true);
+    var roomfacility =$scope.room.facility;
     $rootScope.showPreloader = true;
-    GuesthouseService.addRoom($scope.room, function(response){
+    var obj ={
+      "roomNo":$scope.room.roomNo,
+      "roomType" :$scope.room.roomType,
+      "price" :$scope.room.price,
+      // "isOffer" :$scope.isoffer.checked,
+      // "offerPrice":$scope.room.offerprice,
+      "facility":roomfacility,
+      "capacity ":$scope.room.capacity,
+      "guestHouse" : $rootScope.logedInUser._id
+    }
+    if($scope.isoffer.ischecked){
+      obj.isOffer = true;
+      obj.offerPrice = $scope.room.offerprice;
+    }
+    GuesthouseService.addRoom(obj, function(response){
     $rootScope.showPreloader = false;
       console.log($scope.room);
       if(response.statusCode == 200){
@@ -55,16 +70,19 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
   $scope.getRoom = function(){
     $rootScope.showPreloader = true;
     var obj = {
-      "checkInDate" : moment().format("MM-DD-YYYY")
+       "checkInDate" : moment().format("MM-DD-YYYY")
     };
     GuesthouseService.getRoom(obj,function(response){
+      console.log($scope.room_list);
       $rootScope.showPreloader = false;
       $scope.room_list = response.data;
+
     })
   }
   $scope.getRoomDetails = function(room){
     $scope.currentTab = 'roomdetails';
     $scope.room = room;
+    console.log($scope.room);
     angular.forEach($scope.facilities,function(item){
        item.isChecked = false;
       if($scope.room.facility.length > 0){
