@@ -16,6 +16,10 @@ var moment = require("moment");
 exports.addRoom = function (req, res) {
     req.body.createdBy = req.body.updatedBy = req.user._doc._id;
     req.body.guestHouse = req.user._doc._id;
+    if(!req.body.isOffer || !req.body.offerPrice || !(req.body.offerPrice < req.body.price)){
+      delete req.body['isOffer'];
+      delete req.body['offerPrice'];
+    }
     roomModelObj(req.body).save(function (err, user) {
       if(err)
       {
