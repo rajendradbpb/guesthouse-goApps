@@ -23,14 +23,14 @@
                       <p>Room No {{availableRooms.roomNo}}</p>
                       <p>Price {{availableRooms.price}}</p>
                     </a>
-                    <a class="offer-Zone" >
+                    <!-- <a class="offer-Zone" >
                         <span>
                           hj
                         </span>
-                    </a>
-                    <div class="checkbox btn-close" ng-if ="availableRooms.bookingStatus == 'AVAILABLE' ">
+                    </a> -->
+                    <div class="checkbox btn-close">
                         <label>
-                          <input type="checkbox" ng-model="availableRooms.isChecked">
+                          <i class="fa fa-times btn-close" aria-hidden="true" ng-click="deleteRoom(availableRooms._id)"></i>
                         </label>
                     </div>
                 </div>
