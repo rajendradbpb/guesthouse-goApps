@@ -19,20 +19,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     };
     GuesthouseService.getRoom(obj,function(response){
       $rootScope.showPreloader = false;
-      // var availableRooms = [];
-      // var nonAvailebleRooms = [];
-      // $scope.filtered_object = {};
       $scope.room_list = response.data;
-      console.log($scope.room_list);
-    //   angular.forEach($scope.room_list.availableRooms, function(item){
-    //       availableRooms.push(item);
-    //  })
-    //used for search rooms without checking the facilities
-  //   $scope.filtered_object.availableRooms = availableRooms;
-  //   angular.forEach($scope.room_list.nonAvailebleRooms, function(item){
-  //       nonAvailebleRooms.push(item);
-  //  })
-  //  $scope.filtered_object.nonAvailebleRooms = nonAvailebleRooms;
    })
   }
   $scope.getRoomDetails = function(room){
@@ -96,11 +83,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "idproofno" :$scope.transaction.idproofno,
       "identity" : $scope.transaction.identity,
       "purpose"    : $scope.transaction.purpose,
-      "checkInDate" : $scope.transaction.checkInDate,
+      "checkInDate" : moment($scope.transaction.checkInDate).format("MM-DD-YYYY"),
       "bookingStatus" : $scope.transaction.status,
       "guestHouse" : $rootScope.logedInUser._id
     }
-    console.log(obj);
     transactionService.addTransaction(obj,function(response){
     $rootScope.showPreloader = false;
       if(response.statusCode == 200){
@@ -156,15 +142,22 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
    $scope.$watch('selectedTransaction.checkOutDate',function(value) {
      if(!$scope.selectedTransaction)
      return;
-     if(moment($scope.selectedTransaction.checkOutDate) < moment($scope.selectedTransaction.checkInDate)){
-       console.log("checkOutDate < checkInDate");
+     if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
        $scope.selectedTransaction.checkOutDate = null;
      }
      else {
-       console.log("checkOutDate > checkInDate");
+       var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
+       var to = moment($scope.selectedTransaction.checkOutDate);
+       var different = to.diff(from,'days');
+       $scope.selectedTransaction.totalPrice = $scope.roomPrice * different;
+       $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
      }
    })
-
+   $scope.calculateDiscount = function(){
+     if($scope.selectedTransaction.totalPrice < $scope.tempTotPrice){
+       $scope.selectedTransaction.discount = $scope.tempTotPrice - $scope.selectedTransaction.totalPrice;
+     }
+   }
 
    /**
     * $scope.serchTransaction
@@ -197,11 +190,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     */
    $scope.onSelectTransaction = function(transaction){
      $scope.selectedTransaction = transaction;
-     console.log($scope.selectedTransaction);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        room.isSelect = false;
+       room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
      });
-
      $scope.transactionTab('transactionDetails');
      $scope.ReportListTab('Transactiondetails');
    }
@@ -214,8 +206,15 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * updated on -  5-9-2016 // reason for update
     */
    $scope.gotoCheckOut = function(){
-     console.log($scope.selectedTransaction.rooms);
+     console.log($scope.selectedTransaction);
+     $scope.roomPrice = 0;
+     $scope.selectedTransaction.discount = 0;
      $scope.transactionTab('checkOut');
+     angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
+       if(room.isSelect){
+         $scope.roomPrice += room.price;
+       }
+     })
    }
    /**
     * functionName : checkOut
