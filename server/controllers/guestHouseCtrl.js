@@ -246,7 +246,7 @@ exports.getRoom = function (req, res) {
       var nonAvailbleRoomsId = [];
       var nonAvailableRooms = [];
       for(var i in trans1){
-        for(var j in trans1[i].roomsDetails){
+        for(var j = 0 ; trans1[i].roomsDetails[j] && trans1[i].roomsDetails[j].bookingStatus != "AVAILABLE" ; j++){
 
           // adding price filter
           if(

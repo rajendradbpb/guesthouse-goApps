@@ -8,6 +8,7 @@ var tranctionModelObj = require("./../models/tranction");
 var tranctionHistoryModelObj = require("./../models/tranctionHistory");
 var roomModelObj = require("./../models/room");
 var DateOnly = require('mongoose-dateonly')(mongoose);
+var utility = require('./../component/utility');
 /*
 * Tranction crud operation starts
 */
@@ -255,32 +256,40 @@ exports.udpateTranction = function (req, res) {
   // req.body.isPayment = true;
 
   if(req.body.type == "checkOut"){
-      tranctionModelObj.findById(id).exec().then(function(transaction) {
-        // var statusObj = validateCheckOut(transaction.roomsDetails,req.body);
-        // if(!statusObj.status){
-        //   return res.json(response(402,"failed","check out failed",statusObj.reason))
-        // }
-        // adding record to the transaction history
-        var historyObj = createTransactionHistory(transaction,req.body);
-        historyObj.createdBy = historyObj.updatedBy = req.user._doc._id;
-        // return tranctionHistoryModelObj(historyObj).save();
-
-        tranctionHistoryModelObj(historyObj).save(function(err,hist) {
-          if(err)
-            return res.json(response(500,"error","error in check out  ",err))
-            else {
-              return res.json(response(200,"success","check out success ",hist))
-            }
-        })
+      tranctionModelObj.findById(id)
+      .exec()
+      .then(function(transaction) {
+        var statusObj = validateCheckOut(transaction.roomsDetails,req.body);
+        if(!statusObj.status){
+          return res.json(response(402,"failed","check out failed",statusObj.reason))
+        }
+        // update the room status to AVAILABLE
+        for(var i=0 ; i < transaction.roomsDetails.length && req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)) != -1 ; i++){
+          transaction.roomsDetails[i].bookingStatus = "AVAILABLE";
+          transaction.roomsDetails[i].checkDate = new Date(); // setting check out date as same day
+        }
+        return transaction.save();
       })
-      // .then(function(transactionHist) {
-      //   return res.json(response(200,"success","check out success ",transaction))
-      // })
+      .then(function(transaction) {
+        // saving the information into history object
+        console.log("req.user._doc._id    ",req.user._doc._id);
+        var obj = {
+          transaction    :  transaction,
+          rooms    :  req.body.rooms,
+          price    :  req.body.price,
+          discount    :  req.body.discount,
+          createdBy   : req.user._doc._id,
+          updatedBy   : req.user._doc._id
+        }
+        return tranctionHistoryModelObj(obj).save()
+
+      })
+      .then(function(history){
+        return res.json(response(200,"success","check out success "))
+      })
       .catch(function(err) {
         return res.json(response(500,"error","error in check out  ",err))
       })
-
-
   }
   else {
     return res.json(response(402,"failed","check out failed  "))
@@ -301,15 +310,14 @@ function validateCheckOut(roomdetailsArr,inputData){
     reason:"",
   };
   var totalPrice = 0 ;
-  for(var i=0 ; i < roomdetailsArr.length && inputData.rooms.indexOf(String(roomdetailsArr[0].room)) != -1 ; i++){
+  for(var i=0 ; i < roomdetailsArr.length && inputData.rooms.indexOf(String(roomdetailsArr[i].room)) != -1 ; i++){
     // check in room status
-    console.log("roomdetailsArr[i].bookingStatus   ",roomdetailsArr[i].bookingStatus);
     if(roomdetailsArr[i].bookingStatus != "CHECKED-IN"){
       statusObj.status = false;
       statusObj.reason = "Only CHECKED-IN allowed for the checkout";
       break;
     }
-    totalPrice += roomdetailsArr[i].price;
+    totalPrice += roomdetailsArr[i].price * utility.dateDiff(roomdetailsArr[i].checkInDate);
   }
   if(statusObj.status == null && totalPrice == (inputData.price + inputData.discount)){
     statusObj.status = true;
@@ -318,7 +326,6 @@ function validateCheckOut(roomdetailsArr,inputData){
   else if(statusObj.status == null){
     statusObj.status = false;
     statusObj.reason = "Price malfunctioned";
-
   }
   return statusObj;
 }

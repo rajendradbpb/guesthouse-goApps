@@ -70,4 +70,23 @@ utility.getDateFormat = function(objData) {
   }
   return new Date(formatDate); // here we converted to the javascript format as mongo db do not recognise momoment format
 }
+
+/**
+ * functionName :utility.dateDiff()
+ * Info : used to get the date difference
+ * @param
+      startDate , end date
+ * output :Number
+ * createdDate - 01-10-16
+ * updated on - 01-10-16
+ */
+utility.dateDiff = function(startDate,endDate) {
+  startDate = moment(new Date(startDate));
+  endDate   = endDate ? moment(new Date(endDate)) : moment(new Date());
+  var days = endDate.diff(startDate, 'days');
+  days = days || 1;
+  console.log("days  ",days);
+  return days;
+
+}
 module.exports = utility;
