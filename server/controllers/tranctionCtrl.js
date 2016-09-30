@@ -5,6 +5,7 @@ var constants = require("./../../config/constants");
 var password = require('password-hash-and-salt');
 var config = require("config");
 var tranctionModelObj = require("./../models/tranction");
+var tranctionHistoryModelObj = require("./../models/tranctionHistory");
 var roomModelObj = require("./../models/room");
 var DateOnly = require('mongoose-dateonly')(mongoose);
 /*
@@ -196,53 +197,153 @@ exports.getTranction = function (req, res) {
 
 }
 
+// exports.udpateTranction = function (req, res) {
+//   var id = req.body._id;
+//   delete req.body['_id']; //  removed to avoid the _id mod error
+//   req.body.updatedBy = req.user._doc._id;
+//   req.body.checkOutDate = req.body.checkOutDate || new Date();
+//   // req.body.isPayment = true;
+//
+//   if(req.body.type == "checkOut"){
+//       tranctionModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,transaction) {
+//       if(err)
+//       {
+//         return res.json(response(500,"error",constants.messages.errors.updateData,err))
+//       }
+//       else if (!transaction) {
+//         return res.json(response(202,"success",constants.messages.errors.noData))
+//       }
+//       else {
+//         // update the room status to AVAILABLE
+//         console.log("transaction updated");
+//
+//         var query = {
+//           "_id": { "$in": req.body.rooms },
+//         };
+//         var update = {
+//             "bookingStatus" : "AVAILABLE"
+//         };
+//         var options = {
+//           "new" : true,
+//           "multi":true
+//         };
+//         roomModelObj.update(query,update,options).exec(function(err,updatedRooms) {
+//           if(err)
+//           {
+//             return res.json(response(500,"error",constants.messages.errors.updateData,err))
+//           }
+//           else if (!updatedRooms) {
+//             return res.json(response(202,"success",constants.messages.errors.noData))
+//           }
+//           else {
+//             // creating new token with the new user details
+//             return res.json(response(200,"success",constants.messages.success.updateData))
+//           }
+//         })
+//       }
+//     });
+//   }
+//   else {
+//     return res.json(response(402,"failed",constants.messages.errors.noOperation))
+//   }
+// }
 exports.udpateTranction = function (req, res) {
   var id = req.body._id;
   delete req.body['_id']; //  removed to avoid the _id mod error
   req.body.updatedBy = req.user._doc._id;
   req.body.checkOutDate = req.body.checkOutDate || new Date();
-  req.body.isPayment = true;
+  // req.body.isPayment = true;
 
   if(req.body.type == "checkOut"){
-      tranctionModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,transaction) {
-      if(err)
-      {
-        return res.json(response(500,"error",constants.messages.errors.updateData,err))
-      }
-      else if (!transaction) {
-        return res.json(response(202,"success",constants.messages.errors.noData))
-      }
-      else {
-        // update the room status to AVAILABLE
-        console.log("transaction updated");
+      tranctionModelObj.findById(id).exec().then(function(transaction) {
+        // var statusObj = validateCheckOut(transaction.roomsDetails,req.body);
+        // if(!statusObj.status){
+        //   return res.json(response(402,"failed","check out failed",statusObj.reason))
+        // }
+        // adding record to the transaction history
+        var historyObj = createTransactionHistory(transaction,req.body);
+        historyObj.createdBy = historyObj.updatedBy = req.user._doc._id;
+        // return tranctionHistoryModelObj(historyObj).save();
 
-        var query = {
-          "_id": { "$in": req.body.rooms },
-        };
-        var update = {
-            "bookingStatus" : "AVAILABLE"
-        };
-        var options = {
-          "new" : true,
-          "multi":true
-        };
-        roomModelObj.update(query,update,options).exec(function(err,updatedRooms) {
+        tranctionHistoryModelObj(historyObj).save(function(err,hist) {
           if(err)
-          {
-            return res.json(response(500,"error",constants.messages.errors.updateData,err))
-          }
-          else if (!updatedRooms) {
-            return res.json(response(202,"success",constants.messages.errors.noData))
-          }
-          else {
-            // creating new token with the new user details
-            return res.json(response(200,"success",constants.messages.success.updateData))
-          }
+            return res.json(response(500,"error","error in check out  ",err))
+            else {
+              return res.json(response(200,"success","check out success ",hist))
+            }
         })
-      }
-    });
+      })
+      // .then(function(transactionHist) {
+      //   return res.json(response(200,"success","check out success ",transaction))
+      // })
+      .catch(function(err) {
+        return res.json(response(500,"error","error in check out  ",err))
+      })
+
+
   }
   else {
-    return res.json(response(402,"failed",constants.messages.errors.noOperation))
+    return res.json(response(402,"failed","check out failed  "))
   }
+}
+
+/**
+ * functionName :validateCheckOut(rooms)
+ * Info : This is used to validate rooms and test price validation during the check out of the rooms
+ * input : roomdetailsArr,inputData
+ * output :true | false
+ * createdDate - 30-9-2016
+ * updated on -  30-9-2016 // reason for update
+ */
+function validateCheckOut(roomdetailsArr,inputData){
+  var statusObj = {
+    status:null,
+    reason:"",
+  };
+  var totalPrice = 0 ;
+  for(var i=0 ; i < roomdetailsArr.length && inputData.rooms.indexOf(String(roomdetailsArr[0].room)) != -1 ; i++){
+    // check in room status
+    console.log("roomdetailsArr[i].bookingStatus   ",roomdetailsArr[i].bookingStatus);
+    if(roomdetailsArr[i].bookingStatus != "CHECKED-IN"){
+      statusObj.status = false;
+      statusObj.reason = "Only CHECKED-IN allowed for the checkout";
+      break;
+    }
+    totalPrice += roomdetailsArr[i].price;
+  }
+  if(statusObj.status == null && totalPrice == (inputData.price + inputData.discount)){
+    statusObj.status = true;
+    statusObj.reason = "price validated";
+  }
+  else if(statusObj.status == null){
+    statusObj.status = false;
+    statusObj.reason = "Price malfunctioned";
+
+  }
+  return statusObj;
+}
+/**
+ * functionName :createTransactionHistory()
+ * Info : transaction,req.body
+ * input : used to create the TransactionHistory obj that will save in the TransactionHistory
+ * output :TransactionHistory obj
+ * createdDate - 30-9-2016
+ * updated on -  30-9-2016 // reason for update
+ */
+function createTransactionHistory(transaction,inputData){
+  var historyObj = {}
+  historyObj.transaction = transaction._id;
+  historyObj.checkInDate = transaction.roomsDetails[0].checkInDate; // as this will be same for all rooms
+  historyObj.checkOutDate = new Date(); // as this will be same for all rooms
+  historyObj.price = inputData.price;
+  historyObj.discount = inputData.discount;
+  historyObj.roomDetails = [];
+  for(var i=0 ; i < transaction.roomsDetails.length ; i++){
+    var roomDetails = {};
+    roomDetails.room = transaction.roomsDetails[i].room;
+    roomDetails.price = transaction.roomsDetails[i].price;
+    roomDetails.isOffer = transaction.roomsDetails[i].isOffer;
+    historyObj.roomDetails.push(roomDetails);
+  }
+  return historyObj;
 }

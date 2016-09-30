@@ -16,10 +16,7 @@ var moment = require("moment");
 exports.addRoom = function (req, res) {
     req.body.createdBy = req.body.updatedBy = req.user._doc._id;
     req.body.guestHouse = req.user._doc._id;
-    if(!req.body.isOffer || !req.body.offerPrice || !(req.body.offerPrice < req.body.price)){
-      delete req.body['isOffer'];
-      delete req.body['offerPrice'];
-    }
+    req.body = validateOffer(req.body);
     roomModelObj(req.body).save(function (err, user) {
       if(err)
       {
@@ -29,6 +26,22 @@ exports.addRoom = function (req, res) {
         return res.json(response(200,"success",constants.messages.success.saveGuestHouse))
       }
     });
+}
+/**
+ * functionName :validateOffer()
+ * Info : Used to validate the offer with the existing price , if not valid offer
+          will not consider to save offer details in the database
+ * input : reqBody
+ * output :reqBody
+ * createdDate - 30-9-2016
+ * updated on -  30-9-2016 // reason for update
+ */
+function validateOffer(reqBody){
+  if(!reqBody.isOffer || !reqBody.offerPrice || !(reqBody.offerPrice < reqBody.price)){
+    delete reqBody['isOffer'];
+    delete reqBody['offerPrice'];
+  }
+  return reqBody;
 }
 // exports.getRoom = function (req, res) {
 //   if(req.query.isDash == "1")
@@ -280,17 +293,19 @@ exports.getRoom = function (req, res) {
  * output : success / error
  * createdDate - 19-9-16
  * updated on -  19-9-16 // reason for update
+                30-9-16 // to Update the offer price details
  */
 exports.updateRoom = function (req, res) {
   // adding custom validation before update
   if(validator.isNull(req.body._id))
     return res.status(402).json(response(402,"failed",constants.messages.errors.roomIdRequired))
-  if(validator.isNull(req.body.roomType) || constants.roomType.indexOf(req.body.roomType) == -1)
-    return res.status(402).json(response(402,"failed",constants.messages.errors.invalidRoomType))
+  // if(validator.isNull(req.body.roomType) || constants.roomType.indexOf(req.body.roomType) == -1)
+  //   return res.status(402).json(response(402,"failed",constants.messages.errors.invalidRoomType))
   var id = req.body._id;
   delete req.body['_id']; //  removed to avoid the _id mod error
   req.body.updatedBy = req.user._doc._id;
   req.body.updatedDate = new Date();
+  req.body = validateOffer(req.body);
   roomModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,guestHouse) {
     if(err)
     {
