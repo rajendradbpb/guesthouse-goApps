@@ -7,7 +7,7 @@ var passport = require("passport");
 router.post('/', passport.authenticate('ghAuth', {session:false}) ,function(req, res, next) {
   reportCtrl.addReport(req, res);
 });
-router.get('/', function(req, res, next) {
+router.get('/', passport.authenticate('token', {session:false}),function(req, res, next) {
   reportCtrl.getReport(req, res);
 });
 router.put('/', passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
