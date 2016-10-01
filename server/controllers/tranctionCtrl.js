@@ -342,6 +342,7 @@ function validateCheckOut(roomdetailsArr,inputData){
     reason:"",
   };
   var totalPrice = 0 ;
+  console.log(">>>>>>>   ",roomdetailsArr.length , inputData.rooms);
   for(var i=0 ; i < roomdetailsArr.length && inputData.rooms.indexOf(String(roomdetailsArr[i].room)) != -1 ; i++){
     // check in room status
     if(roomdetailsArr[i].bookingStatus != "CHECKED-IN"){
@@ -359,6 +360,7 @@ function validateCheckOut(roomdetailsArr,inputData){
     statusObj.status = false;
     statusObj.reason = "Price malfunctioned";
   }
+  console.log("totalPrice   ",totalPrice);
   return statusObj;
 }
 /**

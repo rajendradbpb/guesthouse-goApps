@@ -106,7 +106,7 @@
             </section>
           </div>
           <div class="tab-pane" ng-class="{'active':currentTab == 'checkIn'}">
-            <section class="content " >
+            <section class="content "  ng-init="TotalPrice()">
               <div class="">
                 <div >
                   <form class="form-horizontal" name="bookroom" >
@@ -273,7 +273,7 @@
       </div>
       <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">
-         <section class="content " >
+         <section class="content ">
            <div class="">
              <div >
                <form class="form-horizontal" name="transactionDetails" >
@@ -310,12 +310,39 @@
                             <span class="help-block" ng-show="transactionDetails.address.$error.pattern && transactionDetails.address.$touched">Address should not  be numeric</span>
                          </div>
                      </div>
-                     <div class="form-group" >
-                       <label for="inputEmail3" class="col-sm-3 control-label">Rooms</label>
-                       <div class="col-sm-8">
-                         <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">select all<label  style="display:block;" ng-repeat="room in selectedTransaction.roomsDetails"><input type="checkbox" ng-model="room.isSelect">{{room.room.roomNo}} --Rs{{room.room.price}}</label>
+                     <div class="row" >
+                      <label for="inputEmail3" class="col-sm-3 control-label">Rooms</label>
+                       <div class="col-sm-5 col-sm-offset-57">
+                         <div class="box">
+                           <div class="box-body over-x-sc">
+                             <table id="example2" class="table">
+                               <thead>
+                                 <tr>
+                                   <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">Sl No</th>
+                                   <th>Room No</th>
+                                   <th>Price/Day</th>
+                                   <th>Total Price</th>
+                                 </tr>
+                               </thead>
+                               <tbody>
+                                 <tr ng-repeat="room in selectedTransaction.roomsDetails">
+                                   <td><input type="checkbox" ng-model="room.isSelect">{{$index+1}}</td>
+                                   <td>{{room.room.roomNo}}</td>
+                                   <td>{{room.room.price}}</td>
+                                   <td>{{selectedTransaction.totalPrice}}</td>
+                                 </tr>
+                               </tbody>
+                             </table>
+                           </div>
+                         </div>
                        </div>
                      </div>
+                     <!-- <div class="form-group" >
+                       <label for="inputEmail3" class="col-sm-3 control-label">Rooms</label>
+                       <div class="col-sm-8">
+                         <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">select all<label  style="display:block;" ng-repeat="room in selectedTransaction.roomsDetails"><input type="checkbox" ng-model="room.isSelect">{{room.room.roomNo}} Rs{{room.room.price}}</label>
+                       </div>
+                     </div> -->
                      <div class="form-group" ng-class="{'has-error': (transactionDetails.transaction_no.$invalid && transactionDetails.transaction_no.$touched)}">
                        <label for="inputEmail3" class="col-sm-3 control-label">Transaction No</label>
                          <div class="col-sm-8">
@@ -359,12 +386,15 @@
                      <div class="form-group ">
                         <label for="inputPassword3" class="col-sm-3 control-label">CheckIn Date</label>
                         <div class="col-sm-8">
-                         <input type="text" class="form-control" name="price"  ng-model="selectedTransaction.roomsDetails[0].checkInDate "  readonly>
+                         <input type="text" class="form-control" name="checkedinprice"  ng-model="selectedTransaction.roomsDetails[0].checkInDate "  readonly>
                        </div>
                     </div>
                     <div class="form-group ">
                       <label for="inputPassword3" class="col-sm-3 control-label">CheckOut Date</label>
-                       <date-viewer ng-model="selectedTransaction.checkOutDate" ></date-viewer>
+                      <div class="col-sm-8">
+                       <input type="text" class="form-control" name="checkoutprice"  ng-model="selectedTransaction.roomsDetails[0].checkOutDate"  readonly>
+                     </div>
+                       <!-- <date-viewer ng-model="selectedTransaction.checkOutDate" ></date-viewer> -->
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="col-sm-3 control-label">Price/Day</label>

@@ -84,6 +84,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "identity" : $scope.transaction.identity,
       "purpose"    : $scope.transaction.purpose,
       "checkInDate" : moment($scope.transaction.checkInDate).format("MM-DD-YYYY"),
+      "checkOutDate" : moment($scope.transaction.checkOutDate).format("MM-DD-YYYY"),
       "bookingStatus" : $scope.transaction.status,
       "guestHouse" : $rootScope.logedInUser._id
     }
@@ -153,11 +154,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
      }
    })
-   $scope.calculateDiscount = function(){
-     if($scope.selectedTransaction.totalPrice < $scope.tempTotPrice){
-       $scope.selectedTransaction.discount = $scope.tempTotPrice - $scope.selectedTransaction.totalPrice;
-     }
-   }
 
    /**
     * $scope.serchTransaction
@@ -190,12 +186,48 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     */
    $scope.onSelectTransaction = function(transaction){
      $scope.selectedTransaction = transaction;
+     console.log($scope.selectedTransaction);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        room.isSelect = false;
        room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
+       room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
+       if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
+         $scope.selectedTransaction.checkOutDate = null;
+       }
+       else {
+         var from = moment($scope.selectedTransaction.checkInDate);
+         var to = moment($scope.selectedTransaction.checkOutDate);
+         var different = to.diff(from,'days');
+         console.log(different);
+         if(different == 0){
+           $scope.selectedTransaction.totalPrice = $scope.selectedTransaction.roomsDetails[0].price * 1;
+         }
+         else {
+           $scope.selectedTransaction.totalPrice = $scope.selectedTransaction.roomsDetails[0].price * different;
+         }
+         $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
+       }
      });
      $scope.transactionTab('transactionDetails');
      $scope.ReportListTab('Transactiondetails');
+   }
+   /**
+    * functionName : calculateDiscount
+    * Info : used to make the room AVAILABLE and update the price as per the selected checkInDate and the checkOutDate and the payment
+    * input : transaction details
+    * output :...
+    * createdDate - 5-9-2016
+    * updated on -  5-9-2016 // reason for update
+    */
+   $scope.calculateDiscount = function(){
+     if($scope.selectedTransaction.totalPrice < $scope.tempTotPrice){
+       $scope.selectedTransaction.discount = $scope.tempTotPrice - $scope.selectedTransaction.totalPrice;
+     }
+     else {
+       if($scope.selectedTransaction.totalPrice > $scope.tempTotPrice){
+         $scope.selectedTransaction.discount = 0;
+       }
+     }
    }
    /**
     * functionName : gotoCheckOut
@@ -206,7 +238,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * updated on -  5-9-2016 // reason for update
     */
    $scope.gotoCheckOut = function(){
-     console.log($scope.selectedTransaction);
      $scope.roomPrice = 0;
      $scope.selectedTransaction.discount = 0;
      $scope.transactionTab('checkOut');
@@ -225,15 +256,26 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * updated on -  5-9-2016 // reason for update
     */
    $scope.checkOut = function(transaction){
-     transaction.type = "checkOut"; // add the type of the transaction update operation
-     transactionService.updateTransaction(transaction,function(response) {
-         $scope.getRoom(); // refresh the rooms
-         $scope.transactionTab('roomlists');
-       },
-       function(err){
-         Util.alertMessage('error', err.message);
+     var obj = {
+       "_id": $scope.selectedTransaction._id,
+       "price": parseFloat($scope.selectedTransaction.totalPrice),
+       "discount":$scope.selectedTransaction.discount,
+       "type":"checkOut",
+       "rooms":[]
+     }
+     angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
+       if(item.isSelect){
+         obj.rooms.push(item._id);
        }
-     )
+     })
+     transactionService.updateTransaction(obj,function(response) {
+        console.log(response);
+        // $scope.getRoom(); // refresh the rooms
+        // $scope.transactionTab('roomlists');
+     },
+     function(err){
+       Util.alertMessage('error', err.message);
+     });
    }
     /**
      * functionName : $scope.newRoomInit()
@@ -283,14 +325,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
         })
       }
     }
-    /**
-     * functionName :   $scope.checkDate
-     * Info :codes for check all rooms by checking select all checkbox
-     * input : ...
-     * output :...
-     * createdDate -23-9-2016
-     * updated on -  23-9-2016 // reason for update
-     */
      $scope.checkAll = function () {
         if ($scope.selectedAll) {
             $scope.selectedAll = true;
