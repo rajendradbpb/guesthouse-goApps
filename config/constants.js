@@ -4,7 +4,7 @@ var constants = {
   // roomType:[
   //   {"name":"AC SINGLE BED","value":"AC-SB"},
   //   "AC-DB","NON-AC-SB","NON-AC-DB"],
-  bookingStatus:["AVAILABLE","CHECKED-IN","BOOKED"],
+  bookingStatus:["AVAILABLE","CHECKED-IN","BOOKED","CHECK-OUT","BOOKING-CANCEL"],
   default:{
     "country" :"India",
     "state" :"Odisha",

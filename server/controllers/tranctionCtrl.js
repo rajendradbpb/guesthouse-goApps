@@ -264,7 +264,7 @@ exports.udpateTranction = function (req, res) {
           return res.json(response(402,"failed","check out failed",statusObj.reason))
         }
         // update the room status to AVAILABLE
-        for(var i=0 ; i < transaction.roomsDetails.length && req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)) != -1 ; i++){
+        for(var i=0 ; i < transaction.roomsDetails.length && req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)) != -1 && transaction.roomsDetails[i].bookingStatus == "CHECKED-IN" ; i++){
           transaction.roomsDetails[i].bookingStatus = "AVAILABLE";
           transaction.roomsDetails[i].checkDate = new Date(); // setting check out date as same day
         }
@@ -272,14 +272,14 @@ exports.udpateTranction = function (req, res) {
       })
       .then(function(transaction) {
         // saving the information into history object
-        console.log("req.user._doc._id    ",req.user._doc._id);
         var obj = {
           transaction    :  transaction,
           rooms    :  req.body.rooms,
           price    :  req.body.price,
           discount    :  req.body.discount,
           createdBy   : req.user._doc._id,
-          updatedBy   : req.user._doc._id
+          updatedBy   : req.user._doc._id,
+          transactionType: "CHECK-OUT"
         }
         return tranctionHistoryModelObj(obj).save()
 
@@ -291,8 +291,40 @@ exports.udpateTranction = function (req, res) {
         return res.json(response(500,"error","error in check out  ",err))
       })
   }
+  else if(req.body.type == "cancelBooking"){
+      tranctionModelObj.findById(id)
+      .exec()
+      .then(function(transaction) {
+        // update the room status to AVAILABLE
+        for(var i=0 ; i < transaction.roomsDetails.length && req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)) != -1 && transaction.roomsDetails[i].bookingStatus == "BOOKED" ; i++){
+          transaction.roomsDetails[i].bookingStatus = "AVAILABLE";
+          transaction.roomsDetails[i].checkDate = new Date(); // setting check out date as same day
+        }
+        return transaction.save();
+      })
+      .then(function(transaction) {
+        // saving the information into history object
+        var obj = {
+          transaction    :  transaction,
+          transactionType: "BOOKING-CANCEL",
+          rooms    :  req.body.rooms,
+          price    :  req.body.price,
+          discount    :  req.body.discount,
+          createdBy   : req.user._doc._id,
+          updatedBy   : req.user._doc._id
+        }
+        return tranctionHistoryModelObj(obj).save()
+
+      })
+      .then(function(history){
+        return res.json(response(200,"success","booking cancel success "))
+      })
+      .catch(function(err) {
+        return res.json(response(500,"error","error in booking cancel  ",err))
+      })
+  }
   else {
-    return res.json(response(402,"failed","check out failed  "))
+    return res.json(response(402,"failed","booking cancel failed  "))
   }
 }
 

@@ -7,6 +7,7 @@ var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var transactionHistorySchema = new mongoose.Schema({
   transaction        : {type: Schema.Types.ObjectId, ref: 'tranction', required:constants.messages.errors.transactionRequried },
+  transactionType    : {type: String, enum: constants.bookingStatus, required:constants.messages.errors.bookingStatusRequired},
   rooms              : [{type: Schema.Types.ObjectId, ref: 'room', required:constants.messages.errors.roomIdRequired }],
   price             : {type:Number , default:null }, // here the price may the original or the offer price
   discount             : {type:Number , default: 0 }, // here the price may the original or the offer price
