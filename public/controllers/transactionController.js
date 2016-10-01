@@ -321,7 +321,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
         $scope.currentTab1 = 'Reportdetails';
         //console.log("endDate > startDate");
         transactionService.getReport(obj,function(response) {
-          $scope.trasactionList = response.data;
+          $scope.reportsList = response.data;
         })
       }
     }

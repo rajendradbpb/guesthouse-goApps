@@ -274,7 +274,7 @@ exports.udpateTranction = function (req, res) {
         // saving the information into history object
         var obj = {
           transaction    :  transaction,
-          rooms    :  req.body.rooms,
+          // rooms    :  req.body.rooms,
           price    :  req.body.price,
           discount    :  req.body.discount,
           createdBy   : req.user._doc._id,
@@ -307,7 +307,7 @@ exports.udpateTranction = function (req, res) {
         var obj = {
           transaction    :  transaction,
           transactionType: "BOOKING-CANCEL",
-          rooms    :  req.body.rooms,
+          // rooms    :  req.body.rooms,
           price    :  req.body.price,
           discount    :  req.body.discount,
           createdBy   : req.user._doc._id,

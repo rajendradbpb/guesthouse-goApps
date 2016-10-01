@@ -1,0 +1,10 @@
+<div  ng-repeat="report in reports" ng-click="showReportDetails(report)" class="alert alert-info alert-dismissible pointer reportList">
+
+  <div class="price">
+      <p class=" ng-binding">Price : $200</p>
+      <p class="ng-binding ng-scope" ng-if="report.discount">discount : $100</p>
+  </div>
+  <p align="center">{{report.transaction.createdDate | dateformat}} </p>
+  <h4>Customer Name : {{report.transaction.cName}}</h4>
+  <h5>purpose : {{report.transaction.purpose}}</h5>
+</div>

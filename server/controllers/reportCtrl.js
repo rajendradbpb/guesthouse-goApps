@@ -24,25 +24,23 @@ exports.getReport = function (req, res) {
   // validating start date and end date
   if(req.query.fromDate > req.query.toDate)
     return res.status(402).json(response(402,"failed",constants.messages.errors.inValidDateLimit))
-  var match = {};
-  var aggregrate = [];
-  match["$and"] = [
+
+  var query = {};
+  query["$and"] = [
     {'createdDate':{'$gte':req.query.fromDate}},
-    {'createdDate':{'$lt': req.query.toDate}}
+    {'createdDate':{'$lt': utility.getDateFormat({operation:"add",mode:"day",count:1,startDate:new Date(req.query.toDate)})}}
   ]
-  aggregrate.push({$match:match});
-  console.log("aggregrate   ",utility.stringify(aggregrate));
-  tranctionHistoryModelObj.aggregate(aggregrate)
+  if(req.user._doc.role.type == "ghUser"){
+      query.createdBy = req.user._doc._id;
+  }
+  tranctionHistoryModelObj.find(query)
+  .deepPopulate('transaction.roomsDetails.room')
   .exec()
-  .then(function(trans) {
-    // return res.json(response(200,"success",constants.messages.success.getData,trans));
-    return tranctionHistoryModelObj.populate(trans,{ "path": "rooms" });
-  })
   .then(function(trans) {
     return res.json(response(200,"success",constants.messages.success.getData,trans));
   })
-  .catch(function(err) {
-    return res.json(response(500,"error","error in reports",err));
+  .catch(function(err){
+    return res.json(response(500,"error","error in history",err));
   })
 }
 /*

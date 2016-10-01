@@ -5067,3 +5067,8 @@ input[type=checkbox], input[type=radio]{
 .m-l-md{margin-left:15px;}
 .m-l-lg{margin-left:30px;}
 .text-strike{text-decoration: line-through}
+
+/*report page */
+.reportList .price {
+    float: right;
+}
