@@ -20,14 +20,14 @@ app.directive("roomFilter",function(){
       modelValue:'='
     },
     link: function(scope, element, attrs) {
-      console.log(scope.modelValue);
-      scope.$watch('filtered_object', function(value) {
-          scope.modelValue = value;
-      });
+      // scope.$watch('modelValue', function(value) {
+      //     console.log(value);
+      //     scope.modelValue = value;
+      // });
     }
   };
 })
-.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util) {
+.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util,$timeout) {
   $scope.find = {};
   $scope.room = {};
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
@@ -42,76 +42,27 @@ app.directive("roomFilter",function(){
   $scope.getRoomInfo = function(filter){
   // adding facilities selected
   var selectedFacilities = [];
-  // for(var i in $scope.facilities) {
-  //   if($scope.facilities[i].isChecked)
-  //   {
-  //     selectedFacilities.push(obj._id);
-  //   }
-  // }
+  for(var i in $scope.facilities) {
+    if($scope.facilities[i].isChecked)
+    {
+      selectedFacilities.push($scope.facilities[i]._id);
+    }
+  }
    var obj = {
      "minPrice" :$scope.find.minPrice,
      "maxPrice" :$scope.find.maxPrice,
      "checkInDate":moment($scope.find.checkInDate).format('MM-DD-YYYY'),
      "roomType":$scope.find.roomType,
-    //  "facilities" : selectedFacilities
+     "facilities" : selectedFacilities.toString()
    }
     if(filter=="1"){
       var checked_count = 0;
      GuesthouseService.getRoom(obj,function(response){
-      // $rootScope.showPreloader = true;
-       var availableRooms = [];
-       var nonAvailebleRooms = [];
-       $scope.filtered_object = {};
-       $scope.room_list = response.data;
-       angular.forEach($scope.room_list.availableRooms, function(item){
-         checked_count = 0;
-         if($scope.room.roomType == item.roomType){
-           checked_count ++;
-           availableRooms.push(item);
-         }
-         angular.forEach($scope.facilities, function(obj){
-          if(obj.isChecked){
-            checked_count++;
-            angular.forEach(item.facility,function(facility){
-              if(facility.name == obj.name ){
-                if (availableRooms.indexOf(item) < 0) {
-                  availableRooms.push(item);
-                }
-              }
-            })
-          }
-        })
-      })
-     //used for search rooms without checking the facilities
-     if(checked_count == 0){
-         availableRooms = $scope.room_list.availableRooms;
-     }
-     $scope.filtered_object.availableRooms = availableRooms;
-
-     angular.forEach($scope.room_list.nonAvailebleRooms, function(item){
-       checked_count = 0;
-       if($scope.room.roomType == item.roomType){
-         checked_count ++;
-         nonAvailebleRooms.push(item);
-       }
-       angular.forEach($scope.facilities, function(obj){
-        if(obj.isChecked){
-          checked_count++;
-          angular.forEach(item.facility,function(facility){
-            if(facility.name == obj.name ){
-              if (nonAvailebleRooms.indexOf(item) < 0) {
-                nonAvailebleRooms.push(item);
-              }
-            }
-          })
-        }
-      })
-    })
-   //used for search rooms without checking the facilities
-   if(checked_count == 0){
-       nonAvailebleRooms = $scope.room_list.nonAvailebleRooms;
-   }
-   $scope.filtered_object.nonAvailebleRooms = nonAvailebleRooms;
+      $timeout(function () {
+        $scope.modelValue.availableRooms = response.data.availableRooms;
+        $scope.modelValue.nonAvailebleRooms = response.data.nonAvailebleRooms;
+        console.log($scope.modelValue);
+      });
    })
  }
     else if(filter=="2"){
@@ -137,13 +88,18 @@ app.directive("roomFilter",function(){
  */
 $scope.allroomLists = function(){
   $rootScope.showPreloader = true;
-    GuesthouseService.getRoom(function(response){
-      $scope.filtered_array = [];
+    var obj = {
+      "checkInDate":moment($scope.find.checkInDate).format('MM-DD-YYYY'),
+    }
+    GuesthouseService.getRoom(obj,function(response){
+      // $scope.filtered_array = [];
       $rootScope.showPreloader = false;
-      $scope.room_list = response.data;
-      angular.forEach($scope.room_list, function(item){
-          $scope.filtered_array.push(item);
-      })
+      $scope.modelValue.availableRooms = response.data.availableRooms;
+      $scope.modelValue.nonAvailebleRooms = response.data.nonAvailebleRooms;
+      // angular.forEach($scope.room_list, function(item){
+      //     $scope.filtered_array.push(item);
+      // })
+
     })
 }
 /**

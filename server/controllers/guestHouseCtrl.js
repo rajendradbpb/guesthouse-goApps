@@ -270,8 +270,6 @@ exports.getRoom = function (req, res) {
             nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
             nonAvailableRooms.push(trans1[i].roomsDetails[j]);
           }
-          // console.log(">>>>>>>>>",req.query.facilities,  trans1[i].roomsDetails[j].room.facility.toString().split(","));
-          // console.log("$$$$$$$$$$$$$",underscore.intersection(req.query.facilities, trans1[i].roomsDetails[j].room.facility.toString().split(",")));
           if(filters.facilities && underscore.intersection(req.query.facilities, trans1[i].roomsDetails[j].room.facility.toString().split(",")).length){
             nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
             nonAvailableRooms.push(trans1[i].roomsDetails[j]);
@@ -301,6 +299,10 @@ exports.getRoom = function (req, res) {
         query.facility = {
             "$in":req.query.facilities
         }
+      }
+      // adding room type
+      if(filters.roomType){
+        query.roomType = req.query.roomType;
       }
       roomModelObj.find(query)
       .lean()
