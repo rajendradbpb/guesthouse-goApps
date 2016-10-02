@@ -40,11 +40,20 @@ app.directive("roomFilter",function(){
    * updated on -  4-9-2016 // reason for update
    */
   $scope.getRoomInfo = function(filter){
-
+  // adding facilities selected
+  var selectedFacilities = [];
+  // for(var i in $scope.facilities) {
+  //   if($scope.facilities[i].isChecked)
+  //   {
+  //     selectedFacilities.push(obj._id);
+  //   }
+  // }
    var obj = {
      "minPrice" :$scope.find.minPrice,
      "maxPrice" :$scope.find.maxPrice,
-     "checkInDate":moment($scope.find.checkInDate).format('MM-DD-YYYY')
+     "checkInDate":moment($scope.find.checkInDate).format('MM-DD-YYYY'),
+     "roomType":$scope.find.roomType,
+    //  "facilities" : selectedFacilities
    }
     if(filter=="1"){
       var checked_count = 0;
@@ -117,6 +126,7 @@ app.directive("roomFilter",function(){
       })
     }
 }
+
 /**
  * functionName : allroomLists()
  * Info : keeps the data of the current selected transaction and show in the transaction detials

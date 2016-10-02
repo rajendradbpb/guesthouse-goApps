@@ -9,7 +9,9 @@ var validator = require("validator");
 var tranctionModelObj = require("./../models/tranction");
 var utility = require("./../component/utility");
 var moment = require("moment");
-
+var underscore = require('underscore');
+var nodeUnique = require('node-unique-array');
+var unique = require('make-unique')
 /*
 * guest house rooms crud operation starts
 */
@@ -198,6 +200,13 @@ exports.getRoom = function (req, res) {
       req.query.maxPrice = parseInt(req.query.maxPrice);
       filters.price = true; // sets the price filter
     }
+    if(req.query.roomType){
+      filters.roomType = true;
+    }
+    if(req.query.facilities){
+      filters.facilities = true;
+      req.query.facilities = req.query.facilities.split(",");
+    }
     // req.query.checkInDate ? req.query.checkInDate = new Date(req.query.checkInDate) : new Date();
     match["$and"] = [
       {'roomsDetails.checkInDate':{'$gte':new Date(req.query.checkInDate)}},
@@ -257,12 +266,25 @@ exports.getRoom = function (req, res) {
               nonAvailableRooms.push(trans1[i].roomsDetails[j]);
 
           }
-          else if(!filters.price){
+          if(filters.roomType && trans1[i].roomsDetails[j].room.roomType == filters.roomType){
+            nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
+            nonAvailableRooms.push(trans1[i].roomsDetails[j]);
+          }
+          // console.log(">>>>>>>>>",req.query.facilities,  trans1[i].roomsDetails[j].room.facility.toString().split(","));
+          // console.log("$$$$$$$$$$$$$",underscore.intersection(req.query.facilities, trans1[i].roomsDetails[j].room.facility.toString().split(",")));
+          if(filters.facilities && underscore.intersection(req.query.facilities, trans1[i].roomsDetails[j].room.facility.toString().split(",")).length){
+            nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
+            nonAvailableRooms.push(trans1[i].roomsDetails[j]);
+
+          }
+          if(!filters.price && !filters.facilities  && !filters.roomType){
             nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
             nonAvailableRooms.push(trans1[i].roomsDetails[j]);
           }
         }
       }
+      nonAvailbleRoomsId = unique(nonAvailbleRoomsId);
+      nonAvailableRooms = unique(nonAvailableRooms);
       // getting availble rooms
       var query= {
          "_id": { "$nin": nonAvailbleRoomsId }
@@ -272,6 +294,12 @@ exports.getRoom = function (req, res) {
         query.price = {
             "$gte":parseInt(req.query.minPrice),
             "$lte":parseInt(req.query.maxPrice)
+        }
+      }
+      // adding facilities filter
+      if(filters.facilities){
+        query.facility = {
+            "$in":req.query.facilities
         }
       }
       roomModelObj.find(query)

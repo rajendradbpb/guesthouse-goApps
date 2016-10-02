@@ -354,8 +354,8 @@
                  </div>
                  <div class="form-group">
                    <div class="col-sm-offset-3 col-sm-3">
-                     <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'" type="button" class="btn btn-info pull-left" ng-click="gotoCheckOut()">Check Out</button>
-                     <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-left" ng-click="checkOut(selectedTransaction)">Cancel</button>
+                     <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'" type="button" class="btn btn-info pull-left" ng-click="gotoCheckOut('checkOut')">Check Out</button>
+                     <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-left" ng-click="gotoCheckOut('cancelBooking')">Cancel Booking</button>
                      <button type="submit" class="btn btn-default pull-right"  ng-click="transactionTab('transaction')">Back</button>
                    </div>
                    <div class="col-sm-12">

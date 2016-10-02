@@ -18,7 +18,7 @@
         <label for="inputEmail3">Room Features</label>
              <div class="radio" ng-repeat="feature in roomFeature">
                <label>
-                 <input type="radio" name="optionsRadios" id="optionsRadios_{{$index}}" ng-model="room.roomType" value="{{feature.value}}">
+                 <input type="radio" name="optionsRadios" id="optionsRadios_{{$index}}" ng-model="room.roomType" value="{{feature.value}}" ng-click="find.roomType = feature.value">
                 {{feature.name}}
                </label>
              </div>

@@ -237,7 +237,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * createdDate - 5-9-2016
     * updated on -  5-9-2016 // reason for update
     */
-   $scope.gotoCheckOut = function(){
+   $scope.gotoCheckOut = function(operation){
+     $scope.operationType = operation;
      $scope.roomPrice = 0;
      $scope.selectedTransaction.discount = 0;
      $scope.transactionTab('checkOut');
@@ -258,9 +259,9 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
    $scope.checkOut = function(transaction){
      var obj = {
        "_id": $scope.selectedTransaction._id,
-       "price": parseFloat($scope.selectedTransaction.totalPrice),
-       "discount":$scope.selectedTransaction.discount,
-       "type":"checkOut",
+       "price": $scope.operationType == "checkOut" ? parseFloat($scope.selectedTransaction.totalPrice):0,
+       "discount":$scope.operationType == "checkOut" ? $scope.selectedTransaction.discount:0,
+       "type":$scope.operationType,
        "rooms":[]
      }
      angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
