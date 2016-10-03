@@ -69,15 +69,14 @@ app.directive("roomFilter",function(){
       transactionService.getTransaction(obj,function(response) {
         console.log(response);
         //$rootScope.showPreloader = true;
-        $scope.filtered_array = [];
+        // $scope.filtered_array = [];
         $scope.trasactionList = response.data;
-        angular.forEach($scope.trasactionList,function(item){
-           $scope.filtered_array.push(item);
-        })
+        // angular.forEach($scope.trasactionList,function(item){
+        //    $scope.filtered_array.push(item);
+        // })
       })
     }
 }
-
 /**
  * functionName : allroomLists()
  * Info : keeps the data of the current selected transaction and show in the transaction detials
@@ -96,10 +95,11 @@ $scope.allroomLists = function(){
       $rootScope.showPreloader = false;
       $scope.modelValue.availableRooms = response.data.availableRooms;
       $scope.modelValue.nonAvailebleRooms = response.data.nonAvailebleRooms;
-      // angular.forEach($scope.room_list, function(item){
-      //     $scope.filtered_array.push(item);
-      // })
-
+      $scope.find = {};
+      $scope.room.roomType = false;
+      angular.forEach($scope.facilities,function(item){
+        item.isChecked = false;
+      })
     })
 }
 /**
@@ -113,11 +113,12 @@ $scope.allroomLists = function(){
   $scope.allTransactions = function(){
     transactionService.getTransaction(function(response) {
       //$rootScope.showPreloader = true;
-      $scope.filtered_array = [];
+      // $scope.filtered_array = [];
       $scope.trasactionList = response.data;
-      angular.forEach($scope.trasactionList,function(item){
-         $scope.filtered_array.push(item);
-      })
+      // angular.forEach($scope.trasactionList,function(item){
+      //    $scope.filtered_array.push(item);
+      // })
+      $scope.find = {};
     })
   }
 /**

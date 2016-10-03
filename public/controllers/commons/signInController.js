@@ -26,9 +26,9 @@ app.controller("SignInController",["$scope","$rootScope","CommonService","$state
           default:
         }
       }
-      else {
-        // clear existing token
-        $state.go("signIn");
+      else{
+        $state.go(signIn);
+          // Util.alertMessage('danger', pRes.data.message);
       }
     },
     function(err) {

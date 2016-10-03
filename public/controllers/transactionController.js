@@ -9,6 +9,11 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.ReportListTab = function(tab){
     $scope.currentTab1 = tab;
   }
+  $scope.showReportDetails = function(reports){
+    $scope.reportDetails = reports;
+    console.log($scope.reportDetails);
+    $scope.ReportListTab('viewReport');
+  }
   /*******************************************************/
   /*******This code is used to get all the room lists*****/
   /*******************************************************/
@@ -93,6 +98,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
           // refresh the room list and change the tab to the room list
+          $scope.transaction = {};
           $scope.getRoom();
           $scope.currentTab = 'roomlists';
       }
@@ -209,7 +215,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      });
      $scope.transactionTab('transactionDetails');
-     $scope.ReportListTab('Transactiondetails');
+    // $scope.ReportListTab('Transactiondetails');
    }
    /**
     * functionName : calculateDiscount
@@ -310,10 +316,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      * updated on -  21-9-2016 // reason for update
      */
     $scope.checkDate = function(){
-      var obj={
-        "fromDate" : $scope.transactionReport.startDate,
-        "toDate" : $scope.transactionReport.endDate
-      }
+      // var obj={
+      //   "fromDate" : $scope.transactionReport.startDate,
+      //   "toDate" : $scope.transactionReport.endDate
+      // }
       if(moment($scope.transactionReport.endDate) < moment($scope.transactionReport.startDate)){
         //console.log("endDate < startDate");
         $scope.transactionReport.endDate = null;
@@ -321,8 +327,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       else {
         $scope.currentTab1 = 'Reportdetails';
         //console.log("endDate > startDate");
-        transactionService.getReport(obj,function(response) {
+        transactionService.getReport(function(response) {
+          console.log(response);
           $scope.reportsList = response.data;
+          console.log($scope.reportsList);
         })
       }
     }
