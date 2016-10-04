@@ -270,6 +270,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        "type":$scope.operationType,
        "rooms":[]
      }
+     console.log(obj);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
        if(item.isSelect){
          obj.rooms.push(item._id);
@@ -277,8 +278,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      })
      transactionService.updateTransaction(obj,function(response) {
         console.log(response);
-        // $scope.getRoom(); // refresh the rooms
-        // $scope.transactionTab('roomlists');
+         $scope.getRoom(); // refresh the rooms
+         $scope.transactionTab('roomlists');
      },
      function(err){
        Util.alertMessage('error', err.message);

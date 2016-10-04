@@ -123,6 +123,7 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       $rootScope.showPreloader = true;
       GuesthouseService.deleteRoom(obj,function(response) {
       $rootScope.showPreloader = false;
+      console.log(response);
         if(response.statusCode == 200){
             $scope.getRoom();
         }
