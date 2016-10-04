@@ -57,6 +57,7 @@ var constants = {
       "upperLimitRequired"      :   "upper Limit Required",
       "roomNoRequired"      :   "room No Required",
       "ghPriceRequired"      :   "guest house Price Required",
+      "roomDeleteNotAvaiable"      :   "room Delete Not Avaiable as booked/checkIn ",
 
 
       "guestHouseExist"      :   "guest House Exist ",

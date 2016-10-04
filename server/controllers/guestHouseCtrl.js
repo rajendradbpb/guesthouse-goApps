@@ -285,7 +285,8 @@ exports.getRoom = function (req, res) {
       nonAvailableRooms = unique(nonAvailableRooms);
       // getting availble rooms
       var query= {
-         "_id": { "$nin": nonAvailbleRoomsId }
+         "_id": { "$nin": nonAvailbleRoomsId },
+         "isDelete":false
       }
       // adding price filter
       if(filters.price){
@@ -353,14 +354,37 @@ exports.updateRoom = function (req, res) {
 exports.deleteRoom = function (req, res) {
   req.query.updatedBy = req.user._doc._id;
   req.query.updatedDate = new Date();
-  roomModelObj.findByIdAndUpdate(req.query._id,{"isDelete":true},{"new" :true})
+  // checking for the rooms AVAILABLE status , only then room will be allowed to delete
+  var match = {
+    "roomsDetails.room" : mongoose.Types.ObjectId(req.query._id)
+  }
+  tranctionModelObj.aggregate([{$match:match}])
   .exec()
-  .then(function(err) {
-    return res.json(response(200,"success",constants.messages.errors.deleteData));
+  .then(function(nonAvailebleRooms) {
+    console.log("nonAvailebleRooms   ",nonAvailebleRooms);
+    if(nonAvailebleRooms.length){
+      return res.json(response(202,"failed",constants.messages.errors.roomDeleteNotAvaiable));
+    }
+    else {
+      console.log("room tobe deleted",req.query._id, typeof req.query._id);
+      roomModelObj.findByIdAndUpdate(req.query._id,{"isDelete":true},{"new" :true},function(err,roomData) {
+        if(err)
+          return res.json(response(500,"error",constants.messages.errors.deleteData,err))
+        else {
+
+          return res.json(response(200,"success",constants.messages.success.deleteData));
+        }
+      })
+
+      // .then(function(response) {
+      //   return res.json(response(200,"success",constants.messages.success.deleteData));
+      // })
+      // .catch(function(err) {
+      //   return res.json(response(500,"error",constants.messages.errors.deleteData,err))
+      // })
+    }
   })
-  .catch(function(data) {
-    return res.json(response(500,"error",constants.messages.success.deleteData,err))
-  })
+
 }
 
 /*
