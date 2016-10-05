@@ -89,10 +89,11 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "identity" : $scope.transaction.identity,
       "purpose"    : $scope.transaction.purpose,
       "checkInDate" : moment($scope.transaction.checkInDate).format("MM-DD-YYYY"),
-      "checkOutDate" : moment($scope.transaction.checkOutDate).format("MM-DD-YYYY"),
+      "checkOutDate" : $scope.transaction.checkOutDate,
       "bookingStatus" : $scope.transaction.status,
       "guestHouse" : $rootScope.logedInUser._id
     }
+    console.log(obj);
     transactionService.addTransaction(obj,function(response){
     $rootScope.showPreloader = false;
       if(response.statusCode == 200){
@@ -146,20 +147,20 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * updated on -  4-9- 2016
     */
 
-   $scope.$watch('selectedTransaction.checkOutDate',function(value) {
-     if(!$scope.selectedTransaction)
-     return;
-     if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
-       $scope.selectedTransaction.checkOutDate = null;
-     }
-     else {
-       var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
-       var to = moment($scope.selectedTransaction.checkOutDate);
-       var different = to.diff(from,'days');
-       $scope.selectedTransaction.totalPrice = $scope.roomPrice * different;
-       $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
-     }
-   })
+  //  $scope.$watch('selectedTransaction.checkOutDate',function(value) {
+  //    if(!$scope.selectedTransaction)
+  //    return;
+  //    if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
+  //      $scope.selectedTransaction.checkOutDate = null;
+  //    }
+  //    else {
+  //      var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
+  //      var to = moment($scope.selectedTransaction.checkOutDate);
+  //      var different = to.diff(from,'days');
+  //      $scope.selectedTransaction.totalPrice = $scope.roomPrice * different;
+  //      $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
+  //    }
+  //  })
 
    /**
     * $scope.serchTransaction
@@ -194,15 +195,16 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      $scope.selectedTransaction = transaction;
      console.log($scope.selectedTransaction);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
-       room.isSelect = false;
+       $scope.selectedAll = true;
+       room.isSelect = true;
        room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
-       room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
+        room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
        if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
          $scope.selectedTransaction.checkOutDate = null;
        }
        else {
-         var from = moment($scope.selectedTransaction.checkInDate);
-         var to = moment($scope.selectedTransaction.checkOutDate);
+         var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
+         var to = moment($scope.selectedTransaction.roomsDetails[0].checkOutDate);
          var different = to.diff(from,'days');
          console.log(different);
          if(different == 0){
@@ -254,6 +256,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      })
    }
+   $scope.bookingOperation = function(operation){
+     $scope.operationType = operation;
+     $scope.checkOut();
+   }
    /**
     * functionName : checkOut
     * Info : used to make the room AVAILABLE and update the price as per the selected checkInDate and the checkOutDate and the payment
@@ -262,7 +268,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * createdDate - 5-9-2016
     * updated on -  5-9-2016 // reason for update
     */
-   $scope.checkOut = function(transaction){
+   $scope.checkOut = function(){
      var obj = {
        "_id": $scope.selectedTransaction._id,
        "price": $scope.operationType == "checkOut" ? parseFloat($scope.selectedTransaction.totalPrice):0,
