@@ -238,16 +238,17 @@
                       </section>
                     </div> -->
                     <div class="form-group">
-                      <div class="col-sm-offset-3 col-sm-3">
+                      <!-- <div class="col-sm-offset-3 col-sm-3"> -->
                         <button type="button" class="btn btn-default" ng-click="transactionTab('roomlists')">Cancel</button>
                         <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking()">Submit</button>
-                      </div>
-                      <div class="col-sm-12">
+                      <!-- </div> -->
+                      <!-- <div class="col-sm-12"> -->
                         <section  align="center" class="m-t-sm">
                           <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
                         </section>
-                      </div>
+                      <!-- </div> -->
                     </div>
+
                     <!-- /.box-footer -->
                   </form>
                 </div>
@@ -357,7 +358,7 @@
                      </div>
                  </div>
                  <div class="form-group">
-                   <div class="col-sm-offset-3 col-sm-3">
+                   <div class="col-sm-offset-3 col-sm-8">
                      <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'" type="button" class="btn btn-info pull-right" ng-click="gotoCheckOut('checkOut')">Check Out</button>
                      <button type="button" class="btn btn-info pull-left"  ng-click="transactionTab('transaction')">Back</button>
                      <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" ng-click="bookingOperation('cancelBooking')">Cancel Booking</button>
@@ -421,15 +422,15 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-3">
+                    <!-- <div class="col-sm-offset-3 col-sm-3"> -->
                       <button type="button" class="btn btn-info pull-left" ng-click="checkOut()">Check Out</button>
                       <button type="submit" class="btn btn-default pull-right"  ng-click="transactionTab('transactionDetails')">Back</button>
-                    </div>
-                    <div class="col-sm-12">
+                    <!-- </div> -->
+                    <!-- <div class="col-sm-12"> -->
                       <section  align="center" class="m-t-sm">
                         <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
                       </section>
-                    </div>
+                    <!-- </div> -->
                   </div>
                   <!-- /.box-footer -->
                 </form>

@@ -67,13 +67,10 @@ app.directive("roomFilter",function(){
  }
     else if(filter=="2"){
       transactionService.getTransaction(obj,function(response) {
+        $scope.filtered_array = [];
         console.log(response);
-        //$rootScope.showPreloader = true;
-        // $scope.filtered_array = [];
-        $scope.trasactionList = response.data;
-        // angular.forEach($scope.trasactionList,function(item){
-        //    $scope.filtered_array.push(item);
-        // })
+        // $rootScope.showPreloader = true;
+        $scope.modelValue = response.data;
       })
     }
 }

@@ -25,6 +25,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     GuesthouseService.getRoom(obj,function(response){
       $rootScope.showPreloader = false;
       $scope.room_list = response.data;
+      console.log($scope.room_list);
    })
   }
   $scope.getRoomDetails = function(room){

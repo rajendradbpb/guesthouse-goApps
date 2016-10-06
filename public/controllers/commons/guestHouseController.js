@@ -47,9 +47,12 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       "capacity ":$scope.room.capacity,
       "guestHouse" : $rootScope.logedInUser._id
     }
-    if($scope.isoffer.ischecked){
+    if($scope.isoffer){
       obj.isOffer = true;
       obj.offerPrice = $scope.room.offerprice;
+    }
+    else {
+      $scope.room.offerprice = null;
     }
     GuesthouseService.addRoom(obj, function(response){
     $rootScope.showPreloader = false;
