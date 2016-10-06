@@ -52,6 +52,7 @@ var constants = {
       "tranctionNoExist"      :   " tranction No. already Exist",
       "transactionfailed"      :   " transaction failed",
       "checkInDateRequired"      :   " checkIn Date Required",
+      "checkOutDateRequired"      :   " check Out Date Required",
       "userRequired"      :   "user Required",
       "lowerLimitRequired"      :   "lower Limit Required",
       "upperLimitRequired"      :   "upper Limit Required",
@@ -81,6 +82,7 @@ var constants = {
         "saveGuestHouse"                 :   "save Guest House Error",
         "updateData"                 :   "update Data Error",
         "deleteData"                 :   "delete Data Error",
+        "checkedIn"                 :   "checkedIn Error",
     },
     success:{
       "getData"   :"get Data Success",
@@ -106,6 +108,7 @@ var constants = {
       "saveGuestHouse"                 :   "save Guest House Success",
       "updateData"                 :   "update Data Success",
       "deleteData"                 :   "delete Data Success",
+      "checkedIn"                 :   "checkedIn success",
     },
   },
   gmailSMTPCredentials : {

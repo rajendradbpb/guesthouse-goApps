@@ -209,8 +209,9 @@ exports.getRoom = function (req, res) {
     }
     // req.query.checkInDate ? req.query.checkInDate = new Date(req.query.checkInDate) : new Date();
     match["$and"] = [
-      {'roomsDetails.checkInDate':{'$gte':new Date(req.query.checkInDate)}},
-      {'roomsDetails.checkInDate':{'$lt': utility.getDateFormat({operation:"add",mode:"day",count:1,startDate:new Date(req.query.checkInDate)})}}
+      {'roomsDetails.checkInDate':{'$lte':new Date(req.query.checkInDate)}},
+      // {'roomsDetails.checkInDate':{'$lt': utility.getDateFormat({operation:"add",mode:"day",count:1,startDate:new Date(req.query.checkInDate)})}}
+      {'roomsDetails.checkOutDate':{'$gte': new Date(req.query.checkInDate)}}
     ]
 
     // var query = {

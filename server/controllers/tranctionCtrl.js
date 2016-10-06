@@ -248,7 +248,7 @@ exports.getTranction = function (req, res) {
 //     return res.json(response(402,"failed",constants.messages.errors.noOperation))
 //   }
 // }
-exports.udpateTranction = function (req, res) {
+exports.updateTransaction = function (req, res) {
   var id = req.body._id;
   delete req.body['_id']; //  removed to avoid the _id mod error
   req.body.updatedBy = req.user._doc._id;
@@ -322,6 +322,27 @@ exports.udpateTranction = function (req, res) {
       .catch(function(err) {
         return res.json(response(500,"error","error in booking cancel  ",err))
       })
+  }
+  else if (req.body.type == "checkedIn") {
+    var query = {
+      _id:id,
+      "roomsDetails":{"$elemMatch":{"bookingStatus":"BOOKED"} } ,
+    }
+    var update = {
+      "$set":{"roomsDetails.$.bookingStatus":"CHECKED-IN"}
+    }
+    var option = {
+      "new":true,
+      "upsert": true
+    }
+    // return tranctionModelObj.find({_id:id}).exec()
+    return tranctionModelObj.findOneAndUpdate(query,update,option).exec()
+    .then(function(transaction) {
+      return res.json(response(200,"success",constants.messages.success.checkedIn))
+    })
+    .catch(function(err) {
+      return res.json(response(500,"error",constants.messages.errors.checkedIn,err))
+    })
   }
   else {
     return res.json(response(402,"failed","booking cancel failed  "))

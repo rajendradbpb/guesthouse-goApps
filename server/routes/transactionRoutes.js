@@ -11,7 +11,7 @@ router.get('/', passport.authenticate('token', {session:false}),function(req, re
   tranctionCtrl.getTranction(req, res);
 });
 router.put('/', passport.authenticate('ghAuth', {session:false}), function(req, res, next) {
-  tranctionCtrl.udpateTranction(req, res);
+  tranctionCtrl.updateTransaction(req, res);
 });
 router.delete('/',passport.authenticate('isAdmin', {session:false}), function(req, res, next) {
   tranctionCtrl.deleteTranction(req, res);

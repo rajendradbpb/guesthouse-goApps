@@ -15,8 +15,8 @@ var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var roomDetailsSchema = new mongoose.Schema({
   guestHouse        : {type: Schema.Types.ObjectId, ref: 'user', required:constants.messages.errors.guestHouseRequried },
   room              : {type: Schema.Types.ObjectId, ref: 'room', required:constants.messages.errors.roomIdRequired },
-  checkInDate       : {type:Date , required:constants.messages.errors.dateRequired },
-  checkOutDate      : {type:Date , default:null }, // will be updated at checkOut
+  checkInDate       : {type:Date , required:constants.messages.errors.checkInDateRequired },
+  checkOutDate      : {type:Date , required:constants.messages.errors.checkOutDateRequired}, // will be updated at checkOut
   price             : {type:Number , default:null }, // here the price may the original or the offer price
   isOffer           : {type:Boolean , default:false  }, // checks the offer price or not
   bookingStatus     : {type: String, enum: constants.bookingStatus, required:constants.messages.errors.bookingStatusRequired},
