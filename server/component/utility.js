@@ -87,6 +87,5 @@ utility.dateDiff = function(startDate,endDate) {
   days = days || 1;
   console.log("days  ",days);
   return days;
-
 }
 module.exports = utility;

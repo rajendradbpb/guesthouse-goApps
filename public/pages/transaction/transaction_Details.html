@@ -362,7 +362,7 @@
                      <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'" type="button" class="btn btn-info pull-right" ng-click="gotoCheckOut('checkOut')">Check Out</button>
                      <button type="button" class="btn btn-info pull-left"  ng-click="transactionTab('transaction')">Back</button>
                      <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" ng-click="bookingOperation('cancelBooking')">Cancel Booking</button>
-                     <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" >Check In</button>
+                     <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" ng-click="checkin_booked()">Check In</button>
                    </div>
                    <div class="col-sm-12">
                      <section  align="center" class="m-t-sm">

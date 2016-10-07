@@ -292,6 +292,24 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        Util.alertMessage('error', err.message);
      });
    }
+   /**
+    * functionName : checkin_booked
+    * Info : used to make the room checkedIn if the room is booked  
+    * input : transaction details
+    * output :...
+    * createdDate - 5-9-2016
+    * updated on -  5-9-2016 // reason for update
+    */
+   $scope.checkin_booked = function(){
+     var obj={
+       "_id":$scope.selectedTransaction._id,
+       "type" :"checkedIn"
+     }
+     transactionService.updateTransaction(obj,function(response) {
+         $scope.getRoom(); // refresh the rooms
+         $scope.transactionTab('roomlists');
+     })
+   }
     /**
      * functionName : $scope.newRoomInit()
      * Info : dependencies codes for the date picker
