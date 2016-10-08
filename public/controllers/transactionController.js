@@ -9,11 +9,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.ReportListTab = function(tab){
     $scope.currentTab1 = tab;
   }
-  $scope.showReportDetails = function(reports){
-    $scope.reportDetails = reports;
-    console.log($scope.reportDetails);
-    $scope.ReportListTab('viewReport');
-  }
   /*******************************************************/
   /*******This code is used to get all the room lists*****/
   /*******************************************************/
@@ -25,7 +20,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     GuesthouseService.getRoom(obj,function(response){
       $rootScope.showPreloader = false;
       $scope.room_list = response.data;
-      console.log($scope.room_list);
    })
   }
   $scope.getRoomDetails = function(room){
@@ -76,7 +70,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
    * createdDate - 4-9-2016
    * updated on -  4-9-2016 // reason for update
    */
-  $scope.submitNewBooking = function(){
+  $scope.submitNewBooking = function(bookroom){
     $rootScope.showPreloader = true;
     var obj ={
       "otp":$scope.transaction.otp,
@@ -90,19 +84,19 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "identity" : $scope.transaction.identity,
       "purpose"    : $scope.transaction.purpose,
       "checkInDate" : moment($scope.transaction.checkInDate).format("MM-DD-YYYY"),
-      "checkOutDate" : $scope.transaction.checkOutDate,
+      "checkOutDate" : moment($scope.transaction.checkOutDate).format("MM-DD-YYYY"),
       "bookingStatus" : $scope.transaction.status,
       "guestHouse" : $rootScope.logedInUser._id
     }
-    console.log(obj);
     transactionService.addTransaction(obj,function(response){
     $rootScope.showPreloader = false;
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
           // refresh the room list and change the tab to the room list
-          $scope.transaction = {};
           $scope.getRoom();
           $scope.currentTab = 'roomlists';
+          $scope.transaction = {};
+          UtilityService.resetForm(bookroom);
       }
       else {
           Util.alertMessage('danger', response.message);
@@ -148,20 +142,20 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * updated on -  4-9- 2016
     */
 
-  //  $scope.$watch('selectedTransaction.checkOutDate',function(value) {
-  //    if(!$scope.selectedTransaction)
-  //    return;
-  //    if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
-  //      $scope.selectedTransaction.checkOutDate = null;
-  //    }
-  //    else {
-  //      var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
-  //      var to = moment($scope.selectedTransaction.checkOutDate);
-  //      var different = to.diff(from,'days');
-  //      $scope.selectedTransaction.totalPrice = $scope.roomPrice * different;
-  //      $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
-  //    }
-  //  })
+   $scope.$watch('selectedTransaction.checkOutDate',function(value) {
+     if(!$scope.selectedTransaction)
+     return;
+     if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
+       $scope.selectedTransaction.checkOutDate = null;
+     }
+     else {
+       var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
+       var to = moment($scope.selectedTransaction.checkOutDate);
+       var different = to.diff(from,'days');
+       $scope.selectedTransaction.totalPrice = $scope.roomPrice * different;
+       $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
+     }
+   })
 
    /**
     * $scope.serchTransaction
@@ -196,16 +190,15 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      $scope.selectedTransaction = transaction;
      console.log($scope.selectedTransaction);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
-       $scope.selectedAll = true;
-       room.isSelect = true;
+       room.isSelect = false;
        room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
-        room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
+       room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
        if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
          $scope.selectedTransaction.checkOutDate = null;
        }
        else {
-         var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
-         var to = moment($scope.selectedTransaction.roomsDetails[0].checkOutDate);
+         var from = moment($scope.selectedTransaction.checkInDate);
+         var to = moment($scope.selectedTransaction.checkOutDate);
          var different = to.diff(from,'days');
          console.log(different);
          if(different == 0){
@@ -218,7 +211,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      });
      $scope.transactionTab('transactionDetails');
-    // $scope.ReportListTab('Transactiondetails');
+     $scope.ReportListTab('Transactiondetails');
    }
    /**
     * functionName : calculateDiscount
@@ -257,10 +250,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      })
    }
-   $scope.bookingOperation = function(operation){
-     $scope.operationType = operation;
-     $scope.checkOut();
-   }
    /**
     * functionName : checkOut
     * Info : used to make the room AVAILABLE and update the price as per the selected checkInDate and the checkOutDate and the payment
@@ -269,7 +258,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * createdDate - 5-9-2016
     * updated on -  5-9-2016 // reason for update
     */
-   $scope.checkOut = function(){
+   $scope.checkOut = function(transaction){
      var obj = {
        "_id": $scope.selectedTransaction._id,
        "price": $scope.operationType == "checkOut" ? parseFloat($scope.selectedTransaction.totalPrice):0,
@@ -277,7 +266,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        "type":$scope.operationType,
        "rooms":[]
      }
-     console.log(obj);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
        if(item.isSelect){
          obj.rooms.push(item._id);
@@ -285,8 +273,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      })
      transactionService.updateTransaction(obj,function(response) {
         console.log(response);
-         $scope.getRoom(); // refresh the rooms
-         $scope.transactionTab('roomlists');
+        // $scope.getRoom(); // refresh the rooms
+        // $scope.transactionTab('roomlists');
      },
      function(err){
        Util.alertMessage('error', err.message);
@@ -294,7 +282,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
    }
    /**
     * functionName : checkin_booked
-    * Info : used to make the room checkedIn if the room is booked  
+    * Info : used to make the room checkedIn if the room is booked
     * input : transaction details
     * output :...
     * createdDate - 5-9-2016
@@ -342,10 +330,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      * updated on -  21-9-2016 // reason for update
      */
     $scope.checkDate = function(){
-      // var obj={
-      //   "fromDate" : $scope.transactionReport.startDate,
-      //   "toDate" : $scope.transactionReport.endDate
-      // }
+      var obj={
+        "fromDate" : $scope.transactionReport.startDate,
+        "toDate" : $scope.transactionReport.endDate
+      }
       if(moment($scope.transactionReport.endDate) < moment($scope.transactionReport.startDate)){
         //console.log("endDate < startDate");
         $scope.transactionReport.endDate = null;
@@ -353,10 +341,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       else {
         $scope.currentTab1 = 'Reportdetails';
         //console.log("endDate > startDate");
-        transactionService.getReport(function(response) {
-          console.log(response);
+        transactionService.getReport(obj,function(response) {
           $scope.reportsList = response.data;
-          console.log($scope.reportsList);
         })
       }
     }

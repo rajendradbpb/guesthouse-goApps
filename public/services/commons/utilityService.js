@@ -49,11 +49,17 @@ app.factory("UtilityService", function($http,$resource,$localStorage,Constants) 
   var setUserSettings = function(obj){
     userSettings = obj;
   }
+  var resetForm = function(form){
+    if(!form)
+    return;
+    form.$setPristine();
+  }
   return{
     getSelectedIds:getSelectedIds,
     getSelectedItemByProp:getSelectedItemByProp,
     getSelectedItemByID:getSelectedItemByID,
     getUserSettings    : getUserSettings,
-    setUserSettings    : setUserSettings
+    setUserSettings    : setUserSettings,
+    resetForm          : resetForm
   }
 })

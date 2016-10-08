@@ -109,7 +109,8 @@
             <section class="content "  ng-init="TotalPrice()">
               <div class="">
                 <div >
-                  <form class="form-horizontal" name="bookroom" >
+                  <form class="form-horizontal" name="
+                  " >
                     <div class="box-body">
                       <div class="form-group" ng-class="{'has-error': (bookroom.otp_no.$invalid && bookroom.otp_no.$touched)}">
                          <label for="inputEmail3" class="col-sm-3 control-label">Enter OTP Code</label>
@@ -240,7 +241,7 @@
                     <div class="form-group">
                       <!-- <div class="col-sm-offset-3 col-sm-3"> -->
                         <button type="button" class="btn btn-default" ng-click="transactionTab('roomlists')">Cancel</button>
-                        <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking()">Submit</button>
+                        <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking(bookroom)">Submit</button>
                       <!-- </div> -->
                       <!-- <div class="col-sm-12"> -->
                         <section  align="center" class="m-t-sm">
