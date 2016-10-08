@@ -31,40 +31,34 @@ module.exports = function(grunt) {
     concat: {
       options: {
         separator: ';',
+        stripBanners: true,
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+        '<%= grunt.template.today() %> */\n',
       },
       dist: {
         src: [
-          'public/user/depModules.js',
-          'public/user/modules/home/controllers/home-controller.js',
-          'public/user/modules/client/controllers/client-controller.js',
-          'public/user/modules/pilot/controllers/pilot-controller.js',
-          'public/user/modules/pilot/controllers/aircraft-controller.js',
-          'public/user/modules/pilot/controllers/training-controller.js',
-          'public/user/modules/pilot/controllers/pilot-dash-controller.js',
-          'public/user/modules/pilot/controllers/pilot-job-details-controller.js',
-          'public/user/modules/editor/controllers/editor-controller.js',
-          'public/user/modules/visualObserver/controllers/visualObserver-controller.js',
-          'public/user/userApp.js',
-          'public/user/modules/home/controllers/loginController.js',
-          'public/user/modules/home/services/loginService.js',
-          'public/user/modules/home/services/home-service.js',
-          'public/user/services/loggerService.js',
-          'public/user/services/fileUpload.js',
-          'public/user/directive/fileUploadDirective.js',
-          'public/user/modules/client/services/client-service.js',
-          'public/user/modules/pilot/services/pilot-service.js',
-          'public/user/services/userServices.js',
-          'public/user/services/jobOrderService.js',
-          'public/user/services/validation.js',
-          'public/user/constants.js',
-          'public/user/modules/client/controllers/mapController.js',
-          'public/user/modules/client/controllers/paymentController.js',
-          'public/user/modules/client/controllers/requestFlightController.js',
-          'public/user/modules/client/controllers/jobOrderController.js',
-          'public/user/directive/onlyDigits.js',
+          "public/main_app.js",
+          "public/controllers/commons/MainController.js",
+          "public/controllers/commons/signInController.js",
+          "public/controllers/commons/userController.js",
+          "public/controllers/commons/customerController.js",
+          "public/controllers/commons/guestHouseController.js",
+          "public/controllers/transactionController.js",
+          "public/services/commons/commonService.js",
+          "public/services/commons/userService.js",
+          "public/services/commons/customerService.js",
+          "public/services/commons/guestHouseService.js",
+          "public/services/commons/utilityService.js",
+          "public/services/transactionService.js",
+          "public/config/constants.js",
+          "public/directives/transaction-details.js",
+          "public/directives/roomFilter.js",
+          "public/directives/dateViewer.js",
+          "public/directives/report-details-directive.js",
+          "public/filters/datefilter.js",
 
         ],
-        dest: 'public/user/built.js',
+        dest: 'public/built.js',
       },
     },
 
@@ -79,6 +73,6 @@ module.exports = function(grunt) {
 
 
   // registerTask
-  grunt.registerTask("default", ["nodemon:dev"]);
+  grunt.registerTask("default", ["concat","nodemon:dev"]);
   grunt.registerTask("con", ['concat']);
 };

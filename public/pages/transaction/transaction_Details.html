@@ -109,42 +109,41 @@
             <section class="content "  ng-init="TotalPrice()">
               <div class="">
                 <div >
-                  <form class="form-horizontal" name="
-                  " >
+                  <form class="form-horizontal" name="checkInForm" >
                     <div class="box-body">
-                      <div class="form-group" ng-class="{'has-error': (bookroom.otp_no.$invalid && bookroom.otp_no.$touched)}">
+                      <div class="form-group" ng-class="{'has-error': (checkInForm.otp_no.$invalid && checkInForm.otp_no.$touched)}">
                          <label for="inputEmail3" class="col-sm-3 control-label">Enter OTP Code</label>
                          <div class="col-sm-8">
                            <input type="text" class="form-control" name="otp_no" ng-model="transaction.otp" placeholder="Enter OTP Code" required ng-pattern="/^[a-zA-Z0-9]*$/">
-                           <span class="help-block" ng-show="bookroom.otp_no.$error.required && bookroom.otp_no.$touched">Please enter OTP Code</span>
-                           <span class="help-block" ng-show="bookroom.otp_no.$error.pattern && bookroom.otp_no.$touched">must be fill</span>
+                           <span class="help-block" ng-show="checkInForm.otp_no.$error.required && checkInForm.otp_no.$touched">Please enter OTP Code</span>
+                           <span class="help-block" ng-show="checkInForm.otp_no.$error.pattern && checkInForm.otp_no.$touched">must be fill</span>
                          </div>
                        </div>
-                       <div class="form-group" ng-class="{'has-error': (bookroom.name.$invalid && bookroom.name.$touched)}">
+                       <div class="form-group" ng-class="{'has-error': (checkInForm.name.$invalid && checkInForm.name.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Name</label>
                           <div class="col-sm-8">
                             <input type="text" class="form-control" name="name" ng-model="transaction.cName" placeholder="Name" required ng-pattern="/^(\D)+$/">
-                            <span class="help-block" ng-show="bookroom.name.$error.required && bookroom.name.$touched">Please enter name</span>
-                            <span class="help-block" ng-show="bookroom.name.$error.pattern && bookroom.name.$touched">name should not be other than letter</span>
+                            <span class="help-block" ng-show="checkInForm.name.$error.required && checkInForm.name.$touched">Please enter name</span>
+                            <span class="help-block" ng-show="checkInForm.name.$error.pattern && checkInForm.name.$touched">name should not be other than letter</span>
                           </div>
                       </div>
-                      <div class="form-group" ng-class="{'has-error': (bookroom.mobile_no.$invalid && bookroom.mobile_no.$touched)}">
+                      <div class="form-group" ng-class="{'has-error': (checkInForm.mobile_no.$invalid && checkInForm.mobile_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Mobile No</label>
                             <div class="col-sm-8">
                                <input type="text" class="form-control" name="mobile_no" ng-model="transaction.cMobile" placeholder="Mobile No" required ng-pattern="/^[0-9]{10,10}$/">
-                               <span class="help-block" ng-show="bookroom.mobile_no.$error.required && bookroom.mobile_no.$touched">Please enter Mobile No</span>
-                               <span class="help-block" ng-show="bookroom.mobile_no.$error.pattern && bookroom.mobile_no.$touched">Mobile No should be numeric</span>
+                               <span class="help-block" ng-show="checkInForm.mobile_no.$error.required && checkInForm.mobile_no.$touched">Please enter Mobile No</span>
+                               <span class="help-block" ng-show="checkInForm.mobile_no.$error.pattern && checkInForm.mobile_no.$touched">Mobile No should be numeric</span>
                             </div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': (bookroom.address.$invalid && bookroom.address.$touched)}">
+                        <div class="form-group" ng-class="{'has-error': (checkInForm.address.$invalid && checkInForm.address.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Address</label>
                             <div class="col-sm-8">
                                <textarea name="address" class="form-control" rows="4" placeholder="Enter address" ng-model="transaction.address" required></textarea>
-                               <span class="help-block" ng-show="bookroom.address.$error.required && bookroom.address.$touched">Please enter address</span>
-                               <span class="help-block" ng-show="bookroom.address.$error.pattern && bookroom.address.$touched">Address should not  be numeric</span>
+                               <span class="help-block" ng-show="checkInForm.address.$error.required && checkInForm.address.$touched">Please enter address</span>
+                               <span class="help-block" ng-show="checkInForm.address.$error.pattern && checkInForm.address.$touched">Address should not  be numeric</span>
                             </div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': (bookroom.idproof.$invalid && bookroom.idproof.$touched)}">
+                        <div class="form-group" ng-class="{'has-error': (checkInForm.idproof.$invalid && checkInForm.idproof.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Identity Proof</label>
                           <div class="col-sm-8">
                               <select class="form-control" ng-model="transaction.identity" name="idproof" required>
@@ -155,26 +154,26 @@
                                 <option value="Passport">Passport</option>
                                 <option value="Voterid">Voter ID Card</option>
                               </select>
-                              <span class="help-block" ng-show="bookroom.idproof.$error.required && bookroom.idproof.$touched">select one</span>
+                              <span class="help-block" ng-show="checkInForm.idproof.$error.required && checkInForm.idproof.$touched">select one</span>
                           </div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': (bookroom.id_no.$invalid && bookroom.id_no.$touched)}">
+                        <div class="form-group" ng-class="{'has-error': (checkInForm.id_no.$invalid && checkInForm.id_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Identity Card No</label>
                             <div class="col-sm-8">
                                <input type="text" class="form-control" name="id_no" ng-model="transaction.idproofno"  placeholder="ID Proof No" required ng-pattern="/^[a-zA-Z0-9]*$/" >
-                               <span class="help-block" ng-show="bookroom.id_no.$error.required && bookroom.id_no.$touched">Please enter ID Proof No</span>
-                               <span class="help-block" ng-show="bookroom.id_no.$error.pattern && bookroom.id_no.$touched">ID Proof should be numeric</span>
+                               <span class="help-block" ng-show="checkInForm.id_no.$error.required && checkInForm.id_no.$touched">Please enter ID Proof No</span>
+                               <span class="help-block" ng-show="checkInForm.id_no.$error.pattern && checkInForm.id_no.$touched">ID Proof should be numeric</span>
                             </div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': (bookroom.room_no.$invalid && bookroom.room_no.$touched)}">
+                        <div class="form-group" ng-class="{'has-error': (checkInForm.room_no.$invalid && checkInForm.room_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Room No</label>
                             <div class="col-sm-8">
                                <input type="text" class="form-control" name="room_no" ng-model="selectedRoomsNo"  placeholder="Room No" readonly>
-                               <span class="help-block" ng-show="bookroom.room_no.$error.required && bookroom.room_no.$touched">Please enter Room No</span>
-                               <span class="help-block" ng-show="bookroom.room_no.$error.pattern && bookroom.room_no.$touched">Room No should be numeric</span>
+                               <span class="help-block" ng-show="checkInForm.room_no.$error.required && checkInForm.room_no.$touched">Please enter Room No</span>
+                               <span class="help-block" ng-show="checkInForm.room_no.$error.pattern && checkInForm.room_no.$touched">Room No should be numeric</span>
                             </div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': (bookroom.status.$invalid && bookroom.status.$touched)}">
+                        <div class="form-group" ng-class="{'has-error': (checkInForm.status.$invalid && checkInForm.status.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Status</label>
                           <div class="col-sm-8">
                               <select class="form-control" ng-change="changeStatus()" ng-model="transaction.status" name="status" required>
@@ -182,7 +181,7 @@
                                 <option value="CHECKED-IN">CHECKED-IN</option>
                                 <option value="BOOKED">BOOKED</option>
                               </select>
-                              <span class="help-block" ng-show="bookroom.status.$error.required && bookroom.status.$touched">select one</span>
+                              <span class="help-block" ng-show="checkInForm.status.$error.required && checkInForm.status.$touched">select one</span>
                           </div>
                         </div>
                         <div class="form-group" ng-if="transaction.status">
@@ -190,50 +189,50 @@
                           <date-viewer ng-show="transaction.status == 'BOOKED'" ng-model="transaction.checkInDate"></date-viewer>
                           <div class="col-sm-8">
                              <input ng-show="transaction.status == 'CHECKED-IN'" readOnly type="text" class="form-control" ng-model="transaction.checkInDate">
-                             <span class="help-block" ng-show="bookroom.room_no.$error.required && bookroom.room_no.$touched">Please enter Room No</span>
-                             <span class="help-block" ng-show="bookroom.room_no.$error.pattern && bookroom.room_no.$touched">Room No should be numeric</span>
+                             <span class="help-block" ng-show="checkInForm.room_no.$error.required && checkInForm.room_no.$touched">Please enter Room No</span>
+                             <span class="help-block" ng-show="checkInForm.room_no.$error.pattern && checkInForm.room_no.$touched">Room No should be numeric</span>
                           </div>
                         </div>
                         <div class="form-group" ng-if="transaction.status">
                           <label for="inputEmail3" class="col-sm-3 control-label">CheckOut Date</label>
                           <date-viewer  ng-model="transaction.checkOutDate"></date-viewer>
                         </div>
-                        <!-- <div class="form-group" ng-class="{'has-error': (bookroom.room_price.$invalid && bookroom.room_price.$touched)}">
+                        <!-- <div class="form-group" ng-class="{'has-error': (checkInForm.room_price.$invalid && checkInForm.room_price.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
                             <div class="col-sm-8">
                                <input type="text" class="form-control" name="room_price" ng-model="selectedRoomsPrice" placeholder="Price" readonly>
-                               <span class="help-block" ng-show="bookroom.room_price.$error.required && bookroom.room_price.$touched">Please enter Price</span>
-                               <span class="help-block" ng-show="bookroom.room_price.$error.pattern && bookroom.room_price.$touched">Price should be numeric</span>
+                               <span class="help-block" ng-show="checkInForm.room_price.$error.required && checkInForm.room_price.$touched">Please enter Price</span>
+                               <span class="help-block" ng-show="checkInForm.room_price.$error.pattern && checkInForm.room_price.$touched">Price should be numeric</span>
                             </div>
                         </div> -->
-                        <div class="form-group" ng-class="{'has-error': (bookroom.visit_purpose.$invalid && bookroom.visit_purpose.$touched)}">
+                        <div class="form-group" ng-class="{'has-error': (checkInForm.visit_purpose.$invalid && checkInForm.visit_purpose.$touched)}">
                            <label for="inputEmail3" class="col-sm-3 control-label">Purpose</label>
                            <div class="col-sm-8">
                              <input type="text" class="form-control" name="visit_purpose" ng-model="transaction.purpose" placeholder="purpose" required ng-pattern="/^(\D)+$/">
-                             <span class="help-block" ng-show="bookroom.visit_purpose.$error.required && bookroom.visit_purpose.$touched">Please enter purpose</span>
-                             <span class="help-block" ng-show="bookroom.visit_purpose.$error.pattern && bookroom.visit_purpose.$touched">purpose should not be other than letter</span>
+                             <span class="help-block" ng-show="checkInForm.visit_purpose.$error.required && checkInForm.visit_purpose.$touched">Please enter purpose</span>
+                             <span class="help-block" ng-show="checkInForm.visit_purpose.$error.pattern && checkInForm.visit_purpose.$touched">purpose should not be other than letter</span>
                            </div>
                          </div>
-                        <!-- <div class="form-group" ng-class="{'has-error': (bookroom.discount.$invalid && bookroom.discount.$touched)}">
+                        <!-- <div class="form-group" ng-class="{'has-error': (checkInForm.discount.$invalid && checkInForm.discount.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Discount</label>
                             <div class="col-sm-8">
                                <input type="text" class="form-control" name="discount" ng-model="selectedRoomsPrice.discount" placeholder="Discount" >
-                               <!<span class="help-block" ng-show="bookroom.discount.$error.required && bookroom.discount.$touched">Please enter Price</span>
-                               <span class="help-block" ng-show="bookroom.discount.$error.pattern && bookroom.discount.$touched">Price should be numeric</span> -->
+                               <!<span class="help-block" ng-show="checkInForm.discount.$error.required && checkInForm.discount.$touched">Please enter Price</span>
+                               <span class="help-block" ng-show="checkInForm.discount.$error.pattern && checkInForm.discount.$touched">Price should be numeric</span> -->
                             <!-- </div>
                         </div> -->
-                        <div class="form-group" ng-class="{'has-error': (bookroom.transaction_no.$invalid && bookroom.transaction_no.$touched)}">
+                        <div class="form-group" ng-class="{'has-error': (checkInForm.transaction_no.$invalid && checkInForm.transaction_no.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Transaction No</label>
                             <div class="col-sm-8">
                                <input type="text" class="form-control" name="transaction_no" ng-model="transaction.transactionNo" placeholder="Transaction No" required ng-pattern="/^[0-9]{1,7}$/">
-                               <span class="help-block" ng-show="bookroom.transaction_no.$error.required && bookroom.transaction_no.$touched">Please enter Transaction No</span>
-                               <span class="help-block" ng-show="bookroom.transaction_no.$error.pattern && bookroom.transaction_no.$touched">Transaction No should be numeric</span>
+                               <span class="help-block" ng-show="checkInForm.transaction_no.$error.required && checkInForm.transaction_no.$touched">Please enter Transaction No</span>
+                               <span class="help-block" ng-show="checkInForm.transaction_no.$error.pattern && checkInForm.transaction_no.$touched">Transaction No should be numeric</span>
                             </div>
                         </div>
                     </div>
                     <!-- <div class="box-footer">
                       <button type="submit" class="btn btn-default" ui-sref="guest_house-dashboard">Cancel</button>
-                      <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" >Submit</button>
+                      <button  ng-disabled="checkInForm.$invalid" type="submit" class="btn btn-info pull-right" >Submit</button>
                       <section  align="center m-t-sm">
                           <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
                       </section>
@@ -241,7 +240,7 @@
                     <div class="form-group">
                       <!-- <div class="col-sm-offset-3 col-sm-3"> -->
                         <button type="button" class="btn btn-default" ng-click="transactionTab('roomlists')">Cancel</button>
-                        <button  ng-disabled="bookroom.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking(bookroom)">Submit</button>
+                        <button  ng-disabled="checkInForm.$invalid" type="submit" class="btn btn-info pull-right" ng-click="submitNewBooking(checkInForm)">Submit</button>
                       <!-- </div> -->
                       <!-- <div class="col-sm-12"> -->
                         <section  align="center" class="m-t-sm">

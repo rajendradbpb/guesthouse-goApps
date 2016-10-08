@@ -88,15 +88,18 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       "bookingStatus" : $scope.transaction.status,
       "guestHouse" : $rootScope.logedInUser._id
     }
+    console.log("before save  ",JSON.stringify(obj));
     transactionService.addTransaction(obj,function(response){
     $rootScope.showPreloader = false;
       if(response.statusCode == 200){
           Util.alertMessage('success', response.message);
           // refresh the room list and change the tab to the room list
-          $scope.getRoom();
-          $scope.currentTab = 'roomlists';
-          $scope.transaction = {};
-          UtilityService.resetForm(bookroom);
+          $timeout(function() {
+            $scope.getRoom();
+            $scope.currentTab = 'roomlists';
+            // $scope.transaction = {};
+            // UtilityService.resetForm(bookroom);
+          },2000)
       }
       else {
           Util.alertMessage('danger', response.message);
