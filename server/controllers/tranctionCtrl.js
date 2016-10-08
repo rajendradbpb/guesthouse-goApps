@@ -259,6 +259,9 @@ exports.updateTransaction = function (req, res) {
       tranctionModelObj.findById(id)
       .exec()
       .then(function(transaction) {
+        console.log(">>>>>>>>>>>>>>>    utility.stringify",utility.stringify(transaction.roomsDetails));
+        console.log(">>>>>>>>>>>>>>>   req.body.rooms ",req.body.rooms);
+        // console.log(">>>>>>>>>>>>>>>   2222222222 ",req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)));
         var statusObj = validateCheckOut(transaction.roomsDetails,req.body);
         if(!statusObj.status){
           return res.json(response(402,"failed","check out failed",statusObj.reason))
@@ -363,7 +366,6 @@ function validateCheckOut(roomdetailsArr,inputData){
     reason:"",
   };
   var totalPrice = 0 ;
-  console.log(">>>>>>>   ",roomdetailsArr.length , inputData.rooms);
   for(var i=0 ; i < roomdetailsArr.length && inputData.rooms.indexOf(String(roomdetailsArr[i].room)) != -1 ; i++){
     // check in room status
     if(roomdetailsArr[i].bookingStatus != "CHECKED-IN"){

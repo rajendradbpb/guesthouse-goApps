@@ -271,7 +271,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      }
      angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
        if(item.isSelect){
-         obj.rooms.push(item._id);
+         obj.rooms.push(item.room._id);
        }
      })
      transactionService.updateTransaction(obj,function(response) {
