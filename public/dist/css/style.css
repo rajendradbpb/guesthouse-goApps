@@ -5072,3 +5072,8 @@ input[type=checkbox], input[type=radio]{
 .reportList .price {
     float: right;
 }
+.custom_roomlist
+{
+  background: #ECF0F5;
+  color: #3C8DBC;
+}

@@ -16,8 +16,8 @@
           <div class="tab-pane" ng-class="{'active':currentTab == 'roomlists'}" >
             <section class="content section-gh-room_list" ng-init="getRoom()">
                 <div class="row col-md-10" >
-                  <div class="col-sm-3 pointer"  ng-repeat = "availableRooms in room_list.availableRooms" >
-                    <a class="room-listing-box" ng-click="getRoomDetails(availableRooms)" >
+                  <div  room-style  class="col-sm-3 pointer"  ng-repeat = "availableRooms in room_list.availableRooms" input-object="availableRooms">
+                    <a  class="room-listing-box"  ng-click="getRoomDetails(availableRooms)" >
                       <span>{{availableRooms.bookingStatus}}</span>
                       <p>Capacity {{availableRooms.capacity}}</p>
                       <p>Room No {{availableRooms.roomNo}}</p>
@@ -184,7 +184,7 @@
                         <input type="text" class="form-control" name="room_capacity" ng-model="room.capacity" placeholder="Capacity" readonly>
                       </div>
               </div>
-                  </form>
+              </form>
               </div>
             </section>
           </div>
