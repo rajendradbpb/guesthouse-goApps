@@ -18,15 +18,15 @@
                 <div class="row col-md-10" >
                   <div  room-style  class="col-sm-3 pointer"  ng-repeat = "availableRooms in room_list.availableRooms" input-object="availableRooms">
                     <a  class="room-listing-box"  ng-click="getRoomDetails(availableRooms)" >
-                      <span>{{availableRooms.bookingStatus}}</span>
+                      <span>{{availableRooms.bookingStatus}} - {{availableRooms.roomNo}}</span>
                       <p>Capacity {{availableRooms.capacity}}</p>
-                      <p>Room No {{availableRooms.roomNo}}</p>
+                      <!-- <p>Room No {{availableRooms.roomNo}}</p> -->
                       <p>Price {{availableRooms.price}}</p>
                     </a>
-                    <a class="offer-Zone" ng-if="availableRooms.isOffer">
-                        <span>
+                    <a class="offer-Zone" ng-if="availableRooms.isOffer" room-style input-object="availableRooms">
+                      <span>
                         OFFER
-                        </span>
+                      </span>
                     </a>
                     <div class="checkbox btn-close">
                         <label>
@@ -39,12 +39,17 @@
                 <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
               </div>
               <div class="row col-md-10 m-t-lg" >
-                <div class="col-sm-3 pointer"  ng-repeat = "room in room_list.nonAvailebleRooms" >
+                <div class="col-sm-3 pointer"  ng-repeat = "room in room_list.nonAvailebleRooms" room-style input-object="room">
                   <a class="room-listing-box" ng-click="getRoomDetails(room.room)" >
-                    <span>{{room.bookingStatus}}</span>
+                    <span>{{room.bookingStatus}} - {{room.room.roomNo}}</span>
                     <p>Capacity {{room.room.capacity}}</p>
-                    <p>Room No {{room.room.roomNo}}</p>
+                    <!-- <p>Room No {{room.room.roomNo}}</p> -->
                     <p>Price {{room.room.price}}</p>
+                  </a>
+                  <a class="offer-Zone" ng-if="room.isOffer" room-style input-object="room">
+                    <span>
+                      OFFER
+                    </span>
                   </a>
               </div>
             </div>
