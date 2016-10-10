@@ -35,9 +35,6 @@
                     </div>
                 </div>
               </div>
-              <div class="row col-md-10">
-                <button type="button" class="btn btn-primary btn-sm" ng-click="bookRoom()">Check IN</button>
-              </div>
               <div class="row col-md-10 m-t-lg" >
                 <div class="col-sm-3 pointer"  ng-repeat = "room in room_list.nonAvailebleRooms" room-style input-object="room">
                   <a class="room-listing-box" ng-click="getRoomDetails(room.room)" >

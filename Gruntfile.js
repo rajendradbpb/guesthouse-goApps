@@ -56,6 +56,7 @@ module.exports = function(grunt) {
           "public/directives/dateViewer.js",
           "public/directives/report-details-directive.js",
           "public/filters/datefilter.js",
+          "public/directives/roomStyle.js"
 
         ],
         dest: 'public/built.js',

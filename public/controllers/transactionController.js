@@ -9,6 +9,9 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.ReportListTab = function(tab){
     $scope.currentTab1 = tab;
   }
+  $scope.roomListInit = function() {
+    $scope.countChecked(); // this is used to update the Go to Booking button in the room list init
+  }
   /*******************************************************/
   /*******This code is used to get all the room lists*****/
   /*******************************************************/
@@ -120,46 +123,23 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        $scope.filterType = 2;
        // call the service to get the trasactions
        transactionService.getTransaction(function(response) {
-         $scope.trasactionList = response.data
+         $scope.trasactionList = response.data;
+         console.log($scope.trasactionList);
        },
        function(err){
          Util.alertMessage('error', err.message);
        }
      )
      }
-     else if(value == "checkOut"){
-       // assign  the checkin date with the check out date , user may change that
-       $scope.selectedTransaction.checkOutDate = $scope.selectedTransaction.checkInDate;
-     }
+    //  else if(value == "checkOut"){
+    //    // assign  the checkin date with the check out date , user may change that
+    //    $scope.selectedTransaction.checkOutDate = new date();
+    //  }
      else if(value == "roomlists"){
        // update the filter type = 1
        $scope.filterType = 1;
      }
    })
-
-   /**
-    * $scope.$watch('selectedTransaction.checkOutDate')
-    * This is used to udpate the price of the transaction based on the checkInDate and the checkOutDate
-    *
-    * createdDate - 4-9- 2016
-    * updated on -  4-9- 2016
-    */
-
-   $scope.$watch('selectedTransaction.checkOutDate',function(value) {
-     if(!$scope.selectedTransaction)
-     return;
-     if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
-       $scope.selectedTransaction.checkOutDate = null;
-     }
-     else {
-       var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
-       var to = moment($scope.selectedTransaction.checkOutDate);
-       var different = to.diff(from,'days');
-       $scope.selectedTransaction.totalPrice = $scope.roomPrice * different;
-       $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
-     }
-   })
-
    /**
     * $scope.serchTransaction
     * This will caleed from the transaction listing page
@@ -196,12 +176,13 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        room.isSelect = false;
        room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
        room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
-       if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
-         $scope.selectedTransaction.checkOutDate = null;
+       console.log(room.checkOutDate);
+       if(moment($scope.selectedTransaction.roomsDetails[0].checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
+         $scope.selectedTransaction.roomsDetails[0].checkOutDate = null;
        }
        else {
-         var from = moment($scope.selectedTransaction.checkInDate);
-         var to = moment($scope.selectedTransaction.checkOutDate);
+         var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
+         var to = moment($scope.selectedTransaction.roomsDetails[0].checkOutDate);
          var different = to.diff(from,'days');
          console.log(different);
          if(different == 0){
@@ -269,6 +250,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        "type":$scope.operationType,
        "rooms":[]
      }
+     console.log(obj);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
        if(item.isSelect){
          obj.rooms.push(item.room._id);
@@ -370,4 +352,22 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     $scope.changeStatus = function(){
       $scope.transaction.checkInDate = ($scope.transaction.status == 'CHECKED-IN') ? moment().format("YYYY-MM-DD") :'';
     }
+    $scope.booking_disable = true;
+    $scope.countChecked = function(){
+    var count = 0;
+    if($scope.room_list && $scope.room_list.availableRooms.length){
+      angular.forEach($scope.room_list.availableRooms, function(value){
+        if (value.isChecked) count++;
+      });
+      $scope.booking_disable = (count > 0) ? false : true;
+    }
+  }
+
+    $scope.countSelect = function(){
+    var count = 0;
+    angular.forEach($scope.selectedTransaction.roomsDetails, function(value){
+        if (value.isSelect) count++;
+    });
+    return count;
+  }
 })

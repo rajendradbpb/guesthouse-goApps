@@ -20,10 +20,10 @@ app.directive("roomFilter",function(){
       modelValue:'='
     },
     link: function(scope, element, attrs) {
-      // scope.$watch('modelValue', function(value) {
-      //     console.log(value);
-      //     scope.modelValue = value;
-      // });
+      scope.$watch('modelValue', function(value) {
+          // console.log(value);
+          scope.modelValue = value;
+      });
     }
   };
 })

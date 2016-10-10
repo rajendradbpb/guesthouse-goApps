@@ -5085,3 +5085,9 @@ input[type=checkbox], input[type=radio]{
 }
 
 /*room details page end*/
+.date{
+  align:left;
+  float: right;
+  margin-top: 6px;
+
+}

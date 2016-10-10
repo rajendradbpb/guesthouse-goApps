@@ -46,6 +46,17 @@ app.directive("roomStyle",function(Constants){
          $(element[0]).find(".room-listing-box").css(css);
          $(element[0]).find(".room-listing-box span").css(spanCss);
      }
+     else if(scope.inputObject && scope.inputObject.bookingStatus == "BOOKED"){
+         var css = {
+           "border" : "2px solid "+Constants.bookedColor,
+           "color"  : Constants.bookedColor,
+         }
+         var spanCss = {
+           "background" : Constants.bookedColor
+         }
+         $(element[0]).find(".room-listing-box").css(css);
+         $(element[0]).find(".room-listing-box span").css(spanCss);
+     }
     }
   };
 })

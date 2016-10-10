@@ -256,6 +256,7 @@ exports.updateTransaction = function (req, res) {
   // req.body.isPayment = true;
 
   if(req.body.type == "checkOut"){
+    console.log(req.body.checkOutDate);
       tranctionModelObj.findById(id)
       .exec()
       .then(function(transaction) {

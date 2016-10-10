@@ -1,6 +1,7 @@
 <div ng-repeat="transaction in trasactionList" ng-click="onSelectTransaction(transaction)" class="alert alert-info alert-dismissible pointer">
-  <span class="pull-right">Rs{{transaction.roomsDetails[0].price}}</span>
-  <p align="center">{{transaction.createdDate | dateformat}} </p>
-  <h4>{{transaction.cName}}</h4>
-  <h5>{{transaction.purpose}}</h5>
+  <span class="pull-right">Rs:{{transaction.roomsDetails[0].price}}</span>
+  <p align="center">CHECKED-IN-{{transaction.createdDate | dateformat}} </p>
+  <p class="date" >CHECK-OUT-{{transaction.roomsDetails[0].checkOutDate | dateformat}} </p>
+  <h4>Name-{{transaction.cName}}</h4>
+  <h5>Purpose-{{transaction.purpose}}</h5>
 </div>
