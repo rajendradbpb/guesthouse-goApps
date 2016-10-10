@@ -27,10 +27,13 @@ app.directive("roomFilter",function(){
     }
   };
 })
-.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util,$timeout) {
+.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util,$timeout,Events) {
   $scope.find = {};
   $scope.room = {};
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
+  $rootScope.$on(Events.ROOM_DELETED,function(data){
+      $scope.getRoomInfo("1");
+  })
   /**
    * functionName : getRoomInfo
    * Info : keeps the data of the current selected transaction and show in the transaction detials

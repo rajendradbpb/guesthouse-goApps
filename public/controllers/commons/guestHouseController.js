@@ -1,4 +1,4 @@
-app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService) {
+app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService,Events) {
   $scope.currentTab = 'roomlists';
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   console.log($scope.roomFeature);
@@ -128,7 +128,7 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       $rootScope.showPreloader = false;
       console.log(response);
         if(response.statusCode == 200){
-            $scope.getRoom();
+            $scope.$emit(Events.ROOM_DELETED);
         }
      })
     }
