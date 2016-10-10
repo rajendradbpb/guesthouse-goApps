@@ -30,6 +30,7 @@ app.directive("roomFilter",function(){
 .controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util,$timeout,Events) {
   $scope.find = {};
   $scope.room = {};
+  $scope.minDate = new Date();
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   $rootScope.$on(Events.ROOM_DELETED,function(data){
       $scope.getRoomInfo("1");

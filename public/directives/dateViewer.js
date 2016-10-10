@@ -19,6 +19,7 @@ app.directive('dateViewer', function () {
     };
 })
 .controller("dateViewerController",["$scope",function($scope) {
+  $scope.minDate = new Date();
   $scope.open2 = function() {
    $scope.popup2.opened = true;
   };
