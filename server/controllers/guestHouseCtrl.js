@@ -267,7 +267,7 @@ exports.getRoom = function (req, res) {
               nonAvailableRooms.push(trans1[i].roomsDetails[j]);
 
           }
-          if(filters.roomType && trans1[i].roomsDetails[j].room.roomType == filters.roomType){
+          if(filters.roomType && trans1[i].roomsDetails[j].room.roomType == req.query.roomType){
             nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
             nonAvailableRooms.push(trans1[i].roomsDetails[j]);
           }
