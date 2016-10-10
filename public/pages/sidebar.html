@@ -10,32 +10,32 @@
     </div>
     <ul class="sidebar-menu">
       <li class="header">MAIN NAVIGATION</li>
-      <li class="active treeview" ng-if="logedInUser.role.type =='ccare'">
+      <li class="treeview" ng-class="{'active': menu == 'Dashboard'}" ng-click="menuChanged('Dashboard','ccare-dashboard')" ng-if="logedInUser.role.type =='ccare'">
         <a href="" ui-sref="ccare-dashboard">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      <li class="active treeview" ng-if="logedInUser.role.type =='admin'">
+      <li class="treeview" ng-class="{'active': menu == 'Dashboard'}" ng-click="menuChanged('Dashboard','admin-dashboard')" ng-if="logedInUser.role.type =='admin'">
         <a href="" ui-sref="admin-dashboard">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      <li class="active treeview" ng-if="logedInUser.role.type =='ghUser'">
+      <li class="treeview" ng-class="{'active': menu == 'Dashboard'}" ng-click="menuChanged('Dashboard','guest_house-dashboard')" ng-if="logedInUser.role.type =='ghUser'">
         <a href="" ui-sref="guest_house-dashboard">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      <li class="active treeview" ng-if="logedInUser.role.type =='ghUser'">
+      <li class="treeview" ng-class="{'active': menu == 'Transaction'}" ng-click="menuChanged('Transaction','transaction_details')" ng-if="logedInUser.role.type =='ghUser'" >
         <a href="" ui-sref="transaction_details">
           <i class="fa  fa-home"></i> <span>Transaction</span>
         </a>
       </li>
-      <li class="active treeview" ng-if="logedInUser.role.type =='ghUser'">
+      <li class="treeview" ng-class="{'active': menu == 'Reports'}" ng-click="menuChanged('Reports','transaction_Report')" ng-if="logedInUser.role.type =='ghUser'">
         <a href="" ui-sref="transaction_Report">
           <i class="fa fa-file-o"></i> <span>Reports</span>
         </a>
       </li>
-      <li class="treeview" ng-if="logedInUser.role.type =='admin'">
+      <li class="treeview" ng-class="{'active': menu == 'User Management'}" ng-click="menuChanged('User Management')" ng-if="logedInUser.role.type =='admin'">
         <a href="">
           <i class="fa fa-cogs" aria-hidden="true"></i>
           <span>User Management</span>
@@ -45,25 +45,25 @@
           <li><a ui-sref="new-user"><i class="fa fa-circle-o"></i>Create User</a></li>
         </ul>
       </li>
-      <li class="treeview" ng-if="logedInUser.role.type =='ghUser'">
+      <li class="treeview" ng-class="{'active': menu == 'Room Management'}" ng-click="menuChanged('Room Management','room-setttings')" ng-if="logedInUser.role.type =='ghUser'">
         <a href="" ui-sref="room-setttings">
           <i class="fa fa-cogs" ></i>
           <span>Room Management</span>
         </a>
       </li>
-      <li class="treeview" ng-if="logedInUser.role.type =='ccare'">
+      <li class="treeview" ng-class="{'active': menu == 'Customer Management'}" ng-click="menuChanged('Customer Management','customer-details')" ng-if="logedInUser.role.type =='ccare'">
        <a href="" ui-sref="customer-details">
          <i class="fa fa-cogs"></i>
          <span>Customer Management</span>
        </a>
      </li>
-     <li class="treeview" ng-if="logedInUser.role.type =='ccare'">
+     <li class="treeview" ng-class="{'active': menu == 'Bookings'}" ng-click="menuChanged('Bookings','customer-booking')" ng-if="logedInUser.role.type =='ccare'">
       <a href="" ui-sref="customer-booking">
         <i class="fa fa-book"></i>
         <span>Bookings</span>
       </a>
     </li>
-    <li class="treeview">
+    <li class="treeview" ng-class="{'active': menu == 'My Profile'}" ng-click="menuChanged('My Profile','userProfile')">
       <a href="" ui-sref="userProfile">
         <i class="fa fa-cogs"></i>
         <span>My Profile</span>

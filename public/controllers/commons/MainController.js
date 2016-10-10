@@ -7,6 +7,11 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
     delete $localStorage[Constants.getTokenKey()]
     $state.go("signIn");
   }
+  $scope.menuChanged = function(menu,sref){
+    $scope.menu = menu;
+    if(sref)
+      $state.go(sref);
+  }
   $scope.roomStatus =
     {
       "AVAILABLE_AC_ROOMS":0,
@@ -104,5 +109,5 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
     }
     return '';
   }
-  
+
 })
