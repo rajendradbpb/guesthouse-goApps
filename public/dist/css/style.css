@@ -5052,13 +5052,13 @@ input[type=checkbox], input[type=radio]{
     margin-right: -15px;
     margin-left: -15px;
 }
-.offer-Zone{
-  position: absolute;
-    top: 76px;
-    left: 130px;
+.offer-Zone {
+    position: absolute;
     background: #3C8DBC;
     padding: 2px 10px;
     color: #fff;
+    bottom: 23px;
+    right: 20px;
 }
 .m-t-sm{margin-top:5px;}
 .m-t-md{margin-top:15px;}

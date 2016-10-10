@@ -7,11 +7,23 @@ app.directive("roomStyle",function(Constants){
     },
     link: function(scope, element, attrs) {
     // console.log("inputObject  ",scope.inputObject.bookingStatus);
+    // styling offer tab in the room list
+    if($(element[0]).hasClass("offer-Zone") && scope.inputObject){
+      var css ;
+      if(scope.inputObject.bookingStatus == "AVAILABLE"){
+         css = {
+          "background" : Constants.availableColor
+        }
+      }
+      else if (scope.inputObject.bookingStatus == "CHECKED-IN") {
+        css = {
+         "background" : Constants.checkedInColor
+       }
+      }
+      $(element[0]).css(css)
+    }
      if(scope.inputObject && scope.inputObject.bookingStatus == "AVAILABLE" )
      {
-      //  element.css({background: red})
-      // console.log("red");
-      // element.addClass('custom_roomlist');
       var css = {
         "border" : "2px solid "+Constants.availableColor,
         "color"  : Constants.availableColor,
@@ -21,9 +33,9 @@ app.directive("roomStyle",function(Constants){
       }
       $(element[0]).find(".room-listing-box").css(css);
       $(element[0]).find(".room-listing-box span").css(spanCss);
+
      }
-     else
-       if(scope.inputObject && scope.inputObject.bookingStatus == "CHECKED-IN"){
+     else if(scope.inputObject && scope.inputObject.bookingStatus == "CHECKED-IN"){
          var css = {
            "border" : "2px solid "+Constants.checkedInColor,
            "color"  : Constants.checkedInColor,
