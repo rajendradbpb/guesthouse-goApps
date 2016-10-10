@@ -5077,3 +5077,11 @@ input[type=checkbox], input[type=radio]{
   background: #ECF0F5;
   color: #3C8DBC;
 }
+
+/*room details page start*/
+/*features styling*/
+.radio label{
+  text-align: left !important;
+}
+
+/*room details page end*/

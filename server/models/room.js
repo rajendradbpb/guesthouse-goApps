@@ -44,4 +44,25 @@ roomSchema.plugin(deepPopulate, {
   }
 });
 var roomSchemaModel = mongoose.model('room', roomSchema);
+
+
+// pre save room
+roomSchema.pre('save', function(next) {
+  console.log("presave of the room",this);
+  // before saving check wheather the room already added or not for this guest house
+  roomSchemaModel.findOne({roomNo:this.roomNo,guestHouse:this.guestHouse}).exec()
+  .then(function(room) {
+    if(!room){
+      console.log("room not found");
+      next();
+    }
+    else {
+      var err = new Error('Room No already present');
+      next(err);
+    }
+  })
+  .catch(function(error) {
+    next(error);
+  })
+});
 module.exports = roomSchemaModel;

@@ -19,7 +19,7 @@ exports.addRoom = function (req, res) {
     req.body.createdBy = req.body.updatedBy = req.user._doc._id;
     req.body.guestHouse = req.user._doc._id;
     req.body = validateOffer(req.body);
-    roomModelObj(req.body).save(function (err, user) {
+    roomModelObj(req.body).save(function (err, room) {
       if(err)
       {
         return res.json(response(500,"error",constants.messages.errors.saveGuestHouse,err))
