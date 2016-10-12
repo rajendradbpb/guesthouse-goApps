@@ -175,7 +175,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        room.isSelect = false;
        room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
-       room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
+       room.checkOutDate = moment().format('YYYY-MM-DD');
        console.log(room.checkOutDate);
        if(moment($scope.selectedTransaction.roomsDetails[0].checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
          $scope.selectedTransaction.roomsDetails[0].checkOutDate = null;
@@ -195,7 +195,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      });
      $scope.transactionTab('transactionDetails');
-     $scope.ReportListTab('Transactiondetails');
+    //  $scope.ReportListTab('Transactiondetails');
    }
    /**
     * functionName : calculateDiscount
@@ -210,7 +210,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        $scope.selectedTransaction.discount = $scope.tempTotPrice - $scope.selectedTransaction.totalPrice;
      }
      else {
-       if($scope.selectedTransaction.totalPrice > $scope.tempTotPrice){
+       if($scope.selectedTransaction.totalPrice >= $scope.tempTotPrice){
          $scope.selectedTransaction.discount = 0;
        }
      }
@@ -258,8 +258,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      })
      transactionService.updateTransaction(obj,function(response) {
         console.log(response);
-        // $scope.getRoom(); // refresh the rooms
-        // $scope.transactionTab('roomlists');
+        $scope.getRoom(); // refresh the rooms
+        $scope.transactionTab('roomlists');
      },
      function(err){
        Util.alertMessage('error', err.message);
@@ -314,7 +314,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      * createdDate -21-9-2016
      * updated on -  21-9-2016 // reason for update
      */
-    $scope.checkDate = function(){
+    $scope.showreportList = function(){
       var obj={
         "fromDate" : $scope.transactionReport.startDate,
         "toDate" : $scope.transactionReport.endDate
@@ -330,6 +330,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
           $scope.reportsList = response.data;
         })
       }
+    }
+    $scope.showReportDetails = function(reports){
+      $scope.reportDetails = reports;
+      $scope.ReportListTab('viewReport');
     }
      $scope.checkAll = function () {
         if ($scope.selectedAll) {
@@ -362,7 +366,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       $scope.booking_disable = (count > 0) ? false : true;
     }
   }
-
     $scope.countSelect = function(){
     var count = 0;
     angular.forEach($scope.selectedTransaction.roomsDetails, function(value){
@@ -370,4 +373,5 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     });
     return count;
   }
+
 })

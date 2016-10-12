@@ -9,11 +9,7 @@
           <!-- <input type="text" class="form-control pull-right" id="datepicker" ng-model="buildingPlan.date"> -->
           <!-- <div date-picker="dates.today" id="pickerMinDateDiv" min-date="minDate" view="date" min-view="hours" timezone="UTC" watch-direct-changes="true"></div> -->
           <p class="input-group">
-            <input type="text" class="form-control"
-                      uib-datepicker-popup ng-model="find.checkInDate" 
-is-open="popup.opened" min-date="minDate" ng-required="true"
- close-text="Close" />
-              <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <input type="text" class="form-control" ng-click="open()" uib-datepicker-popup ng-model="find.checkInDate" is-open="popup.opened" min-date="minDate" ng-required="true" close-text="Close" />
             </span>
           </p>
       </div>

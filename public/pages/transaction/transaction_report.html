@@ -28,7 +28,7 @@
                           </div>
                         </div>
                           <button type="submit" class="btn btn-default" >Cancel</button>
-                          <button ng-disabled="adduser.$invalid" type="submit" class="btn btn-info pull-right" ng-click="checkDate()">Submit</button>
+                          <button ng-disabled="adduser.$invalid" type="submit" class="btn btn-info pull-right" ng-click="showreportList()">Submit</button>
                           <section  align="center m-t-sm">
                               <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
                           </section>
