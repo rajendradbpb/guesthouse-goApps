@@ -1,4 +1,4 @@
-<div class="login-box">
+<div class="login-box" ng-init="initSignIn()">
   <div class="login-logo">
       <a><b>GoApps</b>Admin</a>
   </div>
@@ -24,13 +24,12 @@
               <button ng-click="signIn(user)" class="btn btn-primary btn-block btn-flat">
                 Sign In
               </button>
-              <section  align="center m-t-sm">
-                  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
-              </section>
+              <div ng-if="alert" align="center m-t-sm"  uib-alert  close="closeAlert()">{{alert.msg}}</div>
             </div>
           </div>
         </form>
         <a ui-sref="forgot-password">I forgot my password</a><br>
+
       </div>
   </form>
 </div>

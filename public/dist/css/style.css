@@ -5024,9 +5024,9 @@ input[type=checkbox], input[type=radio]{
    height: 30px;
    right:  30px;
 }
-.alert{
+/*.alert{
   width: 795px;
-}
+}*/
 .preloader{
   background-color: rgba(0,0,0,0.7);
   position: fixed;
