@@ -25,6 +25,7 @@
                     <p>Capacity {{availableRooms.capacity}}</p>
                     <!-- <p>Room No {{availableRooms.roomNo}}</p> -->
                     <p>Price {{availableRooms.price}}</p>
+                    <p ng-if="availableRooms.isOffer">OfferPrice {{availableRooms.offerPrice}}</p>
                   </a>
                   <a class="offer-Zone" ng-if="availableRooms.isOffer" room-style input-object="availableRooms">
                     <span>
@@ -39,7 +40,7 @@
               </div>
             </div>
             <div class="row col-md-10">
-              <button type="button" class="btn btn-primary btn-sm" ng-disabled="booking_disable"  ng-click="bookRoom()">Got To Booking</button>
+              <button type="button" class="btn btn-primary btn-sm" ng-disabled="booking_disable"  ng-click="bookRoom()">Go To Booking</button>
             </div>
             <div class="row col-md-9 m-t-lg" >
             <div class="col-sm-3 pointer" room-style input-object="room" ng-repeat = "room in room_list.nonAvailebleRooms" >
@@ -48,6 +49,7 @@
                   <p>Capacity {{room.room.capacity}}</p>
                   <!-- <p>Room No {{room.room.roomNo}}</p> -->
                   <p>Price {{room.room.price}}</p>
+                  <p ng-if="room.isOffer">OfferPrice {{room.room.offerPrice}}</p>
                 </a>
                 <a class="offer-Zone" ng-if="room.isOffer" room-style input-object="room">
                   <span>
@@ -192,13 +194,12 @@
                           <date-viewer ng-show="transaction.status == 'BOOKED'" ng-model="transaction.checkInDate"></date-viewer>
                           <div class="col-sm-8">
                              <input ng-show="transaction.status == 'CHECKED-IN'" readOnly type="text" class="form-control" ng-model="transaction.checkInDate">
-                             <span class="help-block" ng-show="checkInForm.room_no.$error.required && checkInForm.room_no.$touched">Please enter Room No</span>
-                             <span class="help-block" ng-show="checkInForm.room_no.$error.pattern && checkInForm.room_no.$touched">Room No should be numeric</span>
                           </div>
                         </div>
-                        <div class="form-group" ng-if="transaction.status">
+                        <div class="form-group" ng-if="transaction.status" >
                           <label for="inputEmail3" class="col-sm-3 control-label">CheckOut Date</label>
                           <date-viewer  ng-model="transaction.checkOutDate"></date-viewer>
+                          <span class="help-block" ng-show="checkInForm.status.$error.required && checkInForm.status.$touched">select one</span>
                         </div>
                         <!-- <div class="form-group" ng-class="{'has-error': (checkInForm.room_price.$invalid && checkInForm.room_price.$touched)}">
                           <label for="inputEmail3" class="col-sm-3 control-label">Price</label>
@@ -273,9 +274,9 @@
             </form>
           </div>
         </div>
-        <div class="form-group ">
+        <div class="form-group " >
           <!--added directives for the trasanction view  -->
-          <transaction-details></transaction-details>
+          <transaction-details ></transaction-details>
         </div>
          <room-filter filter="2" model-value="trasactionList"></room-filter>
       </div>
@@ -336,8 +337,8 @@
                                  <tr ng-repeat="room in selectedTransaction.roomsDetails">
                                    <td><input type="checkbox" ng-model="room.isSelect">{{$index+1}}</td>
                                    <td>{{room.room.roomNo}}</td>
-                                   <td>{{room.room.price}}</td>
-                                   <td>{{selectedTransaction.totalPrice}}</td>
+                                   <td>{{room.price}}</td>
+                                   <td>{{room.totalPrice}}</td>
                                  </tr>
                                </tbody>
                              </table>
@@ -407,7 +408,7 @@
                     <div class="form-group">
                       <label for="inputEmail3" class="col-sm-3 control-label">Price/Day</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control" name="price"  ng-model="selectedTransaction.roomsDetails[0].price"  readonly>
+                          <input type="text" class="form-control" name="price"  ng-model="roomPrice"  readonly>
                         </div>
                     </div>
                     <div class="form-group">

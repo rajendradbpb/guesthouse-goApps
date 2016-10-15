@@ -12,10 +12,19 @@ app.directive('dateViewer', function () {
         restrict: 'EA',
         templateUrl: 'directives/views/datepick.html',
         controller:'dateViewerController',
-        // link : linkfunction,
-        scope:{
-          ngModel:'=' // ngModel = user.establishDate  = 2
-        }
+        //  link : linkfunction,
+
+          // ng-model:'='
+          // min-date:
+
+           // ngModel = user.establishDate  = 2
+
+        // link: function(scope, element, attrs) {
+        //   scope.$watch('modelValue', function(value) {
+        //        console.log(value);
+        //       scope.modelValue = value;
+        //   });
+        // }
     };
 })
 .controller("dateViewerController",["$scope",function($scope) {

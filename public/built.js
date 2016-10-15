@@ -1,4 +1,4 @@
-/*! GuestHouse - v0.0.0 - Sat Oct 08 2016 19:53:22 */
+/*! GuestHouse - v0.0.0 - Sat Oct 15 2016 10:08:42 */
 app = angular.module("guest_house", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngCookies']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) {
 
@@ -186,6 +186,11 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
     delete $localStorage[Constants.getTokenKey()]
     $state.go("signIn");
   }
+  $scope.menuChanged = function(menu,sref){
+    $scope.menu = menu;
+    if(sref)
+      $state.go(sref);
+  }
   $scope.roomStatus =
     {
       "AVAILABLE_AC_ROOMS":0,
@@ -283,7 +288,7 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
     }
     return '';
   }
-  
+
 })
 ;app.controller("SignInController",["$scope","$rootScope","CommonService","$state","Constants","$localStorage",function($scope,$rootScope,CommonService,$state,Constants,$localStorage) {
   $scope.user = {};
@@ -523,7 +528,7 @@ $scope.getCustomerbyID = function(){
      })
    }
 })
-;app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService) {
+;app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService,Events) {
   $scope.currentTab = 'roomlists';
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   console.log($scope.roomFeature);
@@ -651,9 +656,8 @@ $scope.getCustomerbyID = function(){
       $rootScope.showPreloader = true;
       GuesthouseService.deleteRoom(obj,function(response) {
       $rootScope.showPreloader = false;
-      console.log(response);
         if(response.statusCode == 200){
-            $scope.getRoom();
+            $scope.$emit(Events.ROOM_DELETED);
         }
      })
     }
@@ -668,6 +672,9 @@ $scope.getCustomerbyID = function(){
    $scope.currentTab1 = 'ReportList';
   $scope.ReportListTab = function(tab){
     $scope.currentTab1 = tab;
+  }
+  $scope.roomListInit = function() {
+    $scope.countChecked(); // this is used to update the Go to Booking button in the room list init
   }
   /*******************************************************/
   /*******This code is used to get all the room lists*****/
@@ -721,6 +728,7 @@ $scope.getCustomerbyID = function(){
     $scope.selectedRoomsNo = UtilityService.getSelectedItemByProp($scope.selectedRooms,"isChecked",true,"roomNo");
     $scope.selectedRoomID = UtilityService.getSelectedItemByID($scope.selectedRooms,"isChecked",true,"_id");
     console.log($scope.selectedRoomID);
+    console.log($scope.selectedRoomsNo);
   }
   /**
    * functionName : submitNewBooking
@@ -780,46 +788,23 @@ $scope.getCustomerbyID = function(){
        $scope.filterType = 2;
        // call the service to get the trasactions
        transactionService.getTransaction(function(response) {
-         $scope.trasactionList = response.data
+         $scope.trasactionList = response.data;
+         console.log($scope.trasactionList);
        },
        function(err){
          Util.alertMessage('error', err.message);
        }
      )
      }
-     else if(value == "checkOut"){
-       // assign  the checkin date with the check out date , user may change that
-       $scope.selectedTransaction.checkOutDate = $scope.selectedTransaction.checkInDate;
-     }
+    //  else if(value == "checkOut"){
+    //    // assign  the checkin date with the check out date , user may change that
+    //    $scope.selectedTransaction.checkOutDate = new date();
+    //  }
      else if(value == "roomlists"){
        // update the filter type = 1
        $scope.filterType = 1;
      }
    })
-
-   /**
-    * $scope.$watch('selectedTransaction.checkOutDate')
-    * This is used to udpate the price of the transaction based on the checkInDate and the checkOutDate
-    *
-    * createdDate - 4-9- 2016
-    * updated on -  4-9- 2016
-    */
-
-   $scope.$watch('selectedTransaction.checkOutDate',function(value) {
-     if(!$scope.selectedTransaction)
-     return;
-     if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
-       $scope.selectedTransaction.checkOutDate = null;
-     }
-     else {
-       var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
-       var to = moment($scope.selectedTransaction.checkOutDate);
-       var different = to.diff(from,'days');
-       $scope.selectedTransaction.totalPrice = $scope.roomPrice * different;
-       $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
-     }
-   })
-
    /**
     * $scope.serchTransaction
     * This will caleed from the transaction listing page
@@ -855,13 +840,14 @@ $scope.getCustomerbyID = function(){
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        room.isSelect = false;
        room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
-       room.checkOutDate = moment(room.checkOutDate).format('YYYY-MM-DD');
-       if(moment($scope.selectedTransaction.checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
-         $scope.selectedTransaction.checkOutDate = null;
+       room.checkOutDate = moment().format('YYYY-MM-DD');
+       console.log(room.checkOutDate);
+       if(moment($scope.selectedTransaction.roomsDetails[0].checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
+         $scope.selectedTransaction.roomsDetails[0].checkOutDate = null;
        }
        else {
-         var from = moment($scope.selectedTransaction.checkInDate);
-         var to = moment($scope.selectedTransaction.checkOutDate);
+         var from = moment($scope.selectedTransaction.roomsDetails[0].checkInDate);
+         var to = moment($scope.selectedTransaction.roomsDetails[0].checkOutDate);
          var different = to.diff(from,'days');
          console.log(different);
          if(different == 0){
@@ -874,7 +860,7 @@ $scope.getCustomerbyID = function(){
        }
      });
      $scope.transactionTab('transactionDetails');
-     $scope.ReportListTab('Transactiondetails');
+    //  $scope.ReportListTab('Transactiondetails');
    }
    /**
     * functionName : calculateDiscount
@@ -889,7 +875,7 @@ $scope.getCustomerbyID = function(){
        $scope.selectedTransaction.discount = $scope.tempTotPrice - $scope.selectedTransaction.totalPrice;
      }
      else {
-       if($scope.selectedTransaction.totalPrice > $scope.tempTotPrice){
+       if($scope.selectedTransaction.totalPrice >= $scope.tempTotPrice){
          $scope.selectedTransaction.discount = 0;
        }
      }
@@ -908,6 +894,7 @@ $scope.getCustomerbyID = function(){
      $scope.selectedTransaction.discount = 0;
      $scope.transactionTab('checkOut');
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
+      console.log($scope.selectedTransaction.roomsDetails);
        if(room.isSelect){
          $scope.roomPrice += room.price;
        }
@@ -929,6 +916,7 @@ $scope.getCustomerbyID = function(){
        "type":$scope.operationType,
        "rooms":[]
      }
+     console.log(obj);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
        if(item.isSelect){
          obj.rooms.push(item.room._id);
@@ -936,8 +924,8 @@ $scope.getCustomerbyID = function(){
      })
      transactionService.updateTransaction(obj,function(response) {
         console.log(response);
-        // $scope.getRoom(); // refresh the rooms
-        // $scope.transactionTab('roomlists');
+        $scope.getRoom(); // refresh the rooms
+        $scope.transactionTab('roomlists');
      },
      function(err){
        Util.alertMessage('error', err.message);
@@ -992,7 +980,7 @@ $scope.getCustomerbyID = function(){
      * createdDate -21-9-2016
      * updated on -  21-9-2016 // reason for update
      */
-    $scope.checkDate = function(){
+    $scope.showreportList = function(){
       var obj={
         "fromDate" : $scope.transactionReport.startDate,
         "toDate" : $scope.transactionReport.endDate
@@ -1008,6 +996,10 @@ $scope.getCustomerbyID = function(){
           $scope.reportsList = response.data;
         })
       }
+    }
+    $scope.showReportDetails = function(reports){
+      $scope.reportDetails = reports;
+      $scope.ReportListTab('viewReport');
     }
      $scope.checkAll = function () {
         if ($scope.selectedAll) {
@@ -1030,6 +1022,24 @@ $scope.getCustomerbyID = function(){
     $scope.changeStatus = function(){
       $scope.transaction.checkInDate = ($scope.transaction.status == 'CHECKED-IN') ? moment().format("YYYY-MM-DD") :'';
     }
+    $scope.booking_disable = true;
+    $scope.countChecked = function(){
+    var count = 0;
+    if($scope.room_list && $scope.room_list.availableRooms.length){
+      angular.forEach($scope.room_list.availableRooms, function(value){
+        if (value.isChecked) count++;
+      });
+      $scope.booking_disable = (count > 0) ? false : true;
+    }
+  }
+    $scope.countSelect = function(){
+    var count = 0;
+    angular.forEach($scope.selectedTransaction.roomsDetails, function(value){
+        if (value.isSelect) count++;
+    });
+    return count;
+  }
+
 })
 ;app.factory("CommonService", ["$http","$resource", function($http,$resource) {
   var jobs = [];
@@ -1252,7 +1262,7 @@ $scope.getCustomerbyID = function(){
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
         "availableColor" : "#3955dd",
         "checkedInColor" : "#ff0000",
-        "bookedColor" : "yellow",
+        "bookedColor" : "#434845",
 })
 ;angular.module('guest_house').directive("transactionDetails",function(){
   return {
@@ -1272,17 +1282,21 @@ $scope.getCustomerbyID = function(){
       modelValue:'='
     },
     link: function(scope, element, attrs) {
-      // scope.$watch('modelValue', function(value) {
-      //     console.log(value);
-      //     scope.modelValue = value;
-      // });
+      scope.$watch('modelValue', function(value) {
+          // console.log(value);
+          scope.modelValue = value;
+      });
     }
   };
 })
-.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util,$timeout) {
+.controller("RoomFilterController",function($scope,$rootScope,transactionService,GuesthouseService,UtilityService,Util,$timeout,Events) {
   $scope.find = {};
   $scope.room = {};
+  $scope.minDate = new Date();
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
+  $rootScope.$on(Events.ROOM_DELETED,function(data){
+      $scope.getRoomInfo("1");
+  })
   /**
    * functionName : getRoomInfo
    * Info : keeps the data of the current selected transaction and show in the transaction detials
@@ -1432,6 +1446,7 @@ function getDayClass(data) {
     };
 })
 .controller("dateViewerController",["$scope",function($scope) {
+  $scope.minDate = new Date();
   $scope.open2 = function() {
    $scope.popup2.opened = true;
   };
@@ -1506,11 +1521,23 @@ function getDayClass(data) {
     },
     link: function(scope, element, attrs) {
     // console.log("inputObject  ",scope.inputObject.bookingStatus);
+    // styling offer tab in the room list
+    if($(element[0]).hasClass("offer-Zone") && scope.inputObject){
+      var css ;
+      if(scope.inputObject.bookingStatus == "AVAILABLE"){
+         css = {
+          "background" : Constants.availableColor
+        }
+      }
+      else if (scope.inputObject.bookingStatus == "CHECKED-IN") {
+        css = {
+         "background" : Constants.checkedInColor
+       }
+      }
+      $(element[0]).css(css)
+    }
      if(scope.inputObject && scope.inputObject.bookingStatus == "AVAILABLE" )
      {
-      //  element.css({background: red})
-      // console.log("red");
-      // element.addClass('custom_roomlist');
       var css = {
         "border" : "2px solid "+Constants.availableColor,
         "color"  : Constants.availableColor,
@@ -1520,6 +1547,7 @@ function getDayClass(data) {
       }
       $(element[0]).find(".room-listing-box").css(css);
       $(element[0]).find(".room-listing-box span").css(spanCss);
+
      }
      else if(scope.inputObject && scope.inputObject.bookingStatus == "CHECKED-IN"){
          var css = {
