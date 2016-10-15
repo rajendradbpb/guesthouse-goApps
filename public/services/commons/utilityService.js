@@ -53,6 +53,7 @@ app.factory("UtilityService", function($http,$resource,$localStorage,Constants) 
     if(!form)
     return;
     form.$setPristine();
+    form.$setUntouched();
   }
   return{
     getSelectedIds:getSelectedIds,

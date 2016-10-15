@@ -100,8 +100,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
           $timeout(function() {
             $scope.getRoom();
             $scope.currentTab = 'roomlists';
-            // $scope.transaction = {};
-            // UtilityService.resetForm(bookroom);
+            $scope.transaction = {};
+            UtilityService.resetForm(bookroom);
           },2000)
       }
       else {
