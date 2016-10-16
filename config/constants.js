@@ -50,6 +50,7 @@ var constants = {
       "roomTypeRequired"            :   " Room Type Required",
       "tranctionNoRequired"         :   " tranctionNo Required",
       "tranctionNoExist"      :   " tranction No. already Exist",
+      "roomNoExist"      :   " Room No. already Exist",
       "transactionfailed"      :   " transaction failed",
       "checkInDateRequired"      :   " checkIn Date Required",
       "checkOutDateRequired"      :   " check Out Date Required",
