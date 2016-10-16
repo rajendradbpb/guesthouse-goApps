@@ -1,6 +1,7 @@
 app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout) {
   $scope.currentTab = 'roomlists';
   $scope.filterType = 1;
+  $scope.minDate = new Date();
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   $scope.transactionTab = function(tab){
     $scope.currentTab = tab;

@@ -12,23 +12,13 @@ app.directive('dateViewer', function () {
         restrict: 'EA',
         templateUrl: 'directives/views/datepick.html',
         controller:'dateViewerController',
-        //  link : linkfunction,
-
-          // ng-model:'='
-          // min-date:
-
-           // ngModel = user.establishDate  = 2
-
-        // link: function(scope, element, attrs) {
-        //   scope.$watch('modelValue', function(value) {
-        //        console.log(value);
-        //       scope.modelValue = value;
-        //   });
-        // }
+        scope:{
+          ngModel:'=',
+          minDate:'='
+        }
     };
 })
 .controller("dateViewerController",["$scope",function($scope) {
-  $scope.minDate = new Date();
   $scope.open2 = function() {
    $scope.popup2.opened = true;
   };
