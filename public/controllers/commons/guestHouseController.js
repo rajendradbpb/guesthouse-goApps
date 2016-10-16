@@ -1,7 +1,6 @@
 app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService,Events) {
   $scope.currentTab = 'roomlists';
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
-  console.log($scope.roomFeature);
   $scope.roomlistingTab = function(tab){
     $scope.currentTab = tab;
   }
@@ -130,5 +129,13 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
             $scope.$emit(Events.ROOM_DELETED);
         }
      })
+    }
+    $scope.checkOfferPrice = function(){
+      if($scope.room.price <= $scope.room.offerPrice){
+        $scope.offerError = true;
+      }
+      else{
+        $scope.offerError = false;
+      }
     }
 })

@@ -190,7 +190,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
          var from = moment(room.checkInDate);
          var to = moment(room.checkOutDate);
          var different = to.diff(from,'days');
-         console.log(different);
+         $scope.different = (different == 0) ? 1 : different;
          if(different == 0){
            room.totalPrice = room.price * 1;
          }

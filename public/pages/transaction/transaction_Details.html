@@ -328,7 +328,8 @@
                                    <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">Sl No</th>
                                    <th>Room No</th>
                                    <th>Price/Day</th>
-                                   <th>Total Price</th>
+                                   <th ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'">Day's</th>
+                                   <th ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'">Total Price</th>
                                  </tr>
                                </thead>
                                <tbody>
@@ -336,7 +337,8 @@
                                    <td><input type="checkbox" ng-model="room.isSelect">{{$index+1}}</td>
                                    <td>{{room.room.roomNo}}</td>
                                    <td>{{room.price}}</td>
-                                   <td>{{room.totalPrice}}</td>
+                                   <td ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'">{{different}}</td>
+                                   <td ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'">{{room.totalPrice}}</td>
                                  </tr>
                                </tbody>
                              </table>
