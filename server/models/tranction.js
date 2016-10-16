@@ -13,7 +13,7 @@ var deepPopulate = require('mongoose-deep-populate')(mongoose);
  * updated on -  21-9-2016 // reason for update
  */
 var roomDetailsSchema = new mongoose.Schema({
-  guestHouse        : {type: Schema.Types.ObjectId, ref: 'user', required:constants.messages.errors.guestHouseRequried },
+
   room              : {type: Schema.Types.ObjectId, ref: 'room', required:constants.messages.errors.roomIdRequired },
   checkInDate       : {type:Date , required:constants.messages.errors.checkInDateRequired },
   checkOutDate      : {type:Date , required:constants.messages.errors.checkOutDateRequired}, // will be updated at checkOut
@@ -33,11 +33,12 @@ var tranctionSchema = new mongoose.Schema({
     discount          : {type: String,default:null },
     // price             : {type: Number, required:constants.messages.errors.priceRequired},// this will be updated 2nd time when the user will be check out
     // isPayment         : {type: Boolean, default:false}, // this will be true in case of the checkOut
-    transactionNo       : {type:String , required:constants.messages.errors.tranctionNoRequired,unique:true},
+    transactionNo       : {type:String , required:constants.messages.errors.tranctionNoRequired},
     createdDate       : {type: Date, default: null},
     // checkInDate       : {type: Date, required:constants.messages.errors.checkInDateRequired , default:Date()},
     // checkOutDate      : {type: Date, default: null},
     createdBy         : {type: Schema.Types.ObjectId ,ref: 'user', required:"user id not mentioned"}, // this is be the ghUser always
+    guestHouse        : {type: Schema.Types.ObjectId, ref: 'user', required:constants.messages.errors.guestHouseRequried },
     updatedDate       : {type: Date, default: new Date()},
     updatedBy         : {type: Schema.Types.ObjectId , required:"user id not mentioned"},
     isDelete          : {type: Boolean, default:false},
@@ -57,5 +58,38 @@ tranctionSchema.plugin(deepPopulate, {
     },
   }
 });
+
+/**
+ * functionName :preSave()
+ * Info : used to validate before save
+ * input : req - request object ,
+ * output : cb- callback with error and response
+ * createdDate - 16-10-2016
+ * updated on -  16-10-2016
+ */
+tranctionSchema.statics.preSave = function search (req, cb) {
+  console.log("tranctionSchema.statics.preSave");
+  var query = {
+    guestHouse:req.body.guestHouse,
+    transactionNo : req.body.transactionNo
+  }
+  tranctionSchemaSchemaModel.findOne(query).exec()
+  .then(function(transaction) {
+    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",transaction);
+    if(!transaction){
+      console.log("transaction not found");
+      return cb(null,true);
+    }
+    else {
+      console.log("transaction  found");
+      var err = new Error(constants.messages.errors.tranctionNoExist);
+      return cb(err,null);
+    }
+  })
+  .catch(function(error) {
+    return cb(error,null);
+  })
+
+}
 var tranctionSchemaSchemaModel = mongoose.model('tranction', tranctionSchema);
 module.exports = tranctionSchemaSchemaModel;
