@@ -11,7 +11,8 @@ var utility = require("./../component/utility");
 var moment = require("moment");
 var underscore = require('underscore');
 var nodeUnique = require('node-unique-array');
-var unique = require('make-unique')
+var unique = require('make-unique');
+var sendResponse = require('./../component/sendResponse');
 /*
 * guest house rooms crud operation starts
 */
@@ -142,6 +143,11 @@ function validateOffer(reqBody){
  * updated on - 23-9-16 // reason for update
  */
 exports.getRoom = function (req, res) {
+  if(req.query.minPrice)
+    req.query.minPrice = parseInt(req.query.minPrice);
+  if(req.query.maxPrice)
+    req.query.maxPrice = parseInt(req.query.maxPrice);
+
   if(req.query.isDash == "1")
   {
     if(req.user._doc.role.type != "ghUser")
@@ -174,6 +180,7 @@ exports.getRoom = function (req, res) {
   }
   // if user selects a room to get the details of the room
   else if (req.query._id) {
+
     var query = {
       "_id":mongoose.Types.ObjectId(req.query._id)
     }
@@ -191,13 +198,21 @@ exports.getRoom = function (req, res) {
     var match = {};
     var aggregrate = [];
     var filters = {};// sets the price filter flag
+    // adding condition for the price
+    if((req.query.minPrice == "" || req.query.minPrice == undefined) && utility.isDataExist(req.query.maxPrice,true) ){
+      // if min price not mentioed and max price mentioed then make minPrice as ZERO
+      req.query.minPrice = 0 ;
+    }
+    if((req.query.maxPrice == "" || req.query.maxPrice == undefined) && utility.isDataExist(req.query.minPrice,true) ){
+      return res.json(response(202,"failed",constants.messages.errors.invalidPriceQuery));
+    }
+    if(parseInt(req.query.minPrice) > parseInt(req.query.maxPrice)){
+      sendResponse(res,202,"failed",constants.messages.errors.invalidPriceQuery);
+    }
     if(
-      parseInt(req.query.minPrice)
-      && parseInt(req.query.maxPrice)
-      && parseInt(req.query.minPrice)
-      && parseInt(req.query.maxPrice)  > parseInt(req.query.minPrice) ){
-      req.query.minPrice = parseInt(req.query.minPrice);
-      req.query.maxPrice = parseInt(req.query.maxPrice);
+      utility.isDataExist(req.query.minPrice)
+      && utility.isDataExist(req.query.maxPrice)
+      && req.query.maxPrice  >= req.query.minPrice ){
       filters.price = true; // sets the price filter
     }
     if(req.query.roomType){

@@ -1,9 +1,9 @@
 <section class=" side-banner " ng-if="filter==1">
       <div class="form-group">
-          <input type="text" class="form-control" name="min_price" ng-model="find.minPrice" placeholder="Min Price" required >
+          <input type="text" class="form-control" name="min_price" numbers-only ng-model="find.minPrice" placeholder="Min Price" required >
       </div>
       <div class="form-group">
-           <input type="text" class="form-control" name="max_price" ng-model="find.maxPrice" placeholder="Max Price" required >
+           <input type="text" class="form-control" name="max_price" numbers-only ng-model="find.maxPrice" placeholder="Max Price" required >
       </div>
       <div class="form-group">
           <!-- <input type="text" class="form-control pull-right" id="datepicker" ng-model="buildingPlan.date"> -->
@@ -37,10 +37,10 @@
 </section>
 <section class=" side-banner " ng-if="filter==2">
   <div class="form-group">
-      <input type="text" class="form-control" name="min_price" ng-model="find.minPrice" placeholder="Min Price" required >
+      <input type="text" class="form-control" name="min_price" numbers-only ng-model="find.minPrice" placeholder="Min Price" required >
   </div>
   <div class="form-group">
-       <input type="text" class="form-control" name="max_price" ng-model="find.maxPrice" placeholder="Max Price" required >
+       <input type="text" class="form-control" name="max_price" numbers-only ng-model="find.maxPrice" placeholder="Max Price" required >
   </div>
   <!-- <div class="form-group">
     <label for="inputEmail3">Room Features</label>

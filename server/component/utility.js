@@ -88,4 +88,24 @@ utility.dateDiff = function(startDate,endDate) {
   console.log("days  ",days);
   return days;
 }
+/**
+ * functionName :utility.isDataExist()
+ * Info : to check wheather data present or blank , where checking ZERo optional
+ * @param
+      data - variable to be check
+      isZero - check condition for the zero
+ * output :Number
+ * createdDate - 16-10-2016
+ * updated on - 16-10-2016
+ */
+utility.isDataExist = function(data,isZero) {
+  var status = true;
+  if(data == undefined || data == null){
+    status = false;
+  }
+  if(isZero){
+    status = data == 0 ? false : true;
+  }
+  return status;
+}
 module.exports = utility;
