@@ -260,7 +260,7 @@
               </div>
             </section>
           </div>
-          <div class="tab-pane" ng-class="{'active':currentTab == 'transaction'}">
+          <div class="tab-pane" ng-class="{'active':currentTab == 'transaction'}" ng-init="serchTransaction()">
           <div class="row alert">
           <div class="col-sm-12">
             <form ng-submit="serchTransaction(searchStr)">
@@ -277,9 +277,12 @@
         </div>
         <div class="form-group " >
           <!--added directives for the trasanction view  -->
-          <transaction-details ></transaction-details>
+          <div ng-repeat="transaction in trasactionList">
+            <transaction-details transaction="transaction" on-select-transaction="onSelectTransaction(transaction)"></transaction-details>
+
+          </div>
         </div>
-         <room-filter filter="2" model-value="trasactionList"></room-filter>
+         <!-- <room-filter filter="2" model-value="trasactionList"></room-filter> -->
       </div>
       <!-- transaction details tab starts  -->
        <div class="tab-pane" ng-class="{'active':currentTab == 'transactionDetails'}">

@@ -1,8 +1,21 @@
 angular.module('guest_house').directive("transactionDetails",function(){
+  var link = function(scope, element, attrs) {
+    console.log("transaction  ",scope.transaction);
+  }
   return {
     restrict: 'EA',
     templateUrl: 'directives/views/transaction-details.html',
-    scope: false,
-    // link: link, //DOM manipulation
+    scope: {
+      transaction:"=",
+      onSelectTransaction:"&"
+
+    },
+    link: link, //DOM manipulation
+    controller:"transactionDetailsController"
   };
+})
+.controller("transactionDetailsController" , function($scope) {
+  $scope.getTransactionDetails = function(transaction) {
+    $scope.onSelectTransaction(transaction);
+  }
 })
