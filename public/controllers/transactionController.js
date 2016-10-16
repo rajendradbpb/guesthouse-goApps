@@ -212,12 +212,13 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * updated on -  5-9-2016 // reason for update
     */
    $scope.calculateDiscount = function(){
-     if($scope.selectedTransaction.totalPrice < $scope.tempTotPrice){
-       $scope.selectedTransaction.discount = $scope.tempTotPrice - $scope.selectedTransaction.totalPrice;
+     if($scope.selectedTransaction.discount <= $scope.tempTotPrice){
+       $scope.selectedTransaction.totalPrice = $scope.tempTotPrice - $scope.selectedTransaction.discount;
      }
      else {
-       if($scope.selectedTransaction.totalPrice >= $scope.tempTotPrice){
+       if($scope.selectedTransaction.discount > $scope.tempTotPrice){
          $scope.selectedTransaction.discount = 0;
+         $scope.selectedTransaction.totalPrice = $scope.tempTotPrice;
        }
      }
    }
