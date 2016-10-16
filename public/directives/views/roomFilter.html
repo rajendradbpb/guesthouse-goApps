@@ -6,11 +6,8 @@
            <input type="text" class="form-control" name="max_price" numbers-only ng-model="find.maxPrice" placeholder="Max Price" required >
       </div>
       <div class="form-group">
-          <!-- <input type="text" class="form-control pull-right" id="datepicker" ng-model="buildingPlan.date"> -->
-          <!-- <div date-picker="dates.today" id="pickerMinDateDiv" min-date="minDate" view="date" min-view="hours" timezone="UTC" watch-direct-changes="true"></div> -->
           <p class="input-group">
-                    <input type="text" class="form-control" ng-click="open()" uib-datepicker-popup ng-model="find.checkInDate" is-open="popup.opened" min-date="minDate" ng-required="true" close-text="Close" />
-                     <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <input placeholder="Filter By Date"type="text" class="form-control" ng-click="open()" uib-datepicker-popup ng-model="find.checkInDate" is-open="popup.opened" min-date="minDate" ng-required="true" close-text="Close" />
           </p>
       </div>
       <div class="form-group">
@@ -42,23 +39,6 @@
   <div class="form-group">
        <input type="text" class="form-control" name="max_price" numbers-only ng-model="find.maxPrice" placeholder="Max Price" required >
   </div>
-  <!-- <div class="form-group">
-    <label for="inputEmail3">Room Features</label>
-         <div class="radio" ng-repeat="feature in roomFeature">
-           <label>
-             <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="room.roomType" value="{{feature.value}}">
-            {{feature.name}}
-           </label>
-         </div>
-   </div> -->
-  <!-- <div class="form-group" ng-init="newRoomInit()">
-      <label for="inputEmail3" >Facilities</label>
-        <div class="checkbox" ng-repeat="facility in facilities">
-            <label>
-              <input type="checkbox" ng-model="facility.isChecked"> {{facility.name}}
-            </label>
-        </div>
-  </div> -->
   <div class="form-group ">
       <button type="btn btn-default" class="button" ng-click="getRoomInfo(filter)" >Apply</button>
       <button type="btn btn-danger" class="" ng-click="allTransactions()">Clear</button>

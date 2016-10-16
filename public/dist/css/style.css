@@ -4964,6 +4964,7 @@ input[type=checkbox], input[type=radio]{
     display: block;
     position: relative;
     color: #3C8DBC;
+    min-height: 120px;
 }
 /*
   section-gh-room_list used to map the internal css relative to this class
@@ -4995,9 +4996,15 @@ input[type=checkbox], input[type=radio]{
 }
 .btn-close{
   position: absolute;
-    right: 6px;
-    top: -7px;
-    font-size: 18px;
+  right: 4px;
+  top: -9px;
+  font-size: 18px;
+}
+.btn-check{
+  position: absolute;
+  right: 10px;
+  top: -9px;
+  font-size: 18px;
 }
 .side-banner{
   position: absolute;

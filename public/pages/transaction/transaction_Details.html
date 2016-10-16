@@ -31,14 +31,14 @@
                       OFFER
                     </span>
                   </a>
-                  <div class="checkbox btn-close" ng-if ="availableRooms.bookingStatus == 'AVAILABLE' ">
+                  <div class="checkbox btn-check" ng-if ="availableRooms.bookingStatus == 'AVAILABLE' ">
                       <label>
                         <input type="checkbox" ng-model="availableRooms.isChecked" ng-change="countChecked()">
                       </label>
                   </div>
               </div>
             </div>
-            <div class="row col-md-10">
+            <div class="row col-md-9">
               <button type="button" class="btn btn-primary btn-sm" ng-disabled="booking_disable"  ng-click="bookRoom()">Go To Booking</button>
             </div>
             <div class="row col-md-9 m-t-lg" >
