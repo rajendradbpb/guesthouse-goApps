@@ -263,8 +263,8 @@ exports.getRoom = function (req, res) {
       // select = "name  contactDetails establishDate rating MinPrice MaxPrice address";
     }
     else if(req.user._doc.role.type == "ghUser"){
-
-      match['roomsDetails.guestHouse'] = mongoose.Types.ObjectId(req.user._doc._id);
+      console.log("mongoose.Types.ObjectId(req.user._doc._id)  ",mongoose.Types.ObjectId(req.user._doc._id));
+      match['guestHouse'] = mongoose.Types.ObjectId(req.user._doc._id);
       // select = "name  contactDetails rooms establishDate rating MinPrice MaxPrice address";
     }
     aggregrate.push({$match:match});
@@ -310,7 +310,10 @@ exports.getRoom = function (req, res) {
       // getting availble rooms
       var query= {
          "_id": { "$nin": nonAvailbleRoomsId },
-         "isDelete":false
+         "isDelete":false,
+      }
+      if(req.user._doc.role.type == "ghUser"){
+        query['guestHouse'] = req.user._doc._id;
       }
       // adding price filter
       if(filters.price){
