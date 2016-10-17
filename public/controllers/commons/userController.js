@@ -29,7 +29,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
     $rootScope.showPreloader = false;
       $localStorage[Constants.getTokenKey()] = response.data.token;
       $rootScope.logedInUser = response.data.user;
-      Util.alertMessage('success', response.message);
+      $scope.$emit(Events.ALERT_MESSAGE,'success', response.message);
     });
 
   }
@@ -44,7 +44,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
     $rootScope.showPreloader = true;
     UserService.changePassword(obj,function(response){
     $rootScope.showPreloader = false;
-      Util.alertMessage('success', response.message);
+      $scope.$emit(Events.ALERT_MESSAGE,'success', response.message);
     });
   }
   /*******************************************************/
@@ -56,9 +56,7 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
     return;
     UserService.getRoleType(function(response){
     $rootScope.showPreloader = false;
-      console.log(response);
       $scope.roleType = response.data;
-       // to udpate the user role on init roles
       $scope.selectedRole = $scope.roleType[0];
       $scope.onSelectRole();
     });
@@ -68,10 +66,9 @@ app.controller("UserController", function($scope,$rootScope,CommonService,$state
   /*******************************************************/
   $scope.submitUserDetails = function(){
       $rootScope.showPreloader = true;
-    UserService.submitUserDetails($scope.user,function(response){
-      console.log(response);
+      UserService.submitUserDetails($scope.user,function(response){
       $rootScope.showPreloader = false;
-      Util.alertMessage('success', response.message);
+      $scope.$emit(Events.ALERT_MESSAGE,'success', response.message);
     });
   }
   /**

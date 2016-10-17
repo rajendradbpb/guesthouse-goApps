@@ -1,3 +1,6 @@
+<section class="alert-message">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+</section>
 <header class="main-header">
   <a ui-sref="dashboard" class="logo">
     <span class="logo-mini"><b>GH</b></span>

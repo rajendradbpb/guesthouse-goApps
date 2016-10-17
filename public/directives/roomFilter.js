@@ -65,14 +65,12 @@ app.directive("roomFilter",function(){
       $timeout(function () {
         $scope.modelValue.availableRooms = response.data.availableRooms;
         $scope.modelValue.nonAvailebleRooms = response.data.nonAvailebleRooms;
-        console.log($scope.modelValue);
       });
    })
  }
     else if(filter=="2"){
       transactionService.getTransaction(obj,function(response) {
         $scope.filtered_array = [];
-        console.log(response);
         // $rootScope.showPreloader = true;
         $scope.modelValue = response.data;
       })
@@ -137,13 +135,9 @@ $scope.newRoomInit = function() {
             $scope.facilities = response.data;
         }
         else {
-            Util.alertMessage('danger', response.message);
+            $scope.$emit(Events.ALERT_MESSAGE,'danger', response.message);
         }
-    },
-    function(err){
-          Util.alertMessage('danger', err.message);
-    }
-  )
+    })
 }
 $scope.open = function() {
  $scope.popup.opened = true;

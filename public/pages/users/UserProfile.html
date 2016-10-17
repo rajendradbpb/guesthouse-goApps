@@ -74,9 +74,6 @@
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                   <button type="button" class="btn btn-danger" ng-click="updateMyProfile()" ng-disabled="updateProfile.$invalid">Update</button>
-                  <section  align="center" class="m-t-sm">
-                      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
-                  </section>
                 </div>
               </div>
             </form>
@@ -107,9 +104,6 @@
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                   <button type="button" ng-click="changePassword()" class="btn btn-danger" ng-disabled="changepwd.$invalid || password.new != password.confirm">Change Password</button>
-                  <section  align="center" class="m-t-sm">
-                      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
-                  </section>
                 </div>
               </div>
             </form>

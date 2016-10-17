@@ -1,6 +1,5 @@
 angular.module('guest_house').directive("transactionDetails",function(){
   var link = function(scope, element, attrs) {
-    console.log("transaction  ",scope.transaction);
   }
   return {
     restrict: 'EA',

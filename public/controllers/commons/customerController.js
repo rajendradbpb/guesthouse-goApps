@@ -19,11 +19,20 @@ $scope.submitCustDetails = function(){
       $rootScope.showPreloader = true;
   CustomerService.submitCustDetails($scope.customer,function(response){
       $rootScope.showPreloader = false;
-    if(response.statusCode == 200){
-        Util.alertMessage('success', response.message);
-    }
-  },function(err) {
-    Util.alertMessage('danger', err.message);
+      if(response.statusCode == 200){
+        obj = {
+          "type":"success",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
+      }
+      else {
+        obj = {
+          "type":"danger",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
+      }
   })
 }
 /*******************************************************/

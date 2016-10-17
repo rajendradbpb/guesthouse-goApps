@@ -2373,7 +2373,7 @@ a:focus {
   border-radius: 3px;
 }
 .alert h4 {
-  font-weight: 600;
+  font-weight: 200;
 }
 .alert .icon {
   margin-right: 10px;
@@ -5093,8 +5093,35 @@ input[type=checkbox], input[type=radio]{
 
 /*room details page end*/
 .date{
-  align:left;
-  float: right;
-  margin-top: 6px;
+  align:center;
 
+  margin-top: -24px;
+
+}
+.checkoutdate{
+  margin-top: -24px;
+}
+.transaction{
+  font-size: 15px;
+}
+.roomno{
+  font-size: 17px;
+}
+.name{
+  margin-top: -31px;
+}
+/*.checkindate{
+margin-top: -24px;
+  color: inherit;
+  font-weight: 200;
+}*/
+.alert-message{
+  position: absolute;
+  left: 230px;
+  right: 15px;
+  top: 50px;
+  z-index: 9991;
+}
+.transction-list{
+  margin: 15px 25px;
 }

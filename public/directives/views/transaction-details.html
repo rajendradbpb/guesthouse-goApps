@@ -1,14 +1,22 @@
-  <div  ng-click="getTransactionDetails(transaction)" class="alert alert-info alert-dismissible pointer">
-    <span class="pull-right">Rs:{{transaction.transction_price}}</span>
-    <p align="center">CHECKED-IN-{{transaction.createdDate | dateformat}} </p>
-    <p class="date" >CHECK-OUT-{{transaction.roomsDetails[0].checkOutDate | dateformat}} </p>
-    <h4>Name-{{transaction.cName}}</h4>
-    <h5>Purpose-{{transaction.purpose}}</h5>
-  </div>
-  <!-- <div ng-repeat="transaction in transactionList"ng-click="onSelectTransaction(transaction)" class="alert alert-info alert-dismissible pointer">
+  <!-- <div  ng-click="getTransactionDetails(transaction)" class="alert alert-info alert-dismissible pointer">
     <span class="pull-right">Rs:{{transaction.transction_price}}</span>
     <p align="center">CHECKED-IN-{{transaction.createdDate | dateformat}} </p>
     <p class="date" >CHECK-OUT-{{transaction.roomsDetails[0].checkOutDate | dateformat}} </p>
     <h4>Name-{{transaction.cName}}</h4>
     <h5>Purpose-{{transaction.purpose}}</h5>
   </div> -->
+  <div ng-click="getTransactionDetails(transaction)" class=" row alert alert-info alert-dismissible pointer transction-list">
+    <div class="col-sm-4">
+      <p>Name - {{transaction.cName}}</p>
+      <p>RoomNo - {{transaction.roomNo.toString()}}</p>
+      <p>Transaction No - {{transaction.transactionNo}}</p>
+    </div>
+    <div class="col-sm-5">
+      <p>CHECKED-IN - {{transaction.roomsDetails[0].checkInDate | dateformat}} </p>
+      <p>CHECK-OUT - {{transaction.checkOutDate | dateformat}} </p>
+    </div>
+    <div class="col-sm-3">
+      <p>Rs: {{transaction.transction_price}}</p>
+      <p>Status-{{transaction.bookingStatus}}</p>
+    </div>
+  </div>

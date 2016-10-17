@@ -22,6 +22,7 @@
                       <p>Capacity {{availableRooms.capacity}}</p>
                       <!-- <p>Room No {{availableRooms.roomNo}}</p> -->
                       <p>Price {{availableRooms.price}}</p>
+                      <p ng-if="availableRooms.isOffer">OfferPrice {{availableRooms.offerPrice}}</p>
                     </a>
                     <a class="offer-Zone" ng-if="availableRooms.isOffer" room-style input-object="availableRooms">
                       <span>
@@ -42,6 +43,7 @@
                     <p>Capacity {{room.room.capacity}}</p>
                     <!-- <p>Room No {{room.room.roomNo}}</p> -->
                     <p>Price {{room.room.price}}</p>
+                    <p ng-if="room.isOffer">OfferPrice {{room.room.offerPrice}}</p>
                   </a>
                   <a class="offer-Zone" ng-if="room.isOffer" room-style input-object="room">
                     <span>
@@ -136,9 +138,6 @@
                     <div class="box-footer">
                       <button type="submit" class="btn btn-default" ng-click="roomlistingTab('roomlists')">Cancel</button>
                       <button  ng-disabled="update_room.$invalid" type="button" class="btn btn-info pull-right" ng-click="updateRoomDetails()">Update</button>
-                      <section  align="center m-t-sm">
-                          <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
-                      </section>
                     </div>
                     <!-- /.box-footer -->
                   </form>

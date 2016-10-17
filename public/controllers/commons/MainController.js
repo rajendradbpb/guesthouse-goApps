@@ -1,4 +1,4 @@
-app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService) {
+app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService,Events,Util) {
   $rootScope.showPreloader = false;
    $scope.find = {};
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
@@ -33,6 +33,9 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
     }
   )
   }
+  $rootScope.$on(Events.ALERT_MESSAGE,function(event,data){
+      Util.alertMessage(data.type, data.message);
+  })
   /*******************************************************/
   /********This code is to load room details in guest_house dashboard******/
   /*******************************************************/

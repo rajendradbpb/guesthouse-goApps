@@ -82,9 +82,6 @@
         <div class="box-footer">
           <button type="submit" class="btn btn-default" ui-sref="room-setttings">Cancel</button>
           <button  ng-disabled="addroom.$invalid" type="submit" class="btn btn-info pull-right" >Submit</button>
-          <section  align="center m-t-sm">
-              <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
-          </section>
         </div>
         <!-- /.box-footer -->
       </form>

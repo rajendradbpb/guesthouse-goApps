@@ -1,4 +1,4 @@
-app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout) {
+app.controller("transactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout,Events) {
   $scope.currentTab = 'roomlists';
   $scope.filterType = 1;
   $scope.minDate = new Date();
@@ -24,7 +24,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     GuesthouseService.getRoom(obj,function(response){
       $rootScope.showPreloader = false;
       $scope.room_list = response.data;
-      console.log($scope.room_list);
    })
   }
   $scope.getRoomDetails = function(room){
@@ -95,19 +94,26 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     console.log("before save  ",JSON.stringify(obj));
     transactionService.addTransaction(obj,function(response){
     $rootScope.showPreloader = false;
-      if(response.statusCode == 200){
-          Util.alertMessage('success', response.message);
-          // refresh the room list and change the tab to the room list
-          $timeout(function() {
-            $scope.getRoom();
-            $scope.currentTab = 'roomlists';
-            $scope.transaction = {};
-            UtilityService.resetForm(bookroom);
-          },2000)
+    if(response.statusCode == 200){
+      obj = {
+        "type":"success",
+        "message":response.message
       }
-      else {
-          Util.alertMessage('danger', response.message);
+       $scope.$emit(Events.ALERT_MESSAGE,obj);
+       $timeout(function() {
+         $scope.getRoom();
+         $scope.currentTab = 'roomlists';
+         $scope.transaction = {};
+         UtilityService.resetForm(bookroom);
+       },2000)
+    }
+    else {
+      obj = {
+        "type":"danger",
+        "message":response.message
       }
+       $scope.$emit(Events.ALERT_MESSAGE,obj);
+    }
     })
   };
    /**
@@ -124,18 +130,18 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        $scope.filterType = 2;
        // call the service to get the trasactions
        transactionService.getTransaction(function(response) {
-         $scope.transactionList = response.data;
-         angular.forEach($scope.transactionList,function(transction){
-           transction.transction_price = 0;
+         var transactionList = response.data;
+         angular.forEach(transactionList,function(transction){
+           transction.roomNo = [];
            angular.forEach(transction.roomsDetails,function(room){
-            transction.transction_price += room.price;
+             transction.roomNo.push(room.room.roomNo);
            });
          });
-       },
-       function(err){
-         Util.alertMessage('error', err.message);
-       }
-     )
+         $timeout(function () {
+            $scope.transactionList = transactionList;
+            console.log($scope.transactionList);
+         });
+       })
      }
     //  else if(value == "checkOut"){
     //    // assign  the checkin date with the check out date , user may change that
@@ -177,12 +183,11 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     */
    $scope.onSelectTransaction = function(transaction){
      $scope.selectedTransaction = transaction;
-     console.log($scope.selectedTransaction);
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        room.isSelect = false;
        room.checkInDate = moment(room.checkInDate).format('YYYY-MM-DD');
        room.checkOutDate = moment().format('YYYY-MM-DD');
-       console.log(room.checkOutDate);
+       console.log($scope.selectedTransaction);
        if(moment($scope.selectedTransaction.roomsDetails[0].checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
          $scope.selectedTransaction.roomsDetails[0].checkOutDate = null;
        }
@@ -201,7 +206,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        }
      });
      $scope.transactionTab('transactionDetails');
-    //  $scope.ReportListTab('Transactiondetails');
    }
    /**
     * functionName : calculateDiscount
@@ -232,15 +236,20 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     */
    $scope.gotoCheckOut = function(operation){
      $scope.operationType = operation;
+     $scope.selectedRooms = [];
      $scope.roomPrice = 0;
      $scope.selectedTransaction.totalPrice = 0;
      $scope.selectedTransaction.discount = 0;
      $scope.transactionTab('checkOut');
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        if(room.isSelect){
+         console.log(room.totalPrice);
+         $scope.selectedRooms.push(room);
+         console.log($scope.selectedRooms);
          $scope.roomPrice += room.price;
          $scope.selectedTransaction.totalPrice += room.totalPrice;
        }
+
      })
      $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
    }
@@ -260,18 +269,30 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        "type":$scope.operationType,
        "rooms":[]
      }
-     angular.forEach($scope.selectedTransaction.roomsDetails,function(item){
+     angular.forEach($scope.selectedRooms,function(item){
        if(item.isSelect){
          obj.rooms.push(item.room._id);
+         console.log(item.room._id);
        }
      })
      transactionService.updateTransaction(obj,function(response) {
         $scope.getRoom(); // refresh the rooms
         $scope.transactionTab('roomlists');
-     },
-     function(err){
-       Util.alertMessage('error', err.message);
-     });
+        if(response.statusCode == 200){
+          obj = {
+            "type":"success",
+            "message":response.message
+          }
+           $scope.$emit(Events.ALERT_MESSAGE,obj);
+        }
+        else {
+          obj = {
+            "type":"danger",
+            "message":response.message
+          }
+           $scope.$emit(Events.ALERT_MESSAGE,obj);
+        }
+     })
    }
    /**
     * functionName : checkin_booked
@@ -289,11 +310,25 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      transactionService.updateTransaction(obj,function(response) {
          $scope.getRoom(); // refresh the rooms
          $scope.transactionTab('roomlists');
+         if(response.statusCode == 200){
+           obj = {
+             "type":"success",
+             "message":response.message
+           }
+            $scope.$emit(Events.ALERT_MESSAGE,obj);
+         }
+         else {
+           obj = {
+             "type":"danger",
+             "message":response.message
+           }
+            $scope.$emit(Events.ALERT_MESSAGE,obj);
+         }
      })
    }
     /**
      * functionName : $scope.newRoomInit()
-     * Info : dependencies codes for the date picker
+     * Info : dependencies codes facilities
      * input : ...
      * output :...
      * createdDate - 4-9-2016
@@ -306,16 +341,12 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
                 $scope.facilities = response.data;
             }
             else {
-                Util.alertMessage('danger', response.message);
+                $scope.$emit(Events.ALERT_MESSAGE,'danger', response.message);
             }
-        },
-        function(err){
-              Util.alertMessage('danger', err.message);
-        }
-      )
+        })
     }
     /**
-     * functionName :   $scope.checkDate
+     * functionName :   $scope.showreportList
      * Info : dependencies codes for Transaction report
      * input : ...
      * output :...
@@ -336,6 +367,20 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
         //console.log("endDate > startDate");
         transactionService.getReport(obj,function(response) {
           $scope.reportsList = response.data;
+          if(response.statusCode == 200){
+            obj = {
+              "type":"success",
+              "message":response.message
+            }
+             $scope.$emit(Events.ALERT_MESSAGE,obj);
+          }
+          else {
+            obj = {
+              "type":"danger",
+              "message":response.message
+            }
+             $scope.$emit(Events.ALERT_MESSAGE,obj);
+          }
         })
       }
     }
@@ -343,6 +388,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
       $scope.reportDetails = reports;
       $scope.ReportListTab('viewReport');
     }
+    /***** this is used in the transactionDetails page in the room list table******/
      $scope.checkAll = function () {
         if ($scope.selectedAll) {
             $scope.selectedAll = true;
@@ -389,10 +435,4 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     });
     return count;
   }
-
-    // $scope.$watch("transaction.checkOutDate",function(){
-    //   if($scope.transaction.checkOutDate < $scope.transaction.checkInDate ){
-    //     alert('checkoutdate must be >= checkindate');
-    //   }
-    // })
 })

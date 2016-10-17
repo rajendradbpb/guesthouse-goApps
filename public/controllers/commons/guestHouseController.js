@@ -17,17 +17,13 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       function(response){
           $rootScope.showPreloader = false;
           if(response.statusCode == 200){
+
               $scope.facilities = response.data;
-              console.log($scope.facilities);
           }
           else {
-              Util.alertMessage('danger', response.message);
+            $scope.$emit(Events.ALERT_MESSAGE,'danger', response.message);
           }
-      },
-      function(err){
-            Util.alertMessage('danger', err.message);
-      }
-    )
+      })
   }
   /*******************************************************/
   /********This code is for adding new room details******/
@@ -40,8 +36,6 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       "roomNo":$scope.room.roomNo,
       "roomType" :$scope.room.roomType,
       "price" :$scope.room.price,
-      // "isOffer" :$scope.isoffer.checked,
-      // "offerPrice":$scope.room.offerprice,
       "facility":roomfacility,
       "capacity ":$scope.room.capacity,
       "guestHouse" : $rootScope.logedInUser._id
@@ -54,17 +48,22 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
       $scope.room.offerprice = null;
     }
     GuesthouseService.addRoom(obj, function(response){
-    $rootScope.showPreloader = false;
-      console.log($scope.room);
       if(response.statusCode == 200){
-          Util.alertMessage('success', response.message);
+        obj = {
+          "type":"success",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
       }
       else {
-          Util.alertMessage('danger', response.message);
+        obj = {
+          "type":"danger",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
       }
-    },function(err){
-      Util.alertMessage('danger', err.message);
     });
+    $rootScope.showPreloader = false;
   }
   /*******************************************************/
   /********This code is used to get all the room lists******/
@@ -75,10 +74,8 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
        "checkInDate" : moment().format("MM-DD-YYYY")
     };
     GuesthouseService.getRoom(obj,function(response){
-      console.log($scope.room_list);
       $rootScope.showPreloader = false;
       $scope.room_list = response.data;
-
     })
   }
   $scope.getRoomDetails = function(room){
@@ -105,20 +102,25 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
     GuesthouseService.updateroomByID($scope.room,function(response){
       $rootScope.showPreloader = false;
       if(response.statusCode == 200){
-          Util.alertMessage('success', response.message);
+        obj = {
+          "type":"success",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
       }
       else {
-          Util.alertMessage('danger', response.message);
+        obj = {
+          "type":"danger",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
       }
-    },function(err){
-      Util.alertMessage('danger', err.message);
-    });
+    })
   }
   /*******************************************************/
   /********This code is to delete room details******/
   /*******************************************************/
   $scope.deleteRoom = function(id){
-    console.log(id);
       var obj = {
        "_id":id
       }
