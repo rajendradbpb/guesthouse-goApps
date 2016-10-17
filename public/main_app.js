@@ -167,7 +167,8 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
     var Util = {};
     $rootScope.alerts =[];
     Util.alertMessage = function(msgType, message){
-        console.log(1212121);
+        if(msgType == "failed")
+          msgType = "warning";
         var alert = { type:msgType , msg: message };
         $rootScope.alerts.push( alert );
          $timeout(function(){

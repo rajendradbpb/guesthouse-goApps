@@ -1,4 +1,4 @@
-app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService,Events,Util) {
+app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService,Events,Util, $location, $anchorScroll) {
   $rootScope.showPreloader = false;
    $scope.find = {};
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
@@ -34,6 +34,8 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
   )
   }
   $rootScope.$on(Events.ALERT_MESSAGE,function(event,data){
+      $location.hash('top');
+      $anchorScroll();
       Util.alertMessage(data.type, data.message);
   })
   /*******************************************************/

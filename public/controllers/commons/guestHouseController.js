@@ -1,4 +1,4 @@
-app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService,Events) {
+app.controller("GuesthouseController", function($scope,$rootScope,UserService,$state,$stateParams,Util,UtilityService,GuesthouseService,Events,$timeout) {
   $scope.currentTab = 'roomlists';
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   $scope.roomlistingTab = function(tab){
@@ -35,14 +35,16 @@ app.controller("GuesthouseController", function($scope,$rootScope,UserService,$s
     var obj ={
       "roomNo":$scope.room.roomNo,
       "roomType" :$scope.room.roomType,
-      "price" :$scope.room.price,
+      "price" :parseInt($scope.room.price),
+      // "isOffer" :$scope.isoffer.checked,
+      // "offerPrice":$scope.room.offerprice,
       "facility":roomfacility,
       "capacity ":$scope.room.capacity,
       "guestHouse" : $rootScope.logedInUser._id
     }
     if($scope.isoffer){
       obj.isOffer = true;
-      obj.offerPrice = $scope.room.offerprice;
+      obj.offerPrice = parseInt($scope.room.offerprice);
     }
     else {
       $scope.room.offerprice = null;

@@ -62,10 +62,21 @@ app.directive("roomFilter",function(){
     if(filter=="1"){
       var checked_count = 0;
      GuesthouseService.getRoom(obj,function(response){
-      $timeout(function () {
-        $scope.modelValue.availableRooms = response.data.availableRooms;
-        $scope.modelValue.nonAvailebleRooms = response.data.nonAvailebleRooms;
-      });
+       if(response.statusCode == 200){
+         $timeout(function () {
+           $scope.modelValue.availableRooms = response.data.availableRooms;
+           $scope.modelValue.nonAvailebleRooms = response.data.nonAvailebleRooms;
+         });
+       }
+       else {
+         $scope.modelValue.availableRooms = [];
+         $scope.modelValue.nonAvailebleRooms = [];
+         obj = {
+           "type":response.status,
+           "message":response.message
+         }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
+       }
    })
  }
     else if(filter=="2"){
