@@ -68,14 +68,13 @@ tranctionSchema.plugin(deepPopulate, {
  * updated on -  16-10-2016
  */
 tranctionSchema.statics.preSave = function search (req, cb) {
-  console.log("tranctionSchema.statics.preSave");
   var query = {
     guestHouse:req.body.guestHouse,
     transactionNo : req.body.transactionNo
   }
+  console.log("tranctionSchema.statics.preSave",query);
   tranctionSchemaSchemaModel.findOne(query).exec()
   .then(function(transaction) {
-    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",transaction);
     if(!transaction){
       console.log("transaction not found");
       return cb(null,true);
@@ -87,6 +86,7 @@ tranctionSchema.statics.preSave = function search (req, cb) {
     }
   })
   .catch(function(error) {
+      console.log("transaction  err");
     return cb(error,null);
   })
 

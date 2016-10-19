@@ -46,6 +46,7 @@ var constants = {
       "toDateRequired"              :   " to Date Required",
       "guestHouseRequried"          :   " guest House Requried",
       "inValidDateLimit"            :   " inValid Date Limit",
+      "invalidDateFormat"           : "invalid Date Format",
       "invalidRoomType"             :   " invalid Room Type",
       "roomTypeRequired"            :   " Room Type Required",
       "tranctionNoRequired"         :   " tranctionNo Required",

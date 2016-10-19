@@ -7,6 +7,9 @@ var passport = require("passport");
 router.post('/', passport.authenticate('ghAuth', {session:false}) ,function(req, res, next) {
   tranctionCtrl.addTranction(req, res);
 });
+router.post('/availability', passport.authenticate('ghAuth', {session:false}) ,function(req, res, next) {
+  tranctionCtrl.checkAvailability(req, res);
+});
 router.get('/', passport.authenticate('token', {session:false}),function(req, res, next) {
   tranctionCtrl.getTranction(req, res);
 });

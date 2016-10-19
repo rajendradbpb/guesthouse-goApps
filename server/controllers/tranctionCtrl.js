@@ -10,72 +10,65 @@ var roomModelObj = require("./../models/room");
 var DateOnly = require('mongoose-dateonly')(mongoose);
 var utility = require('./../component/utility');
 var sendResponse = require('./../component/sendResponse');
+var validator = require('validator');
 /*
 * Tranction crud operation starts
 */
-// exports.addTranction_bk = function (req, res) {
-//     // validating gh user against the room
-//     var query = {
-//       _id: { $in: req.body.rooms },
-//       guestHouse:req.user._doc._id
-//     }
-//     roomModelObj.find(query).exec()
-//     .then(function(data) {
-//       if(data.length > 0){
-//         console.log("got the rooms");
-//         req.body.createdBy = req.body.updatedBy = req.user._doc._id;
-//         req.body.tranctionNo = req.body.tranctionNo;
-//         return tranctionModelObj(req.body).save();
-//       }
-//       else {
-//         // no room AVAILABLE for the ghuser ... send failure
-//         return res.json(response(402,"failed",constants.messages.errors.transactionfailed))
-//       }
-//
-//     })
-//     .then(function(transaction) {
-//       if(transaction)
-//       {
-//         // update the selected room status
-//         var query = {
-//           "_id": { "$in": req.body.rooms },
-//           "guestHouse":req.user._doc._id
-//         };
-//         var update = {
-//             "bookingStatus" : "CHECKED-IN"
-//         };
-//         var options = {
-//           "new" : true,
-//           "multi":true
-//         };
-//         roomModelObj.update(query,update,options).exec(function(err,updatedRooms) {
-//           if(updatedRooms){
-//             return res.json(response(200,"success",constants.messages.success.saveData,transaction));
-//           }
-//           else {
-//             return res.json(response(402,"failed",constants.messages.errors.transactionfailed));
-//           }
-//         } );
-//       }
-//       else {
-//         return res.json(response(402,"failed",constants.messages.errors.transactionfailed));
-//       }
-//     })
-//     .catch(function(err) {
-//       return res.json(response(500,"error",constants.messages.errors.saveData,err))
-//     });
-// }
+exports.checkAvailability = function (req, res) {
+  // validations
+  if(req.body.guestHouse == "" || validator.isNull(req.body.guestHouse)){
+    sendResponse(res,202,"failed",constants.messages.errors.guestHouseRequried);
+  }
+  if(!req.body.rooms || !req.body.rooms.length){
+    sendResponse(res,202,"failed",constants.messages.errors.roomIdRequired);
+  }
+  req.body.checkInDate = new Date(req.body.checkInDate);
+  req.body.checkOutDate = new Date(req.body.checkOutDate);
+  if(!validator.isDate(req.body.checkInDate) || !validator.isDate(req.body.checkOutDate)){
+    sendResponse(res,202,"failed",constants.messages.errors.invalidDateFormat);
+  }
+  var aggregrate = [];
+  var match = {};
+  for(var i in req.body.rooms){
+    req.body.rooms[i] = mongoose.Types.ObjectId(req.body.rooms[i]);
+  }
 
+  match['guestHouse'] = mongoose.Types.ObjectId(req.user._doc._id);
+  match['roomsDetails.room'] = {"$in":req.body.rooms};
+  match["$or"] = [
+    {"$and":
+            [
+              {'roomsDetails.checkInDate':{'$lte':req.body.checkInDate}},
+              {'roomsDetails.checkOutDate':{'$gte': req.body.checkInDate}}
+            ]
+    },
+    {"$and":
+            [
+              {'roomsDetails.checkInDate':{'$lte':req.body.checkOutDate}},
+              {'roomsDetails.checkOutDate':{'$gte': req.body.checkOutDate}}
+            ]
+    }
+  ];
+  aggregrate.push({$match:match});
+  tranctionModelObj.aggregate(aggregrate)
+  .exec()
+  .then(function(trans) {
+    // return res.json(response(200,"success",constants.messages.success.getData,trans));
+    sendResponse(res,200,"success",constants.messages.success.getData,trans);
+    // return tranctionModelObj.populate( trans,{ "path": "roomsDetails.room" });
+  })
+  .catch(function(err) {
+    sendResponse(res,500,"error",constants.messages.errors.getData,err);
+  })
+}
 exports.addTranction = function (req, res) {
     // validating gh user against the room
     var query = {
       _id: { $in: req.body.rooms },
       guestHouse:req.user._doc._id
     }
-    console.log("query    ",query);
     roomModelObj.find(query).exec()
     .then(function(rooms) {
-      console.log(">>>>>>>>>>>>   ",rooms);
       if(rooms.length > 0){
         req.body.createdBy = req.body.updatedBy = req.user._doc._id;
         req.body.createdDate = new Date();
@@ -127,40 +120,6 @@ exports.addTranction = function (req, res) {
       sendResponse(res,500,"error",constants.messages.errors.saveData,err)
     });
 }
-// exports.getTranction = function (req, res) {
-//   var query = {
-//       "$and": [
-//           { "$or": [
-//               // {_id : new RegExp(req.query.searchStr, 'i')},
-//               {otp : new RegExp(req.query.searchStr, 'i')},
-//               {cName : new RegExp(req.query.searchStr, 'i')},
-//               {cMobile : new RegExp(req.query.searchStr, 'i')},
-//               {tranctionNo : new RegExp(req.query.searchStr, 'i')},
-//             ]
-//           },
-//           {"isDelete" : false}
-//       ]
-//   }
-//   // adding price filter
-//   if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
-//       query.price = {
-//         "$gte":parseInt(req.query.minPrice),
-//         "$lte":parseInt(req.query.maxPrice)
-//     }
-//   }
-//   var select = {};
-//   // // no condition as admin can access all
-//   if(req.user._doc.role.type == "ghUser"){
-//     query["$and"].push({"createdBy" : req.user._doc._id}); // filter added to extract the data specific to the ghuser
-//   }
-//   tranctionModelObj.find(query).deepPopulate("createdBy rooms").exec()
-//     .then(function(tranction) {
-//       return res.json(response(200,"success",constants.messages.success.getCustomer,tranction))
-//     })
-//     .catch(function(err) {
-//       return res.json(response(500,"error",constants.messages.errors.getCustomer,err))
-//     })
-// }
 
 exports.getTranction = function (req, res) {
   var query = {};
@@ -205,57 +164,6 @@ exports.getTranction = function (req, res) {
       })
 
 }
-
-// exports.udpateTranction = function (req, res) {
-//   var id = req.body._id;
-//   delete req.body['_id']; //  removed to avoid the _id mod error
-//   req.body.updatedBy = req.user._doc._id;
-//   req.body.checkOutDate = req.body.checkOutDate || new Date();
-//   // req.body.isPayment = true;
-//
-//   if(req.body.type == "checkOut"){
-//       tranctionModelObj.findOneAndUpdate({"_id":id},req.body,{"new":true}).exec(function (err,transaction) {
-//       if(err)
-//       {
-//         return res.json(response(500,"error",constants.messages.errors.updateData,err))
-//       }
-//       else if (!transaction) {
-//         return res.json(response(202,"success",constants.messages.errors.noData))
-//       }
-//       else {
-//         // update the room status to AVAILABLE
-//         console.log("transaction updated");
-//
-//         var query = {
-//           "_id": { "$in": req.body.rooms },
-//         };
-//         var update = {
-//             "bookingStatus" : "AVAILABLE"
-//         };
-//         var options = {
-//           "new" : true,
-//           "multi":true
-//         };
-//         roomModelObj.update(query,update,options).exec(function(err,updatedRooms) {
-//           if(err)
-//           {
-//             return res.json(response(500,"error",constants.messages.errors.updateData,err))
-//           }
-//           else if (!updatedRooms) {
-//             return res.json(response(202,"success",constants.messages.errors.noData))
-//           }
-//           else {
-//             // creating new token with the new user details
-//             return res.json(response(200,"success",constants.messages.success.updateData))
-//           }
-//         })
-//       }
-//     });
-//   }
-//   else {
-//     return res.json(response(402,"failed",constants.messages.errors.noOperation))
-//   }
-// }
 exports.updateTransaction = function (req, res) {
   var id = req.body._id;
   delete req.body['_id']; //  removed to avoid the _id mod error
@@ -285,7 +193,7 @@ exports.updateTransaction = function (req, res) {
         // saving the information into history object
         var obj = {
           transaction    :  transaction,
-          // rooms    :  req.body.rooms,
+          rooms    :  req.body.rooms,
           price    :  req.body.price,
           discount    :  req.body.discount,
           createdBy   : req.user._doc._id,
