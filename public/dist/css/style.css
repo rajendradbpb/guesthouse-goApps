@@ -1731,10 +1731,7 @@ a:focus {
 .box-header > .glyphicon,
 .box-header > .ion,
 .box-header .box-title {
-  display: inline-block;
-  font-size: 18px;
-  margin: 0;
-  line-height: 1;
+
 }
 .box-header > .fa,
 .box-header > .glyphicon,
@@ -5124,4 +5121,22 @@ margin-top: -24px;
 }
 .transction-list{
   margin: 15px 25px;
+}
+.print_bill{
+  display: inline-block;
+  font-size: 26px;
+  margin: 10px;
+  /*line-height: 1;*/
+}
+.print_name{
+  padding-top: 5px;
+    margin-bottom: 0;
+    text-align: center;
+    margin-right: 99px;
+}
+.address {
+    margin-bottom: 12px;
+    font-style: normal;
+    line-height: 1.42857143;
+    margin-left: 64px;
 }

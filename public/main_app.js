@@ -162,6 +162,12 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             controller:'transactionController',
             resolve: {loggedin: checkLoggedout},
         })
+        .state('print_bill',{
+            templateUrl: 'pages/printinvoice.html',
+            url: '/print_bill',
+            controller:'transactionController',
+            resolve: {loggedin: checkLoggedout},
+        })
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
     var Util = {};

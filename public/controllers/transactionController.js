@@ -4,6 +4,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.minDate = new Date();
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   $scope.transactionTab = function(tab){
+    $scope.isCheckout = false;
     $scope.currentTab = tab;
   }
    $scope.currentTab1 = 'ReportList';
@@ -133,8 +134,10 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
          var transactionList = response.data;
          angular.forEach(transactionList,function(transction){
            transction.roomNo = [];
+           transction.price = [];
            angular.forEach(transction.roomsDetails,function(room){
              transction.roomNo.push(room.room.roomNo);
+             transction.price.push(room.room.price);
            });
          });
          $timeout(function () {
@@ -191,7 +194,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        if(moment($scope.selectedTransaction.roomsDetails[0].checkOutDate).isBefore($scope.selectedTransaction.roomsDetails[0].checkInDate, 'days')){
          $scope.selectedTransaction.roomsDetails[0].checkOutDate = null;
        }
-       else {
+       else{
          var from = moment(room.checkInDate);
          var to = moment(room.checkOutDate);
          var different = to.diff(from,'days');
@@ -235,23 +238,28 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     * updated on -  5-9-2016 // reason for update
     */
    $scope.gotoCheckOut = function(operation){
+    //  var savedData = {};
      $scope.operationType = operation;
      $scope.selectedRooms = [];
+     $scope.selectedRoomno = [];
      $scope.roomPrice = 0;
      $scope.selectedTransaction.totalPrice = 0;
      $scope.selectedTransaction.discount = 0;
+
      $scope.transactionTab('checkOut');
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        if(room.isSelect){
-         console.log(room.totalPrice);
          $scope.selectedRooms.push(room);
+         $scope.selectedRoomno.push(room.room.roomNo);
          console.log($scope.selectedRooms);
          $scope.roomPrice += room.price;
          $scope.selectedTransaction.totalPrice += room.totalPrice;
+         $scope.checkOutDate =  moment().format('YYYY-MM-DD');
        }
-
      })
      $scope.tempTotPrice = $scope.selectedTransaction.totalPrice;
+    //  var data =$scope.selectedTransaction;
+
    }
    /**
     * functionName : checkOut
@@ -265,25 +273,25 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      var obj = {
        "_id": $scope.selectedTransaction._id,
        "price": $scope.operationType == "checkOut" ? parseFloat($scope.selectedTransaction.totalPrice):0,
-       "discount":$scope.operationType == "checkOut" ? $scope.selectedTransaction.discount:0,
+       "discount":$scope.operationType == "checkOut" ?  parseFloat($scope.selectedTransaction.discount):0,
        "type":$scope.operationType,
        "rooms":[]
      }
      angular.forEach($scope.selectedRooms,function(item){
        if(item.isSelect){
          obj.rooms.push(item.room._id);
-         console.log(item.room._id);
        }
-     })
+     });
      transactionService.updateTransaction(obj,function(response) {
         $scope.getRoom(); // refresh the rooms
-        $scope.transactionTab('roomlists');
+        // $scope.transactionTab('roomlists');
         if(response.statusCode == 200){
           obj = {
             "type":"success",
             "message":response.message
           }
-           $scope.$emit(Events.ALERT_MESSAGE,obj);
+          $scope.isCheckout = true;
+          $scope.$emit(Events.ALERT_MESSAGE,obj);
         }
         else {
           obj = {
@@ -293,6 +301,17 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
            $scope.$emit(Events.ALERT_MESSAGE,obj);
         }
      })
+   }
+   $scope.printInvoice = function(){
+     var docHead = document.head.outerHTML;
+     var printContents = document.getElementById('invoice-print').outerHTML;
+     var winAttr = "location=yes, statusbar=no, menubar=no, titlebar=no, toolbar=no,dependent=no, width=865, height=600, resizable=yes, screenX=200, screenY=200, personalbar=no, scrollbars=yes";
+     var newWin = window.open("", "_blank", winAttr);
+     var writeDoc = newWin.document;
+     writeDoc.open();
+     writeDoc.write('<!doctype html><html>' + docHead + '<body onLoad="window.print()">' + printContents + '</body></html>');
+     writeDoc.close();
+     newWin.focus();
    }
    /**
     * functionName : checkin_booked
