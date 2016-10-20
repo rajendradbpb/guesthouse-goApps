@@ -50,12 +50,21 @@ exports.checkAvailability = function (req, res) {
     }
   ];
   aggregrate.push({$match:match});
+  // specifying the fileds to be selected in the query using $project in the aggregate
+  var project = {
+    "transactionNo:":1,
+    "roomsDetails":1,
+  }
+  aggregrate.push({$project:project});
   tranctionModelObj.aggregate(aggregrate)
   .exec()
   .then(function(trans) {
-    // return res.json(response(200,"success",constants.messages.success.getData,trans));
-    sendResponse(res,200,"success",constants.messages.success.getData,trans);
-    // return tranctionModelObj.populate( trans,{ "path": "roomsDetails.room" });
+    if(trans.length > 0 ){
+      sendResponse(res,402,"failed",constants.messages.errors.roomNotAvailable,trans);
+    }
+    else {
+      sendResponse(res,200,"success",constants.messages.success.roomAvailable);
+    }
   })
   .catch(function(err) {
     sendResponse(res,500,"error",constants.messages.errors.getData,err);

@@ -59,6 +59,7 @@ var constants = {
       "lowerLimitRequired"      :   "lower Limit Required",
       "upperLimitRequired"      :   "upper Limit Required",
       "roomNoRequired"      :   "room No Required",
+      "roomNotAvailable"      :   "room Not Available",
       "ghPriceRequired"      :   "guest house Price Required",
       "roomDeleteNotAvaiable"      :   "room Delete Not Avaiable as booked/checkIn ",
       "invalidOfferPrice"      :   "invalid Offer Price ",
@@ -113,6 +114,7 @@ var constants = {
       "updateData"                 :   "update Data Success",
       "deleteData"                 :   "delete Data Success",
       "checkedIn"                 :   "checkedIn success",
+      "roomAvailable"                 :   "room is Available",
     },
   },
   gmailSMTPCredentials : {
