@@ -24,6 +24,11 @@ app.factory("transactionService", function($http,$resource,$localStorage,Constan
         method:'GET',
         url:"/report",
         headers:"application/json"
+    },
+    checkAvailability:{
+       method: 'POST',
+       url:"transaction/availability",
+       headers:"application/json"
     }
   });
 })

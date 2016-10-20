@@ -155,6 +155,28 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
        $scope.filterType = 1;
      }
    })
+   $scope.$watch('transaction.checkOutDate',function(value){
+     $scope.transaction.checkInDate
+     var obj={
+         "rooms" :$scope.selectedRoomID,
+         "checkInDate":moment($scope.transaction.checkInDate).format("MM-DD-YYYY"),
+         "checkOutDate":moment($scope.transaction.checkOutDate).format("MM-DD-YYYY"),
+         "guestHouse":$rootScope.logedInUser._id
+       }
+       transactionService.checkAvailability(obj,function(response) {
+         $scope.checkedInRooms = response.data;
+         if(response.data.length > 0){
+           obj = {
+             "type":"success",
+             "message":response.message
+           }
+            $scope.$emit(Events.ALERT_MESSAGE,obj);
+
+         }
+       })
+   })
+
+
    /**
     * $scope.serchTransaction
     * This will caleed from the transaction listing page
