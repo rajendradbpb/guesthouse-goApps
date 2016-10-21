@@ -235,7 +235,7 @@
                     <div class="input-group">
                       <input type="text" class="form-control" placeholder="Mobile Number/Transaction Number" ng-model="searchStr">
                       <span class="input-group-btn">
-                        <button type="submit" class="btn btn-info btn-flat"><i class="fa fa-search"></i></button>
+                        <button type="submit" class="btn btn-info btn-flat" ><i class="fa fa-search"></i></button>
                       </span>
                     </div>
                   </div>
@@ -324,10 +324,10 @@
                        </div>
                    <div class="form-group">
                      <div class="col-sm-offset-3 col-sm-8">
-                       <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'CHECKED-IN'" type="button" class="btn btn-info pull-right" ng-click="gotoCheckOut('checkOut')" ng-disabled="countSelect() == 0">Check Out</button>
+                       <button ng-if="selectedTransaction.bookingStatus == 'CHECKED-IN'" type="button" class="btn btn-info pull-right" ng-click="gotoCheckOut('checkOut')" ng-disabled="countSelect() == 0">Check Out</button>
                        <button type="button" class="btn btn-info pull-left"  ng-click="transactionTab('transaction')">Back</button>
-                       <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" ng-click="bookingOperation('cancelBooking')">Cancel Booking</button>
-                       <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" ng-click="checkin_booked()" >Check In</button>
+                       <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" ng-click="bookingOperation('cancelBooking')" ng-disabled="countSelect() == 0">Cancel Booking</button>
+                       <button ng-if="selectedTransaction.roomsDetails[0].bookingStatus == 'BOOKED'" type="button" class="btn btn-info pull-right" ng-click="checkin_booked()" ng-disabled="countSelect() == 0">Check In</button>
                      </div>
                    </div>
                  </form>

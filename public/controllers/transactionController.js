@@ -5,6 +5,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
   $scope.transactionTab = function(tab){
     $scope.isCheckout = false;
+    $scope.selectedAll = false;
     $scope.currentTab = tab;
   }
    $scope.currentTab1 = 'ReportList';
@@ -164,19 +165,15 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
          "guestHouse":$rootScope.logedInUser._id
        }
        transactionService.checkAvailability(obj,function(response) {
-         $scope.checkedInRooms = response.data;
-         if(response.data.length > 0){
+         if(response.data){
            obj = {
-             "type":"success",
+             "type":"danger",
              "message":response.message
            }
             $scope.$emit(Events.ALERT_MESSAGE,obj);
-
          }
        })
    })
-
-
    /**
     * $scope.serchTransaction
     * This will caleed from the transaction listing page
