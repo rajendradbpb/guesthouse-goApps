@@ -8,6 +8,7 @@ var constants = {
   default:{
     "country" :"India",
     "state" :"Odisha",
+    
   },
   roomFeature : [
   {"name":"AC SINGLE_BED","value":'AC-SB'},

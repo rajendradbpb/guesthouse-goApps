@@ -11,6 +11,13 @@ var DateOnly = require('mongoose-dateonly')(mongoose);
 var utility = require('./../component/utility');
 var sendResponse = require('./../component/sendResponse');
 var validator = require('validator');
+var autowire = require("./../../config/autowire");
+// console.log(autowire.wire('logger').log("info","rajendra"));
+console.log(autowire.wire('events').getEmitter().emit("error"));
+// require("./../../config/events");
+// var logger = require("./../../config/logger");
+// console.log(logger.log('info',">>>>>>>>>>>>>>>>>>>>>>>>"));
+// autowire.wire('events').emit('error');
 /*
 * Tranction crud operation starts
 */
@@ -53,7 +60,8 @@ exports.checkAvailability = function (req, res) {
   // specifying the fileds to be selected in the query using $project in the aggregate
   var project = {
     "transactionNo:":1,
-    "roomsDetails":1,
+    "roomsDetails.room:":1,
+    "roomsDetails.roomDetails.room:":1,
   }
   aggregrate.push({$project:project});
   tranctionModelObj.aggregate(aggregrate)

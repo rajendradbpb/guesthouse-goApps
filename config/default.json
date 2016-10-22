@@ -8,13 +8,15 @@
     "hostName":"localhost",
     "port":":27017",
     "db":"guestHouse",
-    "dbserver":"mongodb://"
+    "dbserver":"mongodb://",
+    "logPath":"./logs/server.log"
   },
   "prod":{
     "baseUrl":"http://localhost:3000",
     "hostName":"localhost",
     "port":":27017",
-    "db":"guestHouse"
+    "db":"guestHouse",
+    "logPath":"./logs/server.log"
   },
   "env" : "dev"
 }
