@@ -18,11 +18,16 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   /*******************************************************/
   /*******This code is used to get all the room lists*****/
   /*******************************************************/
-  $scope.getRoom = function(){
+  $scope.getRoom = function(data){
+    console.log($state,$stateParams);
     $rootScope.showPreloader = true;
-    var obj = {
-       "checkInDate" : moment().format("MM-DD-YYYY")
-    };
+
+    var obj = {};
+    obj['checkInDate'] = $state.params.checkInDate || moment().format("MM-DD-YYYY");
+    if($state.params.isDash)
+      obj['isDash'] = $state.params.isDash;
+    if($state.params.status)
+      obj['status'] = $state.params.status;
     GuesthouseService.getRoom(obj,function(response){
       $rootScope.showPreloader = false;
       $scope.room_list = response.data;
@@ -157,7 +162,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      }
    })
    $scope.$watch('transaction.checkOutDate',function(value){
-     $scope.transaction.checkInDate
+    // $scope.transaction.checkInDate
      var obj={
          "rooms" :$scope.selectedRoomID,
          "checkInDate":moment($scope.transaction.checkInDate).format("MM-DD-YYYY"),
@@ -473,4 +478,22 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     });
     return count;
   }
+  /**
+   * Event listners goes here
+   */
+   $rootScope.$on(Events.ROOM_LIST,function(event,data) {
+     obj = {
+       "checkInDate" : data.checkInDate || moment().format("MM-DD-YYYY"),
+       "isDash"      : data.isDash,
+       "status"        : data.status
+     };
+     $rootScope.dashBoardData = obj; // this will used to call get Room again if event called from dashBoard
+     $state.go("transaction_details",obj);
+   })
+  //  $scope.$on('$viewContentLoaded', function(event){
+  //    if($rootScope.dashBoardData){
+  //      $scope.getRoom($rootScope.dashBoardData);
+  //      $rootScope.dashBoardData = null;
+  //    }
+  //  });
 })

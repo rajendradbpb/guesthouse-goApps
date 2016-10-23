@@ -9,40 +9,41 @@
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-aqua">
         <div class="inner">
-          <h4>{{roomStatus.AVAILABLE_AC_ROOMS}}</h4>
-          <p>AVAILABLE AC ROOMS</p>
+          <h4>{{roomStatus.availableRooms}}</h4>
+          <!-- <p>AVAILABLE AC ROOMS</p> -->
+          <p>AVAILABLE ROOMS</p>
         </div>
         <div class="icon">
           <i class="ion ion-bag"></i>
         </div>
-        <a href=""class="small-box-footer" >View Status<i class="fa fa-arrow-circle-right"></i></a>
+        <a href=""class="small-box-footer" ng-click="viewList('AVAILABLE')">View List<i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
-          <h4>{{roomStatus.AVAILABLE_NON_AC_ROOMS}}</h4>
-          <p>AVAILABLE NON AC ROOMS</p>
+          <h4>{{roomStatus.bookedRooms}}</h4>
+          <p>BOOKED ROOMS</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
         </div>
-        <a href=""class="small-box-footer">View Status <i class="fa fa-arrow-circle-right"></i></a>
+        <a href=""class="small-box-footer" ng-click="viewList('BOOKED')">View List <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-yellow">
         <div class="inner">
-          <h4>{{roomStatus.BOOKED_AC_ROOMS}}</h4>
-          <p>BOOKED AC ROOMS</p>
+          <h4>{{roomStatus.checkedInRooms}}</h4>
+        <p>CHECKED IN ROOMS</p>
         </div>
         <div class="icon">
           <i class="ion ion-person-add"></i>
         </div>
-        <a href="" class="small-box-footer">View Status <i class="fa fa-arrow-circle-right"></i></a>
+        <a href="" class="small-box-footer" ng-click="viewList('CHECKED-IN')">View List <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
-    <div class="col-lg-4 col-xs-6">
+    <!-- <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-green">
         <div class="inner">
           <h4>{{roomStatus.BOOKED_NON_AC_ROOMS}}</h4>
@@ -77,6 +78,6 @@
         </div>
         <a href="" class="small-box-footer">View Status <i class="fa fa-arrow-circle-right"></i></a>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>

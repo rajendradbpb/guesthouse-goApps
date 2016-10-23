@@ -13,6 +13,8 @@ var underscore = require('underscore');
 var nodeUnique = require('node-unique-array');
 var unique = require('make-unique');
 var sendResponse = require('./../component/sendResponse');
+var autowire = require('./../../config/autowire');
+
 /*
 * guest house rooms crud operation starts
 */
@@ -156,38 +158,38 @@ exports.getRoom = function (req, res) {
   if(req.query.maxPrice)
     req.query.maxPrice = parseInt(req.query.maxPrice);
 
-  if(req.query.isDash == "1")
-  {
-    if(req.user._doc.role.type != "ghUser")
-      return res.json(response(200,"success",constants.messages.errors.auth))
-
-      roomModelObj.aggregate([
-        {
-          // condition to match the logged in user
-          $match: {
-            guestHouse: mongoose.Types.ObjectId(req.user._doc._id),  //$region is the column name in collection
-            isDelete:false,
-          }
-        },
-        {
-          // condition to group the room details
-          "$group": {
-            "_id": {
-                "roomType": "$roomType",
-                "bookingStatus": "$bookingStatus"
-            },
-            "count": { "$sum": 1 }
-        }},
-      ], function (err, result) {
-        if (err) {
-          return res.json(response(500,"error",constants.messages.success.getData,err));
-        } else {
-          return res.json(response(200,"success",constants.messages.success.getData,result));
-        }
-      });
-  }
+  // if(req.query.isDash == "1")
+  // {
+  //   if(req.user._doc.role.type != "ghUser")
+  //     return res.json(response(200,"success",constants.messages.errors.auth))
+  //
+  //     roomModelObj.aggregate([
+  //       {
+  //         // condition to match the logged in user
+  //         $match: {
+  //           guestHouse: mongoose.Types.ObjectId(req.user._doc._id),  //$region is the column name in collection
+  //           isDelete:false,
+  //         }
+  //       },
+  //       {
+  //         // condition to group the room details
+  //         "$group": {
+  //           "_id": {
+  //               "roomType": "$roomType",
+  //               "bookingStatus": "$bookingStatus"
+  //           },
+  //           "count": { "$sum": 1 }
+  //       }},
+  //     ], function (err, result) {
+  //       if (err) {
+  //         return res.json(response(500,"error",constants.messages.success.getData,err));
+  //       } else {
+  //         return res.json(response(200,"success",constants.messages.success.getData,result));
+  //       }
+  //     });
+  // }
   // if user selects a room to get the details of the room
-  else if (req.query._id) {
+  if (req.query._id) {
 
     var query = {
       "_id":mongoose.Types.ObjectId(req.query._id)
@@ -206,6 +208,11 @@ exports.getRoom = function (req, res) {
     var match = {};
     var aggregrate = [];
     var filters = {};// sets the price filter flag
+    var roomCount = {
+      availableRooms : 0,
+      bookedRooms : 0,
+      checkedInRooms : 0,
+    };
     // adding condition for the price
     if((req.query.minPrice == "" || req.query.minPrice == undefined) && utility.isDataExist(req.query.maxPrice,true) ){
       // if min price not mentioed and max price mentioed then make minPrice as ZERO
@@ -280,6 +287,32 @@ exports.getRoom = function (req, res) {
       var nonAvailableRooms = [];
       for(var i = 0 ; i < trans1.length ; i++){
         for(var j = 0 ; j < trans1[i].roomsDetails.length ; j++ ){
+          // checking for the dashBoard info
+          if(req.query.isDash == "1" && !req.query.status){
+            switch (trans1[i].roomsDetails[j].bookingStatus) {
+              // case "AVAILABLE":
+              //   roomCount.availableRooms ++;
+              //   break;
+              case "CHECKED-IN":
+                roomCount.checkedInRooms ++;
+                break;
+              case "BOOKED":
+                roomCount.bookedRooms ++;
+                break;
+              default:
+
+            }
+            nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
+            continue;
+          }
+          else if(req.query.isDash == "1" && req.query.status != "AVAILABLE"){ // skipping availableRooms
+            // req.query.status can be availableRooms,bookedRooms,checkedInRooms only
+            if(trans1[i].roomsDetails[j].bookingStatus == req.query.status){
+              nonAvailableRooms.push(trans1[i].roomsDetails[j]);
+              nonAvailbleRoomsId.push(trans1[i].roomsDetails[j].room._id);
+            }
+            continue;
+          }
           if(trans1[i].roomsDetails[j]  && trans1[i].roomsDetails[j].bookingStatus == "AVAILABLE" )
           continue;
           // adding price filter
@@ -333,15 +366,51 @@ exports.getRoom = function (req, res) {
       if(filters.roomType){
         query.roomType = req.query.roomType;
       }
-      roomModelObj.find(query)
-      .lean()
-      .exec(function(err,availableRooms) {
+      // checking for the dashBoard service or not
+      if(req.query.isDash == "1" && !req.query.status){
+        roomModelObj.count(query,function(err,count) {
+          if(err)
+            sendResponse(res,500,"error",constants.messages.errors.getData,err);
+          else{
+            roomCount.availableRooms = count;
+            sendResponse(res,200,"success",constants.messages.success.getData,roomCount);
+          }
+        })
+        // return res.json(response(200,"success",constants.messages.success.getData,data));
+      }
+      else if(req.query.isDash == "1" && req.query.status && req.query.status != "AVAILABLE"){
         var data = {
           nonAvailebleRooms :nonAvailableRooms,
-          availableRooms :availableRooms,
+          availableRooms :[],
         }
-        return res.json(response(200,"success",constants.messages.success.getData,data));
-      })
+        sendResponse(res,200,"success",constants.messages.success.getData,data);
+        // return res.json(response(200,"success",constants.messages.success.getData,data));
+      }
+      else if(req.query.isDash == "1" && req.query.status && req.query.status == "AVAILABLE"){
+        roomModelObj.find(query,function(err,rooms) {
+          if(err)
+            sendResponse(res,500,"error",constants.messages.errors.getData,err);
+          else{
+            var data = {
+              nonAvailebleRooms :[],
+              availableRooms :rooms,
+            }
+            sendResponse(res,200,"success",constants.messages.success.getData,data);
+          }
+        })
+        // return res.json(response(200,"success",constants.messages.success.getData,data));
+      }
+      else {
+        roomModelObj.find(query)
+        .lean()
+        .exec(function(err,availableRooms) {
+          var data = {
+            nonAvailebleRooms :nonAvailableRooms,
+            availableRooms :availableRooms,
+          }
+          return res.json(response(200,"success",constants.messages.success.getData,data));
+        })
+      }
     })
   }
 }

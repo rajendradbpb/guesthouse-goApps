@@ -13,11 +13,8 @@ var sendResponse = require('./../component/sendResponse');
 var validator = require('validator');
 var autowire = require("./../../config/autowire");
 // console.log(autowire.wire('logger').log("info","rajendra"));
-console.log(autowire.wire('events').getEmitter().emit("error"));
-// require("./../../config/events");
-// var logger = require("./../../config/logger");
-// console.log(logger.log('info',">>>>>>>>>>>>>>>>>>>>>>>>"));
-// autowire.wire('events').emit('error');
+// console.log(autowire.wire('events').getEmitter().emit("error"));
+
 /*
 * Tranction crud operation starts
 */

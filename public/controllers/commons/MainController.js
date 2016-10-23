@@ -1,4 +1,4 @@
-app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService,Events,Util, $location, $anchorScroll) {
+app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService,Events,Util, $location, $anchorScroll,$timeout) {
   $rootScope.showPreloader = false;
    $scope.find = {};
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
@@ -6,6 +6,19 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
     $rootScope.loggedin = false;
     delete $localStorage[Constants.getTokenKey()]
     $state.go("signIn");
+  }
+  /**
+   * functionName :$scope.viewList()
+   * Info : used to dispatch event to fetch the rooms with the status from dashboard
+   * createdDate - 24-10-2016
+   * updated on - 24-10-2016
+   */
+  $scope.viewList = function(status) {
+    // $scope.$broadcast(Events.ROOM_LIST)
+
+    $timeout(function() {
+      $rootScope.$broadcast(Events.ROOM_LIST,{status:status,isDash:"1"});
+    });
   }
   $scope.menuChanged = function(menu,sref){
     $scope.menu = menu;
@@ -43,26 +56,38 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
   /*******************************************************/
   $scope.getAllRooms = function(){
       $rootScope.showPreloader = true;
-    GuesthouseService.loadRoomByStatus(function(response){
-      $rootScope.showPreloader = false;
-      angular.forEach(response.data,function(item){
-        switch(item._id.roomType){
-          case 'AC':
-            $scope.roomStatus.AVAILABLE_AC_ROOMS = item.count;
-            break;
-          case 'NON-AC':
-            $scope.roomStatus.AVAILABLE_NON_AC_ROOMS = item.count;
-            break;
-          case 'SINGLE-BED':
-            $scope.roomStatus.SINGLE_BED = item.count;
-            break;
-          case 'DOUBLE-BED':
-            $scope.roomStatus.DOUBLE_BED = item.count;
-            break;
-           default :
-        }
-      });
-    });
+      var obj = {
+        isDash:"1",
+        "checkInDate" : moment().format("MM-DD-YYYY")
+      }
+      GuesthouseService.getRoom(obj,function(response){
+        $rootScope.showPreloader = false;
+        $scope.roomStatus = response.data;
+        console.log("room status  ",response.data);
+      },function(err) {
+        $rootScope.showPreloader = false;
+        console.log("error room status  ",err.data);
+      })
+    // GuesthouseService.loadRoomByStatus(function(response){
+    //   $rootScope.showPreloader = false;
+    //   angular.forEach(response.data,function(item){
+    //     switch(item._id.roomType){
+    //       case 'AC':
+    //         $scope.roomStatus.AVAILABLE_AC_ROOMS = item.count;
+    //         break;
+    //       case 'NON-AC':
+    //         $scope.roomStatus.AVAILABLE_NON_AC_ROOMS = item.count;
+    //         break;
+    //       case 'SINGLE-BED':
+    //         $scope.roomStatus.SINGLE_BED = item.count;
+    //         break;
+    //       case 'DOUBLE-BED':
+    //         $scope.roomStatus.DOUBLE_BED = item.count;
+    //         break;
+    //        default :
+    //     }
+    //   });
+    // });
   }
   $scope.open2 = function() {
    $scope.popup2.opened = true;
