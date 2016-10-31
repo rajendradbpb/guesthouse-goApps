@@ -496,4 +496,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   //      $rootScope.dashBoardData = null;
   //    }
   //  });
+  $scope.maxSize = 5;
+  $scope.bigTotalItems = 175;
+  $scope.bigCurrentPage = 1;
 })
