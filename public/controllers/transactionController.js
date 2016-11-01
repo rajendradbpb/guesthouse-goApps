@@ -481,8 +481,26 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     });
     return count;
   }
-  
+
   $scope.maxSize = 5;
   $scope.bigTotalItems = 175;
   $scope.bigCurrentPage = 1;
+  /**
+   * functionName :     $scope.getDetails
+   * Info :codes for getting transaction details from room details page
+   * input : ...
+   * output :...
+   * createdDate -23-9-2016
+   * updated on -  23-9-2016 // reason for update
+   */
+  $scope.getDetails = function(transaction){
+    var obj={
+    "  _id":"5809b41c5cdbb202bc03cc34"
+    }
+    $scope.currentTab = 'transactionDetails';
+    transactionService.getTransaction(obj,function(response){
+     $rootScope.showPreloader = false;
+     $scope.selectedTransaction = response.data[0];
+    })
+  }
 })

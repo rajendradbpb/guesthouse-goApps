@@ -4,7 +4,10 @@
     <small>Control panel</small>
   </h1>
 </section>
-<section class="content" ng-init="getAllRooms()">
+<div class="form-group  col-sm-12">
+  <date-viewer  ng-model="dashboard.checkinDate" ></date-viewer>
+</div>
+<section class="content">
   <div class="row">
     <div class="col-lg-4 col-xs-6">
       <div class="small-box bg-aqua">
@@ -16,7 +19,7 @@
         <div class="icon">
           <i class="ion ion-bag"></i>
         </div>
-        <a href=""class="small-box-footer" ng-click="viewList('AVAILABLE')">View List<i class="fa fa-arrow-circle-right"></i></a>
+        <a href=""class="small-box-footer" ng-if="dashboard.checkinDate" ng-click="viewList('AVAILABLE')">View List<i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <div class="col-lg-4 col-xs-6">
@@ -28,7 +31,7 @@
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
         </div>
-        <a href=""class="small-box-footer" ng-click="viewList('BOOKED')">View List <i class="fa fa-arrow-circle-right"></i></a>
+        <a href=""class="small-box-footer" ng-if="dashboard.checkinDate" ng-click="viewList('BOOKED')">View List <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <div class="col-lg-4 col-xs-6">
@@ -40,7 +43,7 @@
         <div class="icon">
           <i class="ion ion-person-add"></i>
         </div>
-        <a href="" class="small-box-footer" ng-click="viewList('CHECKED-IN')">View List <i class="fa fa-arrow-circle-right"></i></a>
+        <a href="" class="small-box-footer"  ng-if="dashboard.checkinDate" ng-click="viewList('CHECKED-IN')">View List <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- <div class="col-lg-4 col-xs-6">
