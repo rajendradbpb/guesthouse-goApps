@@ -3,6 +3,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
   $scope.filterType = 1;
   $scope.minDate = new Date();
   $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
+  $scope.$state = $state;
   $scope.transactionTab = function(tab){
     $scope.isCheckout = false;
     $scope.selectedAll = false;
@@ -163,6 +164,8 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
    })
    $scope.$watch('transaction.checkOutDate',function(value){
     // $scope.transaction.checkInDate
+    if(!$scope.transaction)
+    return;
      var obj={
          "rooms" :$scope.selectedRoomID,
          "checkInDate":moment($scope.transaction.checkInDate).format("MM-DD-YYYY"),
@@ -478,24 +481,7 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
     });
     return count;
   }
-  /**
-   * Event listners goes here
-   */
-   $rootScope.$on(Events.ROOM_LIST,function(event,data) {
-     obj = {
-       "checkInDate" : data.checkInDate || moment().format("MM-DD-YYYY"),
-       "isDash"      : data.isDash,
-       "status"        : data.status
-     };
-     $rootScope.dashBoardData = obj; // this will used to call get Room again if event called from dashBoard
-     $state.go("transaction_details",obj);
-   })
-  //  $scope.$on('$viewContentLoaded', function(event){
-  //    if($rootScope.dashBoardData){
-  //      $scope.getRoom($rootScope.dashBoardData);
-  //      $rootScope.dashBoardData = null;
-  //    }
-  //  });
+  
   $scope.maxSize = 5;
   $scope.bigTotalItems = 175;
   $scope.bigCurrentPage = 1;

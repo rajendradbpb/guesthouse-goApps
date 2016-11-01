@@ -153,6 +153,10 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
         .state('transaction_details',{
             templateUrl: 'pages/transaction/transaction_Details.html',
             url: '/transaction_details?checkInDate=&isDash=&status',
+            // url: '/transaction_details',
+            params: {
+               obj: null
+            },
             controller:'transactionController',
             resolve: {loggedin: checkLoggedout},
         })

@@ -14,11 +14,12 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
    * updated on - 24-10-2016
    */
   $scope.viewList = function(status) {
-    // $scope.$broadcast(Events.ROOM_LIST)
-
-    $timeout(function() {
-      $rootScope.$broadcast(Events.ROOM_LIST,{status:status,isDash:"1"});
-    });
+    obj = {
+      "checkInDate" : moment().format("MM-DD-YYYY"),
+      "isDash"      : "1",
+      "status"        : status
+    };
+    $state.go('transaction_details',obj);
   }
   $scope.menuChanged = function(menu,sref){
     $scope.menu = menu;

@@ -41,6 +41,7 @@
               </div>
               <div class="row col-md-9">
                 <button type="button" class="btn btn-primary btn-sm" ng-disabled="booking_disable"  ng-click="bookRoom()">Go To Booking</button>
+                <button type="button" class="btn btn-primary btn-sm" ng-if="$state.params.isDash == '1'"  ui-sref="guest_house-dashboard">Go To dashboard</button>
               </div>
               <div class="row col-md-9 m-t-lg" >
               <div class="col-sm-3 pointer" room-style input-object="room" ng-repeat = "room in room_list.nonAvailebleRooms" >
