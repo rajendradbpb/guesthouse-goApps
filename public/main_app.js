@@ -1,4 +1,4 @@
-app = angular.module("guest_house", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngCookies']);
+app = angular.module("guest_house", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngCookies','ngStorage']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) {
 
   //adding http intercepter
@@ -148,6 +148,30 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             templateUrl: 'pages/guestHouseUser/newRoomDetails.html',
             url: '/newRoom_details',
             controller:'GuesthouseController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('room_lists',{
+            templateUrl: 'pages/roomLists.html',
+            url: '/room_lists',
+            controller:'roomController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('room_Details',{
+            templateUrl: 'pages/roomDetails.html',
+            url: '/room_Details',
+            controller:'roomController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('BookingDetails',{
+            templateUrl: 'pages/bookingDetails.html',
+            url: '/BookingDetails',
+            controller:'roomController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('allTransactions',{
+            templateUrl: 'pages/transactions.html',
+            url: '/allTransactions',
+            controller:'roomController',
             resolve: {loggedin: checkLoggedout},
         })
         .state('transaction_details',{

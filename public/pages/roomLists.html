@@ -1,0 +1,52 @@
+<section class="content-header">
+  <h1>
+    Room Profile
+  </h1>
+  <small>Control panel</small>
+</section>
+<section class="content section-gh-room_list"  ng-init="getRoom()">
+    <div class="row" >
+    <div class="col-md-9" >
+      <div class="col-sm-3 pointer" room-style input-object="availableRooms" ng-repeat = "availableRooms in room_list.availableRooms" >
+        <a class="room-listing-box" ng-click="goToRoomDetails(availableRooms)" >
+          <span>{{availableRooms.bookingStatus}} - {{availableRooms.roomNo}}</span>
+          <p>Capacity {{availableRooms.capacity}}</p>
+          <p>Price {{availableRooms.price}}</p>
+          <p ng-if="availableRooms.isOffer">OfferPrice {{availableRooms.offerPrice}}</p>
+        </a>
+        <a class="offer-Zone" ng-if="availableRooms.isOffer" room-style input-object="availableRooms">
+          <span>
+            OFFER
+          </span>
+        </a>
+        <div class="checkbox btn-check" ng-if ="availableRooms.bookingStatus == 'AVAILABLE' ">
+            <label>
+              <input type="checkbox" ng-model="availableRooms.isChecked" ng-change="countChecked()">
+            </label>
+        </div>
+    </div>
+  </div>
+  <div class="row col-md-9">
+    <button type="button" class="btn btn-primary btn-sm" ng-disabled="booking_disable"  ng-click="goToBookRoom(room)">Go To Booking</button>
+    <button type="button" class="btn btn-primary btn-sm" ng-if="$state.params.isDash == '1'"  ui-sref="guest_house-dashboard">Go To dashboard</button>
+  </div>
+  <div class="row col-md-9 m-t-lg" >
+  <div class="col-sm-3 pointer" room-style input-object="room" ng-repeat = "room in room_list.nonAvailebleRooms" >
+      <a class="room-listing-box" ng-click="goToRoomDetails(room.room)" >
+        <span>{{room.bookingStatus}} - {{room.room.roomNo}}</span>
+        <p>Capacity {{room.room.capacity}}</p>
+        <!-- <p>Room No {{room.room.roomNo}}</p> -->
+        <p>Price {{room.room.price}}</p>
+        <p ng-if="room.isOffer">OfferPrice {{room.room.offerPrice}}</p>
+      </a>
+      <a class="offer-Zone" ng-if="room.isOffer" room-style input-object="room">
+        <span>
+          OFFER
+        </span>
+      </a>
+  </div>
+</div>
+  </div>
+</section>
+<room-filter filter="1" model-value="room_list"></room-filter>
+</div>

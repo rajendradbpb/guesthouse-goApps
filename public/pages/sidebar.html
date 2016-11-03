@@ -30,6 +30,16 @@
           <i class="fa  fa-home"></i> <span>Transaction</span>
         </a>
       </li>
+      <li class="treeview" ng-class="{'active': menu == 'RoomList'}" ng-click="menuChanged('RoomList','room_lists')" ng-if="logedInUser.role.type =='ghUser'" >
+        <a href="" ui-sref="room_lists">
+          <i class="fa  fa-home"></i> <span>RoomList</span>
+        </a>
+      </li>
+      <li class="treeview" ng-class="{'active': menu == 'NewTransaction'}" ng-click="menuChanged('Transaction','allTransactions')" ng-if="logedInUser.role.type =='ghUser'" >
+        <a href="" ui-sref="allTransactions">
+          <i class="fa  fa-home"></i> <span>NewTransaction</span>
+        </a>
+      </li>
       <li class="treeview" ng-class="{'active': menu == 'Reports'}" ng-click="menuChanged('Reports','transaction_Report')" ng-if="logedInUser.role.type =='ghUser'">
         <a href="" ui-sref="transaction_Report">
           <i class="fa fa-file-o"></i> <span>Reports</span>
