@@ -13,10 +13,10 @@
     </div>
     <div class="col-sm-5">
       <p>CHECKED-IN - {{transaction.roomsDetails[0].checkInDate | dateformat}} </p>
-      <p>CHECK-OUT - {{transaction.checkOutDate | dateformat}} </p>
+      <p>CHECK-OUT - {{transaction.roomsDetails[0].checkOutDate | dateformat}} </p>
     </div>
     <div class="col-sm-3">
-      <p>Rs: {{transaction.transction_price}}</p>
-      <p>Status-{{transaction.bookingStatus}}</p>
+      <p>Rs: {{transaction.roomsDetails[0].price}}</p>
+      <p>Status-{{transaction.roomsDetails[0].bookingStatus}}</p>
     </div>
   </div>

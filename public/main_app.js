@@ -165,23 +165,35 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
         .state('BookingDetails',{
             templateUrl: 'pages/bookingDetails.html',
             url: '/BookingDetails',
-            controller:'roomController',
+            controller:'BookingController',
             resolve: {loggedin: checkLoggedout},
         })
         .state('allTransactions',{
             templateUrl: 'pages/transactions.html',
             url: '/allTransactions',
-            controller:'roomController',
+            controller:'newTransactionController',
             resolve: {loggedin: checkLoggedout},
         })
-        .state('transaction_details',{
-            templateUrl: 'pages/transaction/transaction_Details.html',
-            url: '/transaction_details?checkInDate=&isDash=&status',
+        .state('transactionDetails',{
+            templateUrl: 'pages/transactionDetails.html',
+            url: '/transactionDetails',
+            controller:'newTransactionController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('checkout',{
+            templateUrl: 'pages/checkoutPage.html',
+            url: '/checkout',
+            controller:'newTransactionController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('roomList_details',{
+            templateUrl: 'pages/roomLists.html',
+            url: '/roomList_details?checkInDate=&isDash=&status',
             // url: '/transaction_details',
             params: {
                obj: null
             },
-            controller:'transactionController',
+            controller:'newTransactionController',
             resolve: {loggedin: checkLoggedout},
         })
         .state('transaction_Report',{

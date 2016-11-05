@@ -1,6 +1,7 @@
 app.controller("MainController",function($scope,$rootScope,$localStorage,GuesthouseService,Constants,$state,UserService,transactionService,Events,Util, $location, $anchorScroll,$timeout) {
   $rootScope.showPreloader = false;
    $scope.find = {};
+   $scope.dashboard = {};
   $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
   $scope.signOut = function() {
     $rootScope.loggedin = false;
@@ -15,11 +16,11 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
    */
   $scope.viewList = function(status) {
     obj = {
-      "checkInDate" : moment().format("MM-DD-YYYY"),
+      "checkInDate" : ($scope.dashboard.checkinDate) ? moment($scope.dashboard.checkinDate).format("MM-DD-YYYY") : moment().format("MM-DD-YYYY"),
       "isDash"      : "1",
-      "status"        : status
+      "status"      : status
     };
-    $state.go('transaction_details',obj);
+    $state.go('roomList_details',obj);
   }
   $scope.menuChanged = function(menu,sref){
     $scope.menu = menu;

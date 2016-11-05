@@ -1,0 +1,142 @@
+<section class="content" ng-if="!isCheckout" ng-init="loadCheckoutDetails()">
+  <div class="" >
+      <form class="form-horizontal" name="transactionDetails" >
+        <div class="box-body">
+          <div class="form-group">
+             <label for="inputEmail3" class="col-sm-3 control-label">Transaction No </label>
+             <div class="col-sm-8">
+               <input type="text" class="form-control" name="otp_no" ng-model="selectedTransaction.transactionNo"  readonly>
+             </div>
+           </div>
+           <div class="form-group ">
+              <label for="inputPassword3" class="col-sm-3 control-label">CheckIn Date</label>
+              <div class="col-sm-8">
+               <input type="text" class="form-control" name="checkedinprice"  ng-model="selectedTransaction.roomsDetails[0].checkInDate "  readonly>
+             </div>
+          </div>
+          <div class="form-group ">
+            <label for="inputPassword3" class="col-sm-3 control-label">CheckOut Date</label>
+            <div class="col-sm-8">
+             <input type="text" class="form-control" name="checkoutprice"  ng-model="selectedTransaction.roomsDetails[0].checkOutDate"  readonly>
+           </div>
+          </div>
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">Price/Day</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" name="price"  ng-model="roomPrice"  readonly>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">Total Price</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" name="price" ng-model="selectedTransaction.totalPrice" readonly >
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">Discount</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" name="discount"  ng-model="selectedTransaction.discount" ng-change="calculateDiscount()">
+              </div>
+          </div>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-info pull-left" ng-click="checkOutRoom()">Check Out</button>
+            <button type="submit" class="btn btn-default pull-right" ui-sref="allTransactions">Back</button>
+        </div>
+      </form>
+  </div>
+</section>
+<div class="invoice" ng-if="isCheckout">
+  <section class="content-header">
+    <h1>
+      Invoice
+      <small>{{selectedTransaction.transactionNo}}</small>
+    </h1>
+  </section>
+  <div class="pad margin no-print">
+    <div class="callout callout-info" style="margin-bottom: 0!important;">
+      <h4><i class="fa fa-info"></i> Note:</h4>
+      Do not Refresh of back your page. This has been enhanced for invoice printing. Click the print button at the bottom of the invoice.
+    </div>
+  </div>
+  <section class="invoice" id="invoice-print">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="page-header">
+          <i class="fa fa-globe"></i> Guest House Name
+          <small class="pull-right">Date: {{checkOutDate}}</small>
+        </h2>
+      </div>
+    </div>
+    <div class="row invoice-info">
+      <div class="col-sm-4 invoice-col">
+        Guest
+        <address>
+          <strong>{{selectedTransaction.cName}}</strong><br>
+          {{selectedTransaction.address}}<br>
+          Phone: {{selectedTransaction.cMobile}}<br>
+        </address>
+      </div>
+      <div class="col-sm-4 invoice-col">
+      </div>
+      <div class="col-sm-4 invoice-col">
+        <b>Invoice {{selectedTransaction.transactionNo}}</b><br>
+        <br>
+        <b>Check In Date: {{selectedTransaction.roomsDetails[0].checkInDate}}</b>  <br>
+        <b>Check Out Date: {{checkOutDate}}</b> <br>
+        <b>Room No: </b>  {{selectedRoomno.toString()}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Sl.No</th>
+              <th>Description</th>
+              <th>Room No</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="room in selectedTransaction.roomsDetails" ng-if="room.isSelect">
+              <td>{{$index+1}}</td>
+              <td>Room Charges</td>
+              <td>{{room.room.roomNo}}</td>
+              <td>Rs. {{room.price}}</td>
+            </tr>
+          </tbody>
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Sub Total</th>
+              <th>Rs.{{tempTotPrice}}</th>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Discount</th>
+              <th>Rs.{{selectedTransaction.discount}}</th>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Total</th>
+              <th>Rs. {{selectedTransaction.totalPrice}}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="row no-print">
+      <div class="col-xs-12">
+        <a href="" ng-click="printInvoice()" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+      </div>
+    </div>
+  </section>
+</div>

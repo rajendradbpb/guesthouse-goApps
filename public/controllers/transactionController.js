@@ -272,7 +272,6 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
      $scope.roomPrice = 0;
      $scope.selectedTransaction.totalPrice = 0;
      $scope.selectedTransaction.discount = 0;
-
      $scope.transactionTab('checkOut');
      angular.forEach($scope.selectedTransaction.roomsDetails,function(room){
        if(room.isSelect){
@@ -474,13 +473,13 @@ app.controller("transactionController", function($scope,$rootScope,UserService,$
    * createdDate -23-9-2016
    * updated on -  23-9-2016 // reason for update
    */
-    $scope.countSelect = function(){
-    var count = 0;
-    angular.forEach($scope.selectedTransaction.roomsDetails, function(value){
-        if (value.isSelect) count++;
-    });
-    return count;
-  }
+  //   $scope.countSelect = function(){
+  //   var count = 0;
+  //   angular.forEach($scope.selectedTransaction.roomsDetails, function(value){
+  //       if (value.isSelect) count++;
+  //   });
+  //   return count;
+  // }
 
   $scope.maxSize = 5;
   $scope.bigTotalItems = 175;
