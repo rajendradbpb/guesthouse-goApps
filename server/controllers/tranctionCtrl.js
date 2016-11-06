@@ -229,9 +229,10 @@ exports.updateTransaction = function (req, res) {
       .exec()
       .then(function(transaction) {
         // update the room status to AVAILABLE
-        for(var i=0 ; i < transaction.roomsDetails.length && req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)) != -1 && transaction.roomsDetails[i].bookingStatus == "BOOKED" ; i++){
+        // for(var i=0 ; i < transaction.roomsDetails.length && req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)) != -1 && transaction.roomsDetails[i].bookingStatus == "BOOKED" ; i++){
+        for(var i=0 ; i < transaction.roomsDetails.length ; i++){
           transaction.roomsDetails[i].bookingStatus = "AVAILABLE";
-          transaction.roomsDetails[i].checkDate = new Date(); // setting check out date as same day
+          transaction.roomsDetails[i].cancelDate = new Date(); // setting check out date as same day
         }
         return transaction.save();
       })
@@ -250,26 +251,48 @@ exports.updateTransaction = function (req, res) {
 
       })
       .then(function(history){
-        return res.json(response(200,"success","booking cancel success "))
+        // return res.json(response(200,"success","booking cancel success "))
+        sendResponse(res,200,"success","booking cancel success ");
       })
       .catch(function(err) {
-        return res.json(response(500,"error","error in booking cancel  ",err))
+        // return res.json(response(500,"error","error in booking cancel  ",err))
+        sendResponse(res,500,"error","error in booking cancel  ",err);
       })
+
+
   }
   else if (req.body.type == "checkedIn") {
-    var query = {
-      _id:id,
-      "roomsDetails":{"$elemMatch":{"bookingStatus":"BOOKED"} } ,
-    }
-    var update = {
-      "$set":{"roomsDetails.$.bookingStatus":"CHECKED-IN"}
-    }
-    var option = {
-      "new":true,
-      "upsert": true
-    }
-    // return tranctionModelObj.find({_id:id}).exec()
-    return tranctionModelObj.findOneAndUpdate(query,update,option).exec()
+    // var query = {
+    //   _id:id,
+    //   "roomsDetails":{"$elemMatch":{"bookingStatus":"BOOKED"} } ,
+    // }
+    // var update = {
+    //   "$set":{"roomsDetails.$.bookingStatus":"CHECKED-IN"}
+    // }
+    // var option = {
+    //   "new":true,
+    //   "upsert": true
+    // }
+    // // return tranctionModelObj.find({_id:id}).exec()
+    // return tranctionModelObj.findOneAndUpdate(query,update,option).exec()
+    // .then(function(transaction) {
+    //   return res.json(response(200,"success",constants.messages.success.checkedIn))
+    // })
+    // .catch(function(err) {
+    //   return res.json(response(500,"error",constants.messages.errors.checkedIn,err))
+    // })
+
+    tranctionModelObj.findById(id)
+    .exec()
+    .then(function(transaction) {
+      // update the room status to AVAILABLE
+      // for(var i=0 ; i < transaction.roomsDetails.length && req.body.rooms.indexOf(String(transaction.roomsDetails[i].room)) != -1 && transaction.roomsDetails[i].bookingStatus == "BOOKED" ; i++){
+      for(var i=0 ; i < transaction.roomsDetails.length ; i++){
+        transaction.roomsDetails[i].bookingStatus = "CHECKED-IN";
+        transaction.roomsDetails[i].checkInDate = new Date(); // setting check out date as same day
+      }
+      return transaction.save();
+    })
     .then(function(transaction) {
       return res.json(response(200,"success",constants.messages.success.checkedIn))
     })
@@ -278,7 +301,7 @@ exports.updateTransaction = function (req, res) {
     })
   }
   else {
-    return res.json(response(402,"failed","booking cancel failed  "))
+    return res.json(response(402,"failed","Invalid option for the transaction operation"))
   }
 }
 

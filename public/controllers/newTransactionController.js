@@ -143,6 +143,8 @@ app.controller("newTransactionController", function($scope,$rootScope,UserServic
     */
    $scope.getTransactionData = function(transaction){
      $scope.selectedTransaction = UtilityService.getTransaction();
+     if(!$scope.selectedTransaction)
+        $state.go("allTransactions");
    }
    /**
     * functionName : gotoCheckOut
@@ -285,33 +287,33 @@ $scope.checkin_booked = function(){
       }
   })
 }
-// $scope.BookingCancel = function(){
-//   var obj={
-//     "_id" : $scope.selectedTransaction._id,
-//     "type" :"cancelBooking",
-//     "price"  :$scope.selectedTransaction.price,
-//     "discount":$scope.selectedTransaction.discount
-//   }
-//   transactionService.updateTransaction(obj,function(response) {
-//     console.log(obj);
-//       // $scope.getRoom(); // refresh the rooms
-//       $state.go('room_lists');
-//       if(response.statusCode == 200){
-//         obj = {
-//           "type":"success",
-//           "message":response.message
-//         }
-//          $scope.$emit(Events.ALERT_MESSAGE,obj);
-//       }
-//       else {
-//         obj = {
-//           "type":"danger",
-//           "message":response.message
-//         }
-//          $scope.$emit(Events.ALERT_MESSAGE,obj);
-//       }
-//   })
-// }
+$scope.BookingCancel = function(){
+  var obj={
+    "_id" : $scope.selectedTransaction._id,
+    "type" :"cancelBooking",
+    "price"  :$scope.selectedTransaction.price,
+    "discount":$scope.selectedTransaction.discount
+  }
+  transactionService.updateTransaction(obj,function(response) {
+    console.log(obj);
+      // $scope.getRoom(); // refresh the rooms
+      $state.go('room_lists');
+      if(response.statusCode == 200){
+        obj = {
+          "type":"success",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
+      }
+      else {
+        obj = {
+          "type":"danger",
+          "message":response.message
+        }
+         $scope.$emit(Events.ALERT_MESSAGE,obj);
+      }
+  })
+}
 /**
  * functionName : checkOutRoom()
  * Info : code used to checkout room

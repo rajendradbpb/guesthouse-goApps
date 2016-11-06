@@ -53,6 +53,7 @@ app.controller("BookingController", function($scope,$rootScope,UserService,$stat
         //  $state.go('room_lists');
          $scope.transaction = {};
          UtilityService.resetForm(bookroom);
+         $state.go('room_lists');
        },2000)
     }
     else {
