@@ -10,7 +10,7 @@ app.controller("newTransactionController", function($scope,$rootScope,UserServic
       "_id": $scope.selectedTransaction._id,
       "price": $scope.selectedTransaction.totalPrice,
       "discount":$scope.selectedTransaction.discount,
-      "type":"checkout",
+      "type":"checkOut",
       "rooms":[]
     }
     angular.forEach($scope.selectedRooms,function(item){
