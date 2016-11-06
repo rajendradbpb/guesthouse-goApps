@@ -152,7 +152,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
         })
         .state('room_lists',{
             templateUrl: 'pages/roomLists.html',
-            url: '/room_lists',
+            url: '/room_lists?checkInDate=&isDash=&status',
             controller:'roomController',
             resolve: {loggedin: checkLoggedout},
         })

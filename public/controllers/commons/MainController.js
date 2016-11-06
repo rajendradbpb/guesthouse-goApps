@@ -20,7 +20,7 @@ app.controller("MainController",function($scope,$rootScope,$localStorage,Guestho
       "isDash"      : "1",
       "status"      : status
     };
-    $state.go('roomList_details',obj);
+    $state.go('room_lists',obj);
   }
   $scope.menuChanged = function(menu,sref){
     $scope.menu = menu;
