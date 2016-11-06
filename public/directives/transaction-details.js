@@ -17,4 +17,12 @@ angular.module('guest_house').directive("transactionDetails",function(){
   $scope.getTransactionDetails = function(transaction) {
     $scope.onSelectTransaction(transaction);
   }
+  $scope.getRoomsNos = function(transaction) {
+      var roomNos = [];
+      for(var i in transaction.roomsDetails){
+        if(transaction.roomsDetails[i] && transaction.roomsDetails[i].room)
+          roomNos.push(transaction.roomsDetails[i].room.roomNo);
+    }
+    return roomNos.toString();
+  }
 })

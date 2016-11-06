@@ -8,7 +8,8 @@
   <div ng-click="getTransactionDetails(transaction)" class=" row alert alert-info alert-dismissible pointer transction-list">
     <div class="col-sm-4">
       <p>Name - {{transaction.cName}}</p>
-      <p>RoomNo - {{transaction.roomNo.toString()}}</p>
+      <!-- <p>RoomNo - {{transaction.roomNo.toString()}}</p> -->
+      <p>RoomNo - {{getRoomsNos(transaction)}}</p>
       <p>Transaction No - {{transaction.transactionNo}}</p>
     </div>
     <div class="col-sm-5">

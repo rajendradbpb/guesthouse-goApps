@@ -52,7 +52,7 @@ app.controller("newTransactionController", function($scope,$rootScope,UserServic
        searchStr:searchStr
      }
      transactionService.getTransaction(obj,function(response) {
-       $scope.trasactionList = response.data
+       $scope.transactionList = response.data;
      },
        function(err){
          Util.alertMessage('error', err.message);
@@ -71,19 +71,7 @@ app.controller("newTransactionController", function($scope,$rootScope,UserServic
      $scope.filterType = 2;
      // call the service to get the trasactions
      transactionService.getTransaction(function(response) {
-       var transactionList = response.data;
-       angular.forEach(transactionList,function(transction){
-         transction.roomNo = [];
-         transction.price = [];
-         angular.forEach(transction.roomsDetails,function(room){
-           transction.roomNo.push(room.room.roomNo);
-           transction.price.push(room.room.price);
-         });
-       });
-       $timeout(function () {
-          $scope.transactionList = transactionList;
-          console.log($scope.transactionList);
-       });
+      $scope.transactionList = response.data;
      })
      }
      /**
