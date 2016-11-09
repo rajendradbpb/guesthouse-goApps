@@ -5005,10 +5005,10 @@ input[type=checkbox], input[type=radio]{
 }
 .side-banner{
   position: absolute;
-    background-color: #3C8DBC;
-    top: 95px;
-    right: 17px;
-    padding: 41px;
+        background-color: #3C8DBC;
+        top: 52px;
+        right: 17px;
+        padding: 41px;
 }
 .side-banner label{
   color:#fff;

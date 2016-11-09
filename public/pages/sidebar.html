@@ -25,11 +25,11 @@
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      <li class="treeview" ng-class="{'active': menu == 'Transaction'}" ng-click="menuChanged('Transaction','transaction_details')" ng-if="logedInUser.role.type =='ghUser'" >
+      <!-- <li class="treeview" ng-class="{'active': menu == 'Transaction'}" ng-click="menuChanged('Transaction','transaction_details')" ng-if="logedInUser.role.type =='ghUser'" >
         <a href="" ui-sref="transaction_details">
           <i class="fa  fa-home"></i> <span>Transaction</span>
         </a>
-      </li>
+      </li> -->
       <li class="treeview" ng-class="{'active': menu == 'RoomList'}" ng-click="menuChanged('RoomList','room_lists')" ng-if="logedInUser.role.type =='ghUser'" >
         <a href="" ui-sref="room_lists">
           <i class="fa  fa-home"></i> <span>RoomList</span>

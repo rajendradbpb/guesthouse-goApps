@@ -26,7 +26,20 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
           if (response.status == 'OK') {
               $timeout(function () {
                   deferred.resolve();
-                  $state.go("ccare-dashboard");
+                  switch (response.user.role.type) {
+                    case "ccare":
+                    $state.go("ccare-dashboard");
+                    break;
+                    case "admin":
+                    $state.go("admin-dashboard");
+                    break;
+                    case "ghUser":
+                    $state.go("guest_house-dashboard");
+                    break;
+                    case "ghAdmin":
+                    break;
+                    default:
+                  }
               }, 100);
           }
           else {
@@ -169,13 +182,13 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             resolve: {loggedin: checkLoggedout},
         })
         .state('allTransactions',{
-            templateUrl: 'pages/transactions.html',
+            templateUrl: 'pages/Transactions/transactions.html',
             url: '/allTransactions',
             controller:'newTransactionController',
             resolve: {loggedin: checkLoggedout},
         })
         .state('transactionDetails',{
-            templateUrl: 'pages/transactionDetails.html',
+            templateUrl: 'pages/Transactions/transactionDetails.html',
             url: '/transactionDetails',
             controller:'newTransactionController',
             resolve: {loggedin: checkLoggedout},
@@ -196,18 +209,31 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider,Constants) 
             controller:'newTransactionController',
             resolve: {loggedin: checkLoggedout},
         })
-        .state('transaction_Report',{
-            templateUrl: 'pages/transaction/transaction_report.html',
-            url: '/transaction_Report',
-            controller:'transactionController',
-            resolve: {loggedin: checkLoggedout},
-        })
+        // .state('transaction_Report',{
+        //     templateUrl: 'pages/transaction/transaction_report.html',
+        //     url: '/transaction_Report',
+        //     controller:'transactionController',
+        //     resolve: {loggedin: checkLoggedout},
+        // })
         .state('print_bill',{
             templateUrl: 'pages/printinvoice.html',
             url: '/print_bill',
             controller:'transactionController',
             resolve: {loggedin: checkLoggedout},
         })
+        .state('transaction_Report',{
+            templateUrl: 'pages/Report/TransactionReport.html',
+            url: '/transaction_Report',
+            controller:'reportController',
+            resolve: {loggedin: checkLoggedout},
+        })
+        .state('report_Details',{
+            templateUrl: 'pages/Report/ReportDetails.html',
+            url: '/report_Details',
+            controller:'reportController',
+            resolve: {loggedin: checkLoggedout},
+        })
+
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
     var Util = {};
