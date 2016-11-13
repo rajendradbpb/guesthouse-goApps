@@ -66,6 +66,8 @@ app.controller("newTransactionController", function($scope,$rootScope,UserServic
       obj["page"] = page;
      transactionService.getTransaction(obj,function(response) {
        $scope.transactionData = response.data;
+       if(page)
+        $scope.transactionData.selectedPage = page; // set the selected page
      },
        function(err){
          Util.alertMessage('error', err.message);
