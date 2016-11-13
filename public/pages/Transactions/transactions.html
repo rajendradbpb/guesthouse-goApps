@@ -11,11 +11,11 @@
         </div>
       </div>
     </form>
-     <ul uib-pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true" rotate="false"></ul>
+     <ul uib-pagination total-items="transactionData.totalCount" ng-model="transactionData.selectedPage" max-size="maxSize" items-per-page="transactionData.pageCount" class="pagination-sm" boundary-link-numbers="true" rotate="false" ng-change="transactionPageChanged()"></ul>
   </div>
 </div>
 <div class="form-group " ng-init="getAllTransaction()">
-  <div ng-repeat="transaction in transactionList">
+  <div ng-repeat="transaction in transactionData.transaction">
     <transaction-details transaction="transaction" on-select-transaction="onSelectTransaction(transaction)"></transaction-details>
   </div>
 </div>

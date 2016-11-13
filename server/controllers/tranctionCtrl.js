@@ -135,43 +135,83 @@ exports.addTranction = function (req, res) {
     });
 }
 
+// exports.getTranction = function (req, res) {
+//   var query = {};
+//   var aggregrate = [];
+//   var match = {};
+//   match['isDelete'] = false; // fetch only non deleted transaction
+//   // adding match condition for min max price
+//   if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
+//       match["$and"] = [
+//         {'roomsDetails.price':{"$gte":parseInt(req.query.minPrice)}},
+//         {'roomsDetails.price':{"$lte":parseInt(req.query.maxPrice)}}
+//       ]
+//   }
+//   // adding match if user is ghUser so that only related transaction will get
+//   if(req.user._doc.role.type == "ghUser"){
+//     match['createdBy'] = mongoose.Types.ObjectId(req.user._doc._id); // filter added to extract the data specific to the ghuser
+//   }
+//   if(req.query.searchStr){
+//     match['$or'] = [
+//       {otp : new RegExp(req.query.searchStr, 'i')},
+//       {cName : new RegExp(req.query.searchStr, 'i')},
+//       {cMobile : new RegExp(req.query.searchStr, 'i')},
+//       {tranctionNo : new RegExp(req.query.searchStr, 'i')},
+//     ]
+//   }
+//   aggregrate.push({$match:match});
+//   aggregrate.push({ $group: { _id: null, count: { $sum: 1 } } });
+//
+//   // console.log("transaction  aggregrate",aggregrate);
+//   tranctionModelObj.aggregate(aggregrate).skip(2).limit(5).exec()
+//       .then(function(tranction) {
+//         // populate room after the aggregration
+//         tranctionModelObj.populate(tranction, {path: "roomsDetails.room"},function(err,transactionRes) {
+//           if(err)
+//             return res.json(response(500,"error",constants.messages.errors.getCustomer,err));
+//             else {
+//               return res.json(response(200,"success",constants.messages.success.getCustomer,transactionRes))
+//             }
+//         });
+//         // return res.json(response(200,"success",constants.messages.success.getCustomer,tranction))
+//       })
+//       .catch(function(err) {
+//         return res.json(response(500,"error",constants.messages.errors.getCustomer,err))
+//       })
+//
+// }
 exports.getTranction = function (req, res) {
   var query = {};
-  var aggregrate = [];
-  var match = {};
-  match['isDelete'] = false; // fetch only non deleted transaction
-  // adding match condition for min max price
-  if(parseInt(req.query.minPrice) && parseInt(req.query.maxPrice)){
-      match["$and"] = [
-        {'roomsDetails.price':{"$gte":parseInt(req.query.minPrice)}},
-        {'roomsDetails.price':{"$lte":parseInt(req.query.maxPrice)}}
-      ]
-  }
+
   // adding match if user is ghUser so that only related transaction will get
   if(req.user._doc.role.type == "ghUser"){
-    match['createdBy'] = mongoose.Types.ObjectId(req.user._doc._id); // filter added to extract the data specific to the ghuser
+    query['createdBy'] = mongoose.Types.ObjectId(req.user._doc._id); // filter added to extract the data specific to the ghuser
   }
   if(req.query.searchStr){
-    match['$or'] = [
-      {otp : new RegExp(req.query.searchStr, 'i')},
-      {cName : new RegExp(req.query.searchStr, 'i')},
-      {cMobile : new RegExp(req.query.searchStr, 'i')},
-      {tranctionNo : new RegExp(req.query.searchStr, 'i')},
+    query['$or'] = [
+      {"otp" : new RegExp(req.query.searchStr, 'i')},
+      {"cName" : new RegExp(req.query.searchStr, 'i')},
+      {"cMobile" : new RegExp(req.query.searchStr, 'i')},
+      {"tranctionNo" : new RegExp(req.query.searchStr, 'i')},
     ]
   }
-  aggregrate.push({$match:match});
-  // console.log("transaction  aggregrate",aggregrate);
-  tranctionModelObj.aggregate(aggregrate).exec()
-      .then(function(tranction) {
-        // populate room after the aggregration
-        tranctionModelObj.populate(tranction, {path: "roomsDetails.room"},function(err,transactionRes) {
-          if(err)
-            return res.json(response(500,"error",constants.messages.errors.getCustomer,err));
-            else {
-              return res.json(response(200,"success",constants.messages.success.getCustomer,transactionRes))
-            }
-        });
-        // return res.json(response(200,"success",constants.messages.success.getCustomer,tranction))
+  var totalTransaction = 0;
+  tranctionModelObj.find(query).count().exec()
+      .then(function(count) {
+              totalTransaction = count;
+              var skippedRecord = 0 ;
+              if(req.query.page){
+                skippedRecord = parseInt(req.query.page) * constants.default.pageCount;
+              }
+              return tranctionModelObj.find(query).skip(skippedRecord).limit(constants.default.pageCount).populate("roomsDetails.room").lean().exec()
+      })
+      .then(function(transaction) {
+        var data = {
+          totalCount :totalTransaction,
+          transaction:transaction,
+          pageCount:constants.default.pageCount,
+        }
+        return res.json(response(200,"success",constants.messages.success.getCustomer,data))
       })
       .catch(function(err) {
         return res.json(response(500,"error",constants.messages.errors.getCustomer,err))

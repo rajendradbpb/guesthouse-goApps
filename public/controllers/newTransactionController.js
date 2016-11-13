@@ -1,10 +1,20 @@
 app.controller("newTransactionController", function($scope,$rootScope,UserService,$state,GuesthouseService,$stateParams,Util,UtilityService,transactionService,$timeout,Events) {
-  $scope.currentTab = 'roomlists';
-  $scope.filterType = 1;
-  $scope.minDate = new Date();
-  $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
-  $scope.$state = $state;
-  $scope.isCheckout = false;
+  /**
+   * functionName :viewContentLoaded event
+   * Info : this is used to put initialise the default parameters
+   * createdDate - 13-11-2016
+   * updated on - 13-11-2016
+   Note: here we are avoiding ng-init for a standard approach and to avoid the extra function name
+   */
+  $scope.$on('$viewContentLoaded', function(event){
+      $scope.maxSize = 5;
+      $scope.currentTab = 'roomlists';
+      $scope.filterType = 1;
+      $scope.minDate = new Date();
+      $scope.roomFeature = UtilityService.getUserSettings().roomFeature;
+      $scope.$state = $state;
+      $scope.isCheckout = false;
+  });
   $scope.checkOutRoom = function(){
     var obj = {
       "_id": $scope.selectedTransaction._id,
@@ -46,13 +56,16 @@ app.controller("newTransactionController", function($scope,$rootScope,UserServic
    * createdDate - 4-9-2016
    * updated on -  4-9-2016 // reason for update
    */
-   $scope.serchTransaction = function(searchStr) {
+   $scope.serchTransaction = function(searchStr,page) {
      // call the service to get the trasactions
      var obj = {
        searchStr:searchStr
      }
+     // sending page no if clicked on pagination
+     if(page)
+      obj["page"] = page;
      transactionService.getTransaction(obj,function(response) {
-       $scope.transactionList = response.data;
+       $scope.transactionData = response.data;
      },
        function(err){
          Util.alertMessage('error', err.message);
@@ -71,7 +84,7 @@ app.controller("newTransactionController", function($scope,$rootScope,UserServic
      $scope.filterType = 2;
      // call the service to get the trasactions
      transactionService.getTransaction(function(response) {
-      $scope.transactionList = response.data;
+      $scope.transactionData = response.data;
      })
      }
      /**
@@ -341,7 +354,14 @@ $scope.printInvoice = function(){
   writeDoc.close();
   newWin.focus();
 }
-  $scope.maxSize = 5;
-  $scope.bigTotalItems = 175;
-  $scope.bigCurrentPage = 1;
+/**
+ * functionName :transactionPageChanged()
+ * Info : used to get transaction on page select with the recent query
+ * createdDate - 13-11-2016
+ * updated on - 13-11-2016
+ */
+$scope.transactionPageChanged = function() {
+  $scope.serchTransaction($scope.searchStr,$scope.transactionData.selectedPage);
+}
+
 })
