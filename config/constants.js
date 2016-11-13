@@ -8,7 +8,7 @@ var constants = {
   default:{
     "country" :"India",
     "state" :"Odisha",
-    "pageCount":2,
+    "pageCount":4,
 
   },
   roomFeature : [

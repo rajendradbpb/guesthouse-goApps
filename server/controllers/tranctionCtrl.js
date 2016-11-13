@@ -200,8 +200,8 @@ exports.getTranction = function (req, res) {
       .then(function(count) {
               totalTransaction = count;
               var skippedRecord = 0 ;
-              if(req.query.page){
-                skippedRecord = parseInt(req.query.page) * constants.default.pageCount;
+              if(req.query.page && parseInt(req.query.page) != 1){
+                skippedRecord = ((parseInt(req.query.page) - 1) * (constants.default.pageCount));
               }
               return tranctionModelObj.find(query).skip(skippedRecord).limit(constants.default.pageCount).populate("roomsDetails.room").lean().exec()
       })
